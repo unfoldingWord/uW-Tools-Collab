@@ -5,15 +5,15 @@ This document provides comprehensive technical documentation for developers buil
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Resource Types and Purposes](#resource-types-and-purposes)
-3. [Resource Infrastructure and Organization](#resource-infrastructure-and-organization)
-4. [Core Translation Resources](#core-translation-resources)
-5. [Supporting Resources](#supporting-resources)
-6. [Resource Container Architecture](#resource-container-architecture)
-7. [Resource Linking System](#resource-linking-system)
-8. [Integration Patterns](#integration-patterns)
-9. [Extensibility Framework](#extensibility-framework)
-10. [Implementation Guidelines](#implementation-guidelines)
+2. [Resource Ecosystem Concepts](#resource-ecosystem-concepts)
+3. [Resource Relationships and Workflow](#resource-relationships-and-workflow)
+4. [Getting Started with Integration](#getting-started-with-integration)
+5. [Technical Specifications](#technical-specifications)
+6. [Infrastructure and Hosting](#infrastructure-and-hosting)
+7. [Resource Container Architecture](#resource-container-architecture)
+8. [Integration Patterns and APIs](#integration-patterns-and-apis)
+9. [Implementation Guidelines](#implementation-guidelines)
+10. [Advanced Topics and Extensibility](#advanced-topics-and-extensibility)
 
 ## Overview
 
@@ -96,7 +96,9 @@ graph TD
     style TA fill:#e8f5e8
 ```
 
-## Resource Types and Purposes
+## Resource Ecosystem Concepts
+
+This section provides developers with a comprehensive understanding of what each resource contains, why translation teams need them, and how they work together. Understanding these concepts is essential before diving into technical implementation details.
 
 ### Foundation Resources
 
@@ -143,9 +145,9 @@ These are complete Bible translations in gateway languages (like English, Spanis
 
 **Why translators need it**: Enables translation tools to show exactly which Hebrew or Greek word a translator is working on, and to highlight relevant notes and definitions for that specific word.
 
-### Supporting Guidance Resources
+### Supporting Resources
 
-These resources provide contextual help and training for translators:
+The supporting resources provide contextual guidance, definitions, methodology, and quality assurance tools that work together with the core translation texts. These resources follow standardized formats and linking mechanisms to enable precise integration with translation applications.
 
 #### **Translation Notes (TN)**
 **What they contain**: Verse-by-verse explanations for difficult, ambiguous, or culturally complex passages throughout the Bible that require special attention for accurate translation.
@@ -205,159 +207,326 @@ These resources form an interconnected ecosystem where each one enhances the oth
 
 This conceptual foundation enables the precise, interconnected resource ecosystem detailed in the following sections.
 
-## Resource Infrastructure and Organization
+## Resource Relationships and Workflow
 
-### Where Resources are Hosted
+This section demonstrates how developers can understand the practical connections between resources and how they integrate into translation workflows. These relationship patterns form the foundation for all technical implementation decisions.
 
-All unfoldingWord translation resources are hosted on **Door43 Content Service (DCS)**, a specialized Git-based platform designed specifically for Bible translation content management.
+### Understanding Resource Dependencies
 
-#### Primary Hosting Platform: Door43 Content Service
-- **Platform URL**: `https://git.door43.org/`
-- **Technology**: Gitea-based Git platform with Door43-specific extensions
-- **Organization**: Resources are organized under the `unfoldingWord` organization
-- **Access Methods**: Web interface, Git protocols, and REST API
-- **Version Control**: Full Git history tracking for all resource changes
-- **Collaboration**: Multi-user editing with branch/merge workflows
+The unfoldingWord ecosystem is built on a foundation of precise interdependencies that developers must understand to build effective translation tools:
 
-#### Repository Organization Pattern
-```
-https://git.door43.org/unfoldingWord/
-├── en_ult/          # English Literal Translation
-├── en_ust/          # English Simplified Translation  
-├── en_tn/           # English Translation Notes
-├── en_tw/           # English Translation Words
-├── en_twl/          # English Translation Words Links
-├── en_ta/           # English Translation Academy
-├── hbo_uhb/         # Hebrew Bible (original language)
-├── el-x-koine_ugnt/ # Greek New Testament (original language)
-└── [other languages and resources...]
-```
-
-### Why These Specific Structures?
-
-#### Resource Container (RC) Specification Compliance
-
-All unfoldingWord resources follow the **Resource Container (RC) specification**, an open standard designed specifically for Bible translation content. This ensures:
-
-1. **Standardized Metadata**: Every resource includes Dublin Core-compliant metadata in `manifest.yaml`
-2. **Consistent Structure**: Predictable file organization across all resource types
-3. **Interoperability**: Resources from different organizations can work together
-4. **Linking Capability**: Standardized URI format for cross-resource references
-5. **Tool Compatibility**: Translation software can easily parse and integrate resources
-
-#### Benefits of Git-Based Hosting
-
-**Version Control**: Complete history of every change to translation resources
-```bash
-# Example: View the history of Genesis translation changes
-git log --oneline 01-GEN.usfm
-```
-
-**Branching and Collaboration**: Multiple teams can work on resources simultaneously
-```bash
-# Example: Create feature branch for translation improvements
-git checkout -b improve-genesis-notes
-```
-
-**Distributed Access**: Resources can be cloned, mirrored, and used offline
-```bash
-# Example: Clone entire ULT/GLT repository locally
-git clone https://git.door43.org/unfoldingWord/en_ult.git
-```
-
-**Quality Control**: Pull requests and review workflows ensure resource accuracy
-
-### Multi-Platform Support Strategy
-
-While Door43 is the primary platform, the Resource Container specification enables hosting on multiple platforms:
-
-#### Supported Hosting Options
-- **Door43 Instances**: Primary and mirror Door43 servers
-- **Generic Git Platforms**: GitHub, GitLab, Bitbucket
-- **Self-Hosted Solutions**: Private Gitea, GitLab, or other Git servers  
-- **Local Repositories**: Offline or network-isolated environments
-- **Content Delivery Networks**: Cached distribution for performance
-
-#### Platform Detection and Adaptation
-Translation applications should detect the hosting platform from repository URLs and adapt their access methods accordingly:
-
-**Platform Detection Requirements:**
-- **Door43 Detection**: URLs containing `git.door43.org` indicate Door43 Content Service with enhanced catalog API support
-- **GitHub Detection**: URLs containing `github.com` indicate GitHub hosting with standard GitHub API patterns
-- **GitLab Detection**: URLs containing `gitlab.com` indicate GitLab hosting with GitLab API patterns  
-- **Generic Git**: Other URLs should be treated as generic Git repositories with standard Git access patterns
-
-**Adaptation Considerations:**
-- Door43 platforms provide enhanced catalog APIs for resource discovery
-- Generic Git platforms require standard repository API calls
-- Some platforms may have rate limiting or authentication requirements
-- Fallback mechanisms should handle platform-specific failures
-
-### Resource Discovery and Access
-
-#### Door43 Catalog API
-Door43 provides enhanced resource discovery through a specialized catalog API:
-
-```javascript
-// Discover all available English resources
-GET https://git.door43.org/api/v1/catalog/list?lang=en&stage=prod
-
-// Find specific resource type across languages  
-GET https://git.door43.org/api/v1/catalog/list?resource=ult
+#### Core Dependency Chain
+```mermaid
+graph TB
+    subgraph "Foundation Layer"
+        V[Versification System]
+        UHB[Hebrew Bible - UHB]
+        UGNT[Greek New Testament - UGNT]
+    end
+    
+    subgraph "Alignment Layer" 
+        WA[Word Alignment Data]
+    end
+    
+    subgraph "Gateway Language Texts"
+        ULT[ULT/GLT - Literal Translation]
+        UST[UST/GST - Simplified Translation]
+    end
+    
+    subgraph "Supporting Resources"
+        TN[Translation Notes]
+        TWL[Translation Words Links]
+        TW[Translation Words]
+        TQ[Translation Questions]
+        TA[Translation Academy]
+    end
+    
+    V --> ULT
+    V --> UST
+    UHB --> WA
+    UGNT --> WA
+    WA --> ULT
+    WA --> UST
+    
+    WA --> TN
+    WA --> TWL
+    TWL --> TW
+    TN --> TA
+    ULT --> TQ
+    UST --> TQ
+    
+    style V fill:#fff2cc
+    style WA fill:#f0f4c3
+    style ULT fill:#e1f5fe
+    style UST fill:#e1f5fe
+    style UHB fill:#f3e5f5
+    style UGNT fill:#f3e5f5
+    style TN fill:#fff3e0
+    style TW fill:#e8f5e8
+    style TWL fill:#fff3e0
+    style TQ fill:#fff3e0
+    style TA fill:#e8f5e8
 ```
 
-#### Standard Git Access Patterns
-```javascript
-// Direct repository access
-GET https://git.door43.org/api/v1/repos/unfoldingWord/en_ult
+#### Critical Implementation Insights
 
-// File content access
-GET https://git.door43.org/api/v1/repos/unfoldingWord/en_ult/contents/01-GEN.usfm
+**Word Alignment as the Central Hub**: The word alignment data serves as the crucial connection point that enables all other resources to reference specific words in context. Without understanding alignment data, developers cannot properly implement:
+- Translation Note highlighting
+- Translation Words popup functionality  
+- Quality assurance validation
+- Cross-resource navigation
 
-// Release information
-GET https://git.door43.org/api/v1/repos/unfoldingWord/en_ult/releases/latest
-```
+**Versification as the Coordinate System**: Every resource uses the versification system as its reference framework. Developers must ensure their applications handle versification consistently across all resources to maintain proper coordination.
 
-### Quality Assurance and Release Management
+**Gateway Language Flexibility**: The system supports multiple gateway languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any gateway language implementation, not just English.
 
-#### Three-Stage Quality Process
-1. **Draft Stage**: Initial development and testing
-2. **Pre-Production**: Review and validation by subject matter experts  
-3. **Production**: Approved resources ready for translation teams
+### Practical Integration Workflows
 
-#### Release Versioning
-Resources use semantic versioning aligned with content updates:
-```yaml
-# Example from manifest.yaml
-dublin_core:
-  version: '85'  # Incremented with each content release
-  issued: '2024-01-15'
-  modified: '2024-01-15T14:30:00Z'
-```
+#### Translation Review Workflow
+This workflow demonstrates how resources work together to support translation review:
 
-#### Checking Levels
-Resources include quality indicators:
-- **Level 1**: Community reviewed
-- **Level 2**: Expert reviewed  
-- **Level 3**: Thoroughly checked by unfoldingWord team
+1. **Context Loading**: Application loads ULT/GLT and UST/GST for verse comparison
+2. **Note Integration**: Translation Notes provide specific guidance, with Quote/Occurrence data pointing to aligned words
+3. **Term Definition**: Translation Words Links connect aligned words to comprehensive definitions
+4. **Methodology Reference**: Translation Academy articles explain the principles behind translation decisions
+5. **Quality Verification**: Translation Questions enable community checking of translation effectiveness
 
-### Gateway Language Ecosystem Strategy
+#### Resource Discovery Workflow  
+This workflow shows how developers should approach resource discovery:
 
-#### English as Primary Gateway Language
-unfoldingWord provides the reference implementation in English, serving as the model for other gateway language organizations.
+1. **Language Detection**: Identify available gateway languages with complete resource sets
+2. **Resource Validation**: Verify that all required resources exist for the target language
+3. **Version Coordination**: Ensure compatible versions across all resources in the ecosystem
+4. **Dependency Mapping**: Build resource dependency graph for proper loading order
+5. **Fallback Strategy**: Define alternative resources when primary resources are unavailable
 
-#### Parallel Gateway Language Implementations
-Other organizations create complete resource sets in strategic languages:
-- **Spanish**: `es-419_gl` organization 
-- **French**: `fr_gl` organization
-- **Portuguese**: `pt-br_gl` organization
-- **Hindi**: `hi_gl` organization
+#### Cross-Resource Navigation Workflow
+This workflow demonstrates how users move between interconnected resources:
 
-Each maintains the same structural patterns while adapting content for their linguistic and cultural context.
+1. **Entry Point**: User encounters difficult term in ULT/GLT or UST/GST text
+2. **Alignment Resolution**: System identifies original language word through alignment data  
+3. **Resource Linking**: Translation Words Links provide path to definition
+4. **Extended Learning**: Translation Academy articles offer deeper methodology training
+5. **Context Return**: User returns to original translation context with enhanced understanding
 
-This infrastructure foundation enables the precise, interconnected resource ecosystem detailed in the following sections.
+### Data Flow Patterns for Developers
 
-## Core Translation Resources
+#### Highlighting Implementation Pattern
+When implementing Translation Note highlighting:
+- Parse TN Quote and Occurrence fields
+- Locate matching alignment markers in USFM
+- Extract gateway language words within alignment spans
+- Apply visual highlighting with clear connection to note content
+
+#### Cross-Reference Resolution Pattern  
+When implementing RC link navigation:
+- Parse RC URI components (language, resource, type, project, reference)
+- Resolve to appropriate Resource Container
+- Navigate to specific content location
+- Maintain navigation context for user return path
+
+#### Multi-Resource Coordination Pattern
+When displaying comprehensive verse analysis:
+- Load all relevant resources for target verse concurrently
+- Build cross-resource connections using alignment data as foundation
+- Present unified interface showing interconnected information
+- Enable seamless navigation between related content
+
+### Performance and Architecture Considerations
+
+#### Resource Loading Strategy
+- **Dependency-Aware Loading**: Load foundational resources (versification, alignment) before dependent resources
+- **Lazy Loading Patterns**: Load supporting resources only when needed for specific features
+- **Caching Strategies**: Cache alignment data and resource connections for responsive user interface
+- **Concurrent Loading**: Load multiple resources simultaneously when dependencies allow
+
+#### Error Handling Patterns  
+- **Graceful Degradation**: Continue operation when some resources are unavailable
+- **Fallback Resources**: Substitute alternative resources when primary resources fail
+- **Resource Validation**: Verify resource consistency and completeness before integration
+- **User Communication**: Provide clear feedback when resources are incomplete or unavailable
+
+This understanding of resource relationships and workflows prepares developers for the technical implementation details covered in the following sections.
+
+## Getting Started with Integration
+
+This section provides developers with practical guidance for beginning integration with the unfoldingWord ecosystem. It covers essential first steps, basic resource access patterns, and common integration approaches without diving into complex technical details.
+
+### Prerequisites for Developers
+
+Before beginning integration, developers should understand these fundamental concepts:
+
+#### Essential Knowledge Requirements
+- **Git Repository Structure**: Basic understanding of Git-based content management
+- **REST API Concepts**: Experience with RESTful web services and JSON data handling  
+- **Text File Formats**: Familiarity with structured text formats (TSV, YAML, Markdown)
+- **Unicode and Text Encoding**: Understanding of UTF-8 and multilingual text handling
+- **Resource Linking**: Concept of URI-based resource identification and resolution
+
+#### Translation Domain Awareness
+While technical expertise is assumed, developers benefit from understanding:
+- **Bible Reference Systems**: Chapter and verse numbering concepts
+- **Translation Philosophy**: Difference between literal and meaning-based translation approaches
+- **Cross-Language Challenges**: Cultural and linguistic barriers in translation work
+- **Quality Assurance**: Community-based checking and validation processes
+
+### Resource Discovery Strategy
+
+#### Starting Point: Catalog API Exploration
+Developers should begin by exploring available resources through the Door43 Catalog API:
+
+**Resource Discovery Process**:
+1. **Query Available Languages**: Identify which gateway languages have complete resource sets
+2. **Resource Type Assessment**: Determine which resource types are available for target languages
+3. **Version Identification**: Find the most recent stable versions of each resource
+4. **Completeness Evaluation**: Verify that all required resources exist for chosen language
+5. **Quality Assessment**: Check resource quality levels and checking status
+
+**Catalog API Exploration Strategy**:
+- Start with broad queries to understand the ecosystem scope
+- Filter by production stage to focus on stable resources
+- Examine resource relationships through manifest metadata
+- Identify resource dependencies and integration requirements
+
+#### Language Selection Considerations
+When choosing which gateway language to integrate first:
+
+**Recommended Starting Languages**:
+- **English (`en`)**: Most complete resource set, reference implementation
+- **Spanish (`es-419`)**: Mature gateway language implementation  
+- **French (`fr`)**: Well-developed resource ecosystem
+- **Portuguese (`pt-br`)**: Growing gateway language resources
+
+**Evaluation Criteria**:
+- Resource completeness across all required types
+- Recent update activity and maintenance
+- Quality checking levels and validation status
+- Community support and documentation availability
+
+### Basic Integration Patterns
+
+#### Simple Resource Access Pattern
+For developers beginning integration, start with read-only access to individual resources:
+
+**Basic Access Strategy**:
+1. **Single Resource Focus**: Begin with one resource type (e.g., ULT/GLT)
+2. **Direct Repository Access**: Use standard Git platform APIs for file retrieval
+3. **Simple Content Parsing**: Focus on basic content extraction without complex linking
+4. **Progressive Enhancement**: Add additional resources and features incrementally
+
+**Resource Access Priorities**:
+1. **Gateway Language Texts**: ULT/GLT and UST/GST for foundational content
+2. **Versification**: Chapter and verse structure for navigation
+3. **Supporting Resources**: Add TN, TW, and other resources as features expand
+4. **Cross-Resource Linking**: Implement resource connections after basic functionality works
+
+#### Incremental Feature Development
+Build translation tool features progressively rather than attempting comprehensive integration immediately:
+
+**Phase 1 - Basic Text Display**:
+- Display ULT/GLT and UST/GST side by side
+- Implement basic navigation between chapters and verses
+- Handle USFM formatting for readable text presentation
+- Provide simple search functionality within texts
+
+**Phase 2 - Enhanced Navigation**:
+- Add versification-based reference system
+- Implement cross-reference navigation within texts
+- Enable bookmarking and history functionality
+- Provide text comparison features between ULT/GLT and UST/GST
+
+**Phase 3 - Supporting Resource Integration**:
+- Display Translation Notes for selected verses
+- Show Translation Words definitions for key terms
+- Enable Translation Academy article access
+- Implement Translation Questions for quality checking
+
+**Phase 4 - Advanced Integration**:
+- Enable precise word-level highlighting through alignment data
+- Implement cross-resource navigation and linking
+- Add multi-language support for different gateway languages
+- Provide comprehensive quality assurance features
+
+### Common Integration Approaches
+
+#### Web Application Strategy
+For web-based translation tools:
+
+**Technical Approach Considerations**:
+- **Client-Side vs. Server-Side**: Determine whether to load resources in browser or server
+- **Caching Strategy**: Implement appropriate caching for resource content and API responses
+- **Progressive Loading**: Load essential resources first, supporting resources as needed
+- **Offline Capability**: Consider service worker strategies for offline resource access
+
+**User Experience Priorities**:
+- **Fast Initial Load**: Prioritize showing basic text content quickly
+- **Responsive Design**: Ensure functionality across desktop, tablet, and mobile devices
+- **Accessibility**: Implement proper semantic markup and keyboard navigation
+- **Performance**: Optimize resource loading and text rendering for smooth interaction
+
+#### Desktop Application Strategy  
+For native desktop translation tools:
+
+**Architecture Considerations**:
+- **Local Resource Storage**: Download and cache resources locally for offline access
+- **Update Management**: Implement system for checking and downloading resource updates
+- **Cross-Platform Compatibility**: Ensure resource handling works across operating systems
+- **Integration APIs**: Provide APIs for other desktop applications to access loaded resources
+
+**Performance Optimization**:
+- **Resource Indexing**: Build local indexes for fast search and navigation
+- **Memory Management**: Efficiently handle large resource files and multiple open books
+- **Concurrent Access**: Support multiple simultaneous resource operations
+- **Background Processing**: Load and process resources without blocking user interface
+
+#### Mobile Application Strategy
+For mobile translation tools:
+
+**Mobile-Specific Considerations**:
+- **Bandwidth Optimization**: Minimize network usage through efficient resource loading
+- **Storage Management**: Handle limited device storage for resource caching
+- **Touch Interface**: Design resource navigation for touch-based interaction
+- **Battery Efficiency**: Optimize resource processing to minimize battery drain
+
+**Connectivity Handling**:
+- **Offline Priority**: Ensure core functionality works without network connection
+- **Sync Strategy**: Implement efficient synchronization of resource updates
+- **Progressive Download**: Allow users to download specific books or resources as needed
+- **Connection Quality**: Adapt resource loading to available network conditions
+
+### Integration Testing Strategy
+
+#### Resource Validation Testing
+Before deploying integration features, developers should test:
+
+**Content Integrity Testing**:
+- **Format Validation**: Verify that USFM, TSV, and other formats parse correctly
+- **Character Encoding**: Test handling of Unicode characters and multilingual content
+- **Cross-Resource Consistency**: Validate that resource references resolve correctly
+- **Version Compatibility**: Ensure resources work together across different versions
+
+**Functionality Testing**:
+- **Navigation Accuracy**: Verify that chapter and verse navigation works correctly
+- **Search Functionality**: Test search accuracy across different resource types
+- **Cross-Reference Resolution**: Validate that links between resources function properly
+- **Performance Testing**: Measure resource loading times and application responsiveness
+
+#### User Experience Validation
+Test integration from translator perspective:
+
+**Workflow Testing**:
+- **Translation Review Process**: Verify that resources support actual translation workflows
+- **Learning Curve Assessment**: Evaluate how quickly new users can become productive
+- **Error Handling**: Test application behavior when resources are unavailable or incomplete
+- **Accessibility Compliance**: Ensure features work with assistive technologies
+
+This getting started foundation prepares developers for the detailed technical specifications and advanced integration patterns covered in the following sections.
+
+## Technical Specifications
+
+This section provides detailed technical specifications for all resource types in the unfoldingWord ecosystem. It covers file formats, data structures, and implementation details that developers need for building robust integration features.
+
+### Core Translation Resources
 
 The core translation resources form the foundation of the unfoldingWord ecosystem, providing source texts and alignment data that enable precise translation work.
 
@@ -967,7 +1136,9 @@ Reference	ID	SupportReference	Quote	Note
 For more information, see [Translate Names](rc://en/ta/man/translate/translate-names).
 ```
 
-## Integration Patterns
+## Integration Patterns and APIs
+
+This section covers practical API usage, authentication methods, and multi-platform integration strategies that developers need for robust resource access and application deployment across different hosting environments.
 
 ### Hosting Infrastructure: Git-Based Platforms
 
@@ -1177,7 +1348,9 @@ relation:
 - **Link Validity**: TWL points to words present in alignments
 - **Methodology**: Alignment decisions follow Translation Academy principles
 
-## Extensibility Framework
+## Advanced Topics and Extensibility
+
+This section covers advanced integration topics including creating custom resources, extending the ecosystem, and implementing specialized features for power users and organizations with unique requirements.
 
 ### Creating New Resources
 
@@ -1545,4 +1718,4 @@ The unfoldingWord translation resource ecosystem provides a comprehensive, inter
 - **Open Source**: Creative Commons licensing enables broad adoption
 - **Community Support**: Active developer community and ongoing maintenance
 
-This documentation provides the foundation for building translation tools that serve the global church's mission of making Scripture accessible in every language. The unfoldingWord ecosystem represents years of collaborative development by translation experts, linguists, and software developers working together to create the most comprehensive Bible translation resource system available today. 
+This documentation provides the foundation for building translation tools that serve the global church's mission of making Scripture accessible in every language. The unfoldingWord ecosystem represents years of collaborative development by translation experts, linguists, and software developers working together to create the most comprehensive Bible translation resource system available today.
