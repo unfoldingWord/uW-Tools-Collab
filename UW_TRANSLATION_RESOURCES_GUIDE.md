@@ -279,16 +279,19 @@ While Door43 is the primary platform, the Resource Container specification enabl
 - **Content Delivery Networks**: Cached distribution for performance
 
 #### Platform Detection and Adaptation
-Translation tools should detect the hosting platform and adapt accordingly:
+Translation applications should detect the hosting platform from repository URLs and adapt their access methods accordingly:
 
-```javascript
-function detectPlatformType(repositoryUrl) {
-  if (repositoryUrl.includes('git.door43.org')) return 'door43';
-  if (repositoryUrl.includes('github.com')) return 'github';
-  if (repositoryUrl.includes('gitlab.com')) return 'gitlab';
-  return 'generic-git';
-}
-```
+**Platform Detection Requirements:**
+- **Door43 Detection**: URLs containing `git.door43.org` indicate Door43 Content Service with enhanced catalog API support
+- **GitHub Detection**: URLs containing `github.com` indicate GitHub hosting with standard GitHub API patterns
+- **GitLab Detection**: URLs containing `gitlab.com` indicate GitLab hosting with GitLab API patterns  
+- **Generic Git**: Other URLs should be treated as generic Git repositories with standard Git access patterns
+
+**Adaptation Considerations:**
+- Door43 platforms provide enhanced catalog APIs for resource discovery
+- Generic Git platforms require standard repository API calls
+- Some platforms may have rate limiting or authentication requirements
+- Fallback mechanisms should handle platform-specific failures
 
 ### Resource Discovery and Access
 
@@ -1078,107 +1081,51 @@ openapi-generator-cli generate \
   -o ./src/api/door43
 ```
 
-#### Practical API Usage Examples
+#### Common Integration Patterns
 
-**1. Resource Discovery**:
-```javascript
-// Find all English ULT/GLT resources
-const response = await fetch(
-  'https://git.door43.org/api/v1/catalog/list?lang=en&resource=ult&stage=prod'
-);
-const ultResources = await response.json();
+**1. Resource Discovery Process**:
+Applications should query the catalog API to find available resources by language and type:
+- Filter catalog entries by language (`lang=en`) and resource type (`resource=ult`) 
+- Include stage filter (`stage=prod`) to get production-ready resources only
+- Sort results by release date to identify the most recent version
+- Handle cases where no resources are found for a given language/type combination
 
-// Get latest version
-const latest = ultResources.sort((a, b) => 
-  new Date(b.released) - new Date(a.released)
-)[0];
-```
-
-**2. Resource Download**:
-```javascript
-// Download resource as ZIP
-async function downloadResource(catalogEntry) {
-  const response = await fetch(catalogEntry.zipball_url);
-  const blob = await response.blob();
-  return blob;
-}
-
-// Get manifest data
-async function getResourceManifest(catalogEntry) {
-  const response = await fetch(catalogEntry.metadata_json_url);
-  const manifest = await response.json();
-  return manifest;
-}
-```
+**2. Resource Download Process**:
+Applications can obtain resource content through multiple methods:
+- **ZIP Download**: Use the `zipball_url` from catalog entries for complete resource packages
+- **Direct File Access**: Access individual files through repository API endpoints
+- **Manifest Access**: Retrieve metadata through `metadata_json_url` for resource information
+- **Incremental Loading**: Download only needed books or sections rather than entire resources
 
 **3. Multi-Language Resource Discovery**:
-```javascript
-// Find all available languages for ULT/GLT
-const allUlt = await fetch(
-  'https://git.door43.org/api/v1/catalog/list?resource=ult&stage=prod'
-).then(r => r.json());
+To find available languages for a specific resource type:
+- Query catalog without language filter to get all available implementations
+- Extract unique language identifiers from the results
+- Group resources by language to understand completeness
+- Identify which languages have full resource ecosystems
 
-const languages = [...new Set(allUlt.map(entry => entry.language.identifier))];
-console.log('Available ULT/GLT languages:', languages);
-```
+**4. Gateway Language Ecosystem Assessment**:
+To identify complete gateway language implementations:
+- Define core resource requirements (`ult`, `ust`, `tn`, `tw`, `twl`, `ta`)
+- Query catalog for all production resources across languages
+- Group catalog entries by language identifier
+- Filter languages that have all required resource types available
+- Prioritize languages with recent updates and high checking levels
 
-**4. Gateway Language Ecosystem Discovery**:
-```javascript
-// Find complete resource sets for gateway languages
-async function findCompleteGatewayLanguages() {
-  const requiredResources = ['ult', 'ust', 'tn', 'tw', 'twl', 'ta'];
-  const catalog = await fetch(
-    'https://git.door43.org/api/v1/catalog/list?stage=prod'
-  ).then(r => r.json());
-  
-  // Group by language
-  const byLanguage = catalog.reduce((acc, entry) => {
-    const lang = entry.language.identifier;
-    if (!acc[lang]) acc[lang] = [];
-    acc[lang].push(entry.resource.identifier);
-    return acc;
-  }, {});
-  
-  // Find languages with all required resources
-  const completeLanguages = Object.entries(byLanguage)
-    .filter(([lang, resources]) => 
-      requiredResources.every(req => resources.includes(req))
-    )
-    .map(([lang]) => lang);
-    
-  return completeLanguages;
-}
-```
+#### Authentication and Rate Limiting Considerations
 
-#### Authentication and Rate Limiting
+**Authentication Requirements:**
+- Most public resources are accessible without authentication
+- Private repositories or enhanced API features may require API tokens
+- Authentication should use standard `Authorization: token <TOKEN>` headers
+- Content-Type should be set to `application/json` for API requests
 
-```javascript
-// API authentication (when required)
-const headers = {
-  'Authorization': 'token YOUR_API_TOKEN',
-  'Content-Type': 'application/json'
-};
-
-// Rate limiting considerations
-const apiClient = {
-  async request(url, options = {}) {
-    const response = await fetch(url, {
-      ...options,
-      headers: { ...headers, ...options.headers }
-    });
-    
-    // Check rate limit headers
-    const remaining = response.headers.get('X-RateLimit-Remaining');
-    const reset = response.headers.get('X-RateLimit-Reset');
-    
-    if (remaining && parseInt(remaining) < 10) {
-      console.warn(`API rate limit low: ${remaining} requests remaining`);
-    }
-    
-    return response;
-  }
-};
-```
+**Rate Limiting Management:**
+- APIs typically include rate limit information in response headers
+- Check `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers when available
+- Implement backoff strategies when approaching rate limits
+- Consider caching responses to minimize API calls
+- For high-volume applications, consider local resource mirrors
 
 ### Repository Organization
 ```
@@ -1335,21 +1282,12 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
                               ↑ highlighted because it aligns to δοῦλος
 ```
 
-**Code Implementation**:
-```javascript
-function highlightTranslationNote(note, alignmentData) {
-  const quote = note.Quote;
-  const occurrence = note.Occurrence;
-  
-  // Find alignment for the quote
-  const alignment = findAlignment(alignmentData, quote, occurrence);
-  if (alignment) {
-    const gatewayWords = extractGatewayWords(alignment);
-    return highlightInText(gatewayWords);
-  }
-  return null;
-}
-```
+**Implementation Requirements**:
+1. Parse Translation Note Quote and Occurrence fields from TSV data
+2. Search alignment data for matching `x-content` attribute with specified occurrence
+3. Extract the gateway language words contained within the matching alignment markers
+4. Apply visual highlighting to those specific words in the displayed text
+5. Handle cases where no matching alignment is found
 
 #### 2. Translation Words Popup
 
@@ -1370,22 +1308,13 @@ function highlightTranslationNote(note, alignmentData) {
 4. Load Translation Words article from `rc://en/tw/dict/bible/kt/god`
 5. Display popup with definition and examples
 
-**Code Implementation**:
-```javascript
-async function showTranslationWordsPopup(clickedWord, verse) {
-  // Find alignment for clicked word
-  const alignment = findAlignmentForGatewayWord(clickedWord, verse);
-  const originalWord = alignment.originalWord;
-  
-  // Find TWL entry
-  const twlEntry = findTWLEntry(verse.reference, originalWord);
-  if (twlEntry) {
-    // Load TW article
-    const article = await loadResource(twlEntry.TWLink);
-    displayPopup(article);
-  }
-}
-```
+**Implementation Requirements**:
+1. Identify which gateway language word was clicked in the displayed text
+2. Locate the corresponding alignment data for that word position
+3. Extract the original language word from the alignment `x-content` attribute
+4. Search TWL data for entries matching the verse reference and original word
+5. Resolve the RC link from TWL to load the corresponding Translation Words article
+6. Display the article content in an appropriate user interface element
 
 #### 3. Cross-Reference Navigation
 
@@ -1405,22 +1334,12 @@ async function showTranslationWordsPopup(clickedWord, verse) {
 3. Load Translation Academy article
 4. Provide breadcrumb navigation back to original context
 
-**Code Implementation**:
-```javascript
-function handleSupportReference(supportRef, currentContext) {
-  const rcLink = parseRCLink(supportRef);
-  const article = loadTranslationAcademy(rcLink.path);
-  
-  // Maintain navigation context
-  const breadcrumb = {
-    previous: currentContext,
-    current: rcLink,
-    title: article.title
-  };
-  
-  displayWithNavigation(article, breadcrumb);
-}
-```
+**Implementation Requirements**:
+1. Parse RC link from Translation Note SupportReference field
+2. Resolve the RC link to locate the appropriate Translation Academy article
+3. Load the article content from the Translation Academy resource
+4. Maintain navigation context to enable returning to the original Translation Note
+5. Provide user interface for seamless navigation between interconnected resources
 
 #### 4. Comprehensive Verse Analysis
 
@@ -1438,31 +1357,13 @@ function handleSupportReference(supportRef, currentContext) {
    - Translation Questions for verification
    - Original language alignment data
 
-**Code Implementation**:
-```javascript
-async function buildVerseAnalysis(reference) {
-  // Load all resources in parallel
-  const [ult, ust, tn, tw, twl, tq] = await Promise.all([
-    loadULT(reference),
-    loadUST(reference), 
-    loadTN(reference),
-    loadTW(),
-    loadTWL(reference),
-    loadTQ(reference)
-  ]);
-  
-  // Build interconnections
-  const analysis = {
-    texts: { ult, ust },
-    notes: linkNotesToAlignment(tn, ult.alignment),
-    words: linkWordsToAlignment(twl, tw, ult.alignment),
-    questions: tq,
-    alignment: ult.alignment
-  };
-  
-  return analysis;
-}
-```
+**Implementation Requirements**:
+1. Load all relevant resources for the target verse concurrently for optimal performance
+2. Extract verse-specific content from each resource type (ULT/GLT, UST/GST, TN, TW, TWL, TQ)
+3. Build cross-resource connections using alignment data as the linking foundation
+4. Connect Translation Notes to highlighted text through Quote/Occurrence matching
+5. Link Translation Words definitions to specific words through TWL mappings
+6. Present unified interface showing all interconnected information for comprehensive analysis
 
 #### 5. Quality Assurance Dashboard
 
@@ -1477,146 +1378,69 @@ async function buildVerseAnalysis(reference) {
 4. Confirm RC links resolve correctly
 5. Report inconsistencies for correction
 
-**Code Implementation**:
-```javascript
-function validateResourceConsistency(resources) {
-  const issues = [];
-  
-  // Check alignment coverage
-  const uncoveredWords = findUncoveredOriginalWords(resources.alignment);
-  if (uncoveredWords.length > 0) {
-    issues.push({ type: 'alignment', uncovered: uncoveredWords });
-  }
-  
-  // Validate TN quotes
-  resources.tn.forEach(note => {
-    if (!findAlignmentForQuote(note.Quote, resources.alignment)) {
-      issues.push({ type: 'tn_quote', note: note.ID, quote: note.Quote });
-    }
-  });
-  
-  // Validate TWL links
-  resources.twl.forEach(link => {
-    if (!resourceExists(link.TWLink)) {
-      issues.push({ type: 'twl_link', link: link.TWLink });
-    }
-  });
-  
-  return issues;
-}
-```
+**Quality Validation Requirements**:
+1. **Alignment Coverage**: Verify every original language word has corresponding gateway language alignment
+2. **Translation Note Accuracy**: Confirm all TN Quote fields reference words that exist in alignment data
+3. **TWL Link Validity**: Ensure all Translation Words Links point to existing Translation Words articles
+4. **RC Link Resolution**: Validate that all RC links resolve to accessible resources
+5. **Cross-Resource Consistency**: Check that references between resources are accurate and up-to-date
+6. **Issue Reporting**: Provide clear categorization and description of any consistency problems found
 
 ### Resource Loading Strategy
 
 #### Configurable Resource Sources
 
-Applications should support configurable resource sources rather than hardcoding Door43 URLs:
+Applications should support configurable resource sources rather than hardcoding specific URLs:
 
-```javascript
-// Configuration-driven resource loading
-const resourceConfig = {
-  baseUrl: process.env.RESOURCE_BASE_URL || 'https://git.door43.org',
-  organization: process.env.RESOURCE_ORG || 'unfoldingWord',
-  apiEndpoint: process.env.RESOURCE_API || '/api/v1',
-  authToken: process.env.RESOURCE_TOKEN || null,
-  useCatalogAPI: process.env.USE_CATALOG_API !== 'false'
-};
+**Configuration Requirements:**
+- **Base URL**: Configurable base URL for resource hosting platform (default: Door43)
+- **Organization**: Configurable organization/user for resource repositories (default: unfoldingWord)
+- **API Endpoint**: Configurable API path for programmatic access (default: /api/v1)
+- **Authentication**: Optional authentication tokens for private or enhanced access
+- **API Preference**: Configurable preference for using catalog API vs. direct repository access
 
-async function loadResource(language, resourceType, bookId) {
-  // Try Catalog API first (if available)
-  if (resourceConfig.useCatalogAPI) {
-    try {
-      return await loadViaCatalogAPI(language, resourceType, bookId);
-    } catch (catalogError) {
-      console.warn('Catalog API failed, trying direct access:', catalogError.message);
-    }
-  }
-  
-  // Fallback to direct repository access
-  const repoUrl = `${resourceConfig.baseUrl}/${resourceConfig.organization}/${language}_${resourceType}`;
-  
-  try {
-    // Try standard Gitea API
-    return await loadViaAPI(repoUrl, resourceConfig.apiEndpoint, bookId);
-  } catch (apiError) {
-    // Final fallback to direct Git access
-    return await loadViaGit(repoUrl, bookId);
-  }
-}
+**Resource Loading Strategy:**
+1. **Primary Method**: Attempt catalog API access when available for enhanced discovery
+2. **Fallback Method**: Use standard Git platform API for direct repository access
+3. **Final Fallback**: Direct Git protocol access for maximum compatibility
+4. **Error Handling**: Graceful degradation between access methods with appropriate logging
 
-async function loadViaCatalogAPI(language, resourceType, bookId) {
-  // Use Catalog API for resource discovery
-  const catalogUrl = `${resourceConfig.baseUrl}${resourceConfig.apiEndpoint}/catalog/list` +
-    `?lang=${language}&resource=${resourceType}&stage=prod`;
-  
-  const response = await fetch(catalogUrl);
-  const entries = await response.json();
-  
-  if (entries.length === 0) {
-    throw new Error(`No ${resourceType} resources found for language ${language}`);
-  }
-  
-  // Get latest version
-  const latest = entries.sort((a, b) => new Date(b.released) - new Date(a.released))[0];
-  
-  // Download and parse resource
-  return await downloadAndParseResource(latest, bookId);
-}
-```
+**Access Method Selection:**
+- Catalog API provides enhanced metadata and filtering capabilities
+- Standard Git APIs offer broad platform compatibility
+- Direct Git access ensures availability even when web APIs are unavailable
+- Local caching reduces repeated network requests
 
 #### Platform Detection and Adaptation
 
-```javascript
-function detectPlatformType(baseUrl) {
-  if (baseUrl.includes('git.door43.org')) return 'gitea';
-  if (baseUrl.includes('github.com')) return 'github';
-  if (baseUrl.includes('gitlab.com')) return 'gitlab';
-  return 'generic-git';
-}
+**Platform Adaptation Strategy:**
+- Detect platform type from base URL patterns (Door43, GitHub, GitLab, generic Git)
+- Adapt API calls and authentication methods based on detected platform
+- Use platform-specific optimizations when available
+- Maintain compatibility across different hosting platforms
 
-async function loadResourceWithPlatformAdaptation(config, language, resourceType) {
-  const platformType = detectPlatformType(config.baseUrl);
-  
-  switch (platformType) {
-    case 'gitea':
-      return await loadFromGitea(config, language, resourceType);
-    case 'github':
-      return await loadFromGitHub(config, language, resourceType);
-    case 'gitlab':
-      return await loadFromGitLab(config, language, resourceType);
-    default:
-      return await loadFromGenericGit(config, language, resourceType);
-  }
-}
-```
+#### Dependency Resolution Strategy
 
-#### Dependency Resolution
-```javascript
-async function loadResourcePackage(language, bookId) {
-  // Load core resources first
-  const ult = await loadResource(language, 'ult', bookId);
-  const ust = await loadResource(language, 'ust', bookId);
-  
-  // Load dependent resources
-  const tn = await loadResource(language, 'tn', bookId);
-  const tw = await loadResource(language, 'tw');
-  const twl = await loadResource(language, 'twl', bookId);
-  const ta = await loadResource(language, 'ta');
-  
-  // Build cross-resource connections
-  return buildResourceConnections(ult, ust, tn, tw, twl, ta);
-}
-```
+**Resource Loading Hierarchy:**
+1. **Core Resources First**: Load ULT/GLT and UST/GST as foundational texts
+2. **Supporting Resources**: Load TN, TW, TWL, and TA that depend on core texts
+3. **Cross-Resource Linking**: Build connections between resources using alignment data and RC links
+4. **Validation**: Verify that all resource references are resolvable
 
-#### Link Resolution Implementation
-```javascript
-function resolveRCLink(link) {
-  const parsed = parseRCLink(link);
-  const rc = findResourceContainer(parsed.language, parsed.resource);
-  const project = findProject(rc, parsed.project);
-  return navigateToContent(project, parsed.chapter, parsed.chunk);
-}
-```
+**Resource Interdependencies:**
+- Translation Notes reference specific words through alignment data
+- Translation Words Links connect aligned words to Translation Words articles  
+- Translation Academy articles are referenced by Translation Notes
+- All resources coordinate through standardized versification
+
+#### RC Link Resolution Process
+
+**Link Parsing Requirements:**
+1. Parse RC link components (language, resource, type, project, chapter, chunk)
+2. Locate appropriate Resource Container based on language and resource type
+3. Navigate to specific project within the Resource Container
+4. Resolve to final content location using chapter and chunk identifiers
+5. Handle wildcards and default values appropriately
 
 ### User Interface Integration
 
@@ -1625,20 +1449,14 @@ function resolveRCLink(link) {
 - **Visual Connections**: Highlight relationships between aligned words and notes
 - **Seamless Movement**: Enable jumping between interconnected resources
 
-#### Translation Note Highlighting
-```javascript
-function highlightAlignedWords(note, alignmentData) {
-  const quote = note.Quote;
-  const occurrence = note.Occurrence;
-  
-  // Find alignment for the quote
-  const alignment = findAlignment(alignmentData, quote, occurrence);
-  if (alignment) {
-    const gatewayWords = extractGatewayWords(alignment);
-    highlightInText(gatewayWords);
-  }
-}
-```
+#### Translation Note Highlighting Strategy
+
+**Highlighting Process:**
+1. Extract Quote and Occurrence data from Translation Note entries
+2. Locate corresponding alignment markers in the USFM text
+3. Identify gateway language words within the alignment spans
+4. Apply visual highlighting to the identified words in the user interface
+5. Provide clear visual connection between notes and referenced text
 
 ### Quality Checking Features
 
@@ -1648,17 +1466,14 @@ function highlightAlignedWords(note, alignmentData) {
 - **Alignment Completeness**: Ensure all original words are aligned
 - **Cross-Resource Consistency**: Validate resource interconnections
 
-#### Error Handling
-```javascript
-function handleMissingResource(link) {
-  const alternatives = ['ult', 'ust', 'glt', 'gst'];
-  for (const alt of alternatives) {
-    const altLink = link.replace(/\/\w+\//, `/${alt}/`);
-    if (resourceExists(altLink)) return altLink;
-  }
-  return null; // No fallback available
-}
-```
+#### Error Handling Strategy
+
+**Resource Fallback Approach:**
+- Define alternative resource types for fallback (ULT/GLT, UST/GST, etc.)
+- Attempt to substitute missing resources with available alternatives
+- Provide clear indication when fallback resources are being used
+- Gracefully handle cases where no alternatives are available
+- Log resource access issues for troubleshooting and improvement
 
 ### Performance Optimization
 
@@ -1676,65 +1491,31 @@ function handleMissingResource(link) {
 
 Applications should support offline usage and local resource storage:
 
-```javascript
-// Multi-source resource loader with offline support
-class ResourceLoader {
-  constructor(config) {
-    this.sources = [
-      new LocalFileSource(config.localPath),
-      new CachedSource(config.cachePath),
-      new RemoteGitSource(config.remoteUrl),
-      new FallbackSource(config.fallbackUrls)
-    ];
-  }
-  
-  async loadResource(language, resourceType, bookId) {
-    for (const source of this.sources) {
-      try {
-        const resource = await source.load(language, resourceType, bookId);
-        if (resource) {
-          // Cache successful loads for offline use
-          await this.cacheResource(resource, language, resourceType, bookId);
-          return resource;
-        }
-      } catch (error) {
-        console.warn(`Source ${source.name} failed:`, error.message);
-        continue; // Try next source
-      }
-    }
-    throw new Error(`No source available for ${language}_${resourceType}`);
-  }
-}
-```
+**Multi-Source Loading Strategy:**
+- **Local Files**: Check for locally stored resource files first
+- **Cache Storage**: Use cached versions of previously downloaded resources
+- **Remote Access**: Fetch from remote Git repositories when needed
+- **Fallback URLs**: Support multiple remote sources for redundancy
+
+**Offline Support Requirements:**
+1. **Cache Management**: Store successful downloads for offline use
+2. **Source Prioritization**: Prefer local/cached over remote sources
+3. **Graceful Degradation**: Continue operation when some sources are unavailable
+4. **Update Management**: Check for newer versions when online connectivity is restored
 
 #### Resource Discovery and Validation
 
-```javascript
-// Validate resource compatibility across platforms
-async function validateResourceSource(baseUrl, organization) {
-  try {
-    // Check if manifest.yaml exists and is valid RC format
-    const manifestUrl = `${baseUrl}/${organization}/en_ult/raw/master/manifest.yaml`;
-    const manifest = await fetchYAML(manifestUrl);
-    
-    // Validate RC compliance
-    if (!manifest.dublin_core || !manifest.dublin_core.conformsto) {
-      throw new Error('Invalid Resource Container format');
-    }
-    
-    return {
-      valid: true,
-      rcVersion: manifest.dublin_core.conformsto,
-      platform: detectPlatformType(baseUrl)
-    };
-  } catch (error) {
-    return {
-      valid: false,
-      error: error.message
-    };
-  }
-}
-```
+**Resource Source Validation:**
+- **Manifest Verification**: Check for valid manifest.yaml files with proper Dublin Core metadata
+- **RC Compliance**: Verify conformance to Resource Container specification
+- **Platform Compatibility**: Ensure resource structure works with different hosting platforms
+- **Version Tracking**: Identify RC specification version and compatibility requirements
+
+**Validation Process:**
+1. **Access Test**: Verify that resource repositories are accessible
+2. **Format Validation**: Confirm that resources follow expected file structures
+3. **Metadata Parsing**: Extract and validate Dublin Core metadata from manifests
+4. **Cross-Reference Check**: Ensure referenced resources are available and accessible
 
 ## Conclusion
 
@@ -1759,7 +1540,7 @@ The unfoldingWord translation resource ecosystem provides a comprehensive, inter
 ### Benefits for Developers
 
 - **Standards-Based**: RC specification provides clear implementation guidelines
-- **Well-Documented**: Complete technical specifications with code examples
+- **Well-Documented**: Complete technical specifications with conceptual guidance
 - **Proven Architecture**: Battle-tested by multiple translation organizations
 - **Open Source**: Creative Commons licensing enables broad adoption
 - **Community Support**: Active developer community and ongoing maintenance
