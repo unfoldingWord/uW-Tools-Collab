@@ -356,19 +356,22 @@ For comprehensive information about Bible translation methodology and workflow, 
 Before diving into implementation, developers should understand what resources are available and how to access them:
 
 **Key Resource Locations**:
+
 - **Primary Platform**: Door43 Content Service at `https://git.door43.org/`
 - **Organization Structure**: Resources organized under various organizations (some language-specific like `es-419_gl`, others multi-language like `unfoldingWord`)
 - **Repository Naming**: Language code + underscore + resource identifier (e.g., `en_ult`, `es-419_tn`, `fr_tw`)
-- **Resource Type Identification**: Resource types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
+- **Resource Subject Identification**: Resource content types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
 
 #### Recommended Starting Approach
 
 **Language Selection for First Implementation**:
+
 - **English (`en`)**: Most complete resource set, best for initial development and testing
 - **Proven Ecosystem**: All resource types available with high quality levels
 - **Reference Implementation**: Serves as the model for other gateway languages
 
 **Simple Access Strategy**:
+
 - Begin with direct repository URLs for well-known resources
 - Use basic Git platform APIs for file retrieval  
 - Focus on one resource type initially (e.g., ULT/GLT text)
@@ -1222,18 +1225,21 @@ Door43 Content Service provides a specialized Catalog API that enables sophistic
 #### Enterprise Resource Discovery Patterns
 
 **Automated Resource Validation**:
+
 - Implement automated checks for resource completeness across target languages
 - Validate resource version compatibility within language ecosystems
 - Monitor resource update frequency and quality level changes
 - Detect and report resource dependency conflicts or missing links
 
 **Multi-Organization Discovery**:
+
 - Discover resources across different gateway language organizations
 - Map organizational patterns and resource naming conventions
 - Identify authoritative sources for each gateway language
 - Plan integration strategies for multi-organizational deployments
 
 **Performance-Optimized Discovery**:
+
 - Cache catalog responses to minimize API calls during resource discovery
 - Implement incremental discovery for large-scale applications
 - Use batch requests for efficient multi-resource discovery
@@ -1426,6 +1432,7 @@ https://git.door43.org/unfoldingWord/en_ta      # Translation Academy
 unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Multiple organizations contribute resources for different gateway languages:
 
 **Organization Types**:
+
 - **Language-Specific Organizations**: Like `es-419_gl` (Latin American Spanish Gateway Language resources)
 - **Multi-Language Organizations**: Like `unfoldingWord` (hosting resources for multiple languages)
 - **Mixed Organizations**: Some organizations host both gateway language and other language resources
@@ -1435,14 +1442,15 @@ unfoldingWord created English resources for Mother Tongue Translators, serving a
 **Standard Format**: `{language-code}_{resource-identifier}`
 
 **Examples**:
+
 - `en_ult` - English Literal Translation
 - `es-419_tn` - Latin American Spanish Translation Notes  
 - `fr_tw` - French Translation Words
 - `hi_glt` - Hindi Gateway Literal Translation
 
-#### Resource Type Identification
+#### Resource Subject Identification
 
-Resource types are definitively identified by the `subject` field in each repository's manifest file, not just the repository name. The Door43 Catalog API uses these subjects as searchable parameters. The ecosystem is extensible, allowing new subjects to be created as translation needs evolve.
+Resource content types are definitively identified by the `subject` field in each repository's manifest file, not just the repository name. The Door43 Catalog API uses these subjects as searchable parameters. The ecosystem is extensible, allowing new subjects to be created as translation needs evolve.
 
 **Complete List of Current Resource Subjects**:
 
@@ -1481,10 +1489,12 @@ Resource types are definitively identified by the `subject` field in each reposi
 **Resource Identifier Extensibility**:
 
 The resource identifiers used in repository names (the part after the underscore) are also extensible. These identifiers serve dual purposes:
+
 - **Repository Naming**: Form part of the repository name pattern `{language}_{identifier}`
 - **Resource Relations**: Used in manifest `relation` fields to establish connections between resources
 
 **Example Resource Relations in Manifest**:
+
 ```yaml
 relation:
   - en/tn           # English Translation Notes
@@ -1800,6 +1810,7 @@ Applications can leverage the `relation` field in Resource Container manifests t
 **Manifest-Driven Dependency Chain Example**:
 
 Starting with `en_glt` (English Literal Translation):
+
 ```yaml
 # en_glt/manifest.yaml
 relation:
@@ -1810,6 +1821,7 @@ relation:
 ```
 
 Loading `en_tn` reveals additional dependencies:
+
 ```yaml
 # en_tn/manifest.yaml  
 relation:
@@ -1819,6 +1831,7 @@ relation:
 ```
 
 Loading `en_twl` shows further connections:
+
 ```yaml
 # en_tw/manifest.yaml
 relation:
@@ -1832,6 +1845,7 @@ relation:
 Applications may only require specific resource types rather than complete dependency chains. The loading strategy should support selective resource filtering based on application requirements.
 
 **Filtered Loading Process**:
+
 ```
 1. Load initial resource (e.g., en_glt)
 2. Parse manifest relations array
@@ -1849,38 +1863,44 @@ Applications may only require specific resource types rather than complete depen
 **Application-Specific Resource Filtering Examples**:
 
 **Translation Review App** (only needs GLT, TN, TA):
+
 - Load en_glt as primary resource
-- Filter relations to include only Translation Notes (TN) and Translation Academy (TA)
-- Skip Translation Words Links, Translation Questions, and other resources
+- Filter relations to include only Translation Notes and Translation Academy subjects
+- Skip Translation Words Links, Translation Questions, and other resource subjects
 - Maintain focused resource set for specific workflow
 
 **Terminology Study App** (only needs TW, TWL, GLT):
+
 - Load en_tw as primary resource
-- Filter relations to include only Translation Words Links (TWL) and source texts
-- Skip Translation Notes and methodology resources
+- Filter relations to include only Translation Words Links and source text subjects
+- Skip Translation Notes and methodology resource subjects
 - Focus on word-level analysis workflow
 
 **Community Checking App** (only needs GLT, GST, TQ):
+
 - Load translation texts for comparison
-- Include only Translation Questions for verification workflow
-- Skip detailed notes and terminology resources
+- Include only Translation Questions subject for verification workflow
+- Skip detailed notes and terminology resource subjects
 - Streamline interface for community validators
 
 **Deduplication Strategy**:
 
 **Resource Tracking Requirements**:
+
 - Maintain a registry of already loaded resources using resource identifiers
 - Track loading state for each resource (not_loaded, loading, loaded) to prevent race conditions
 - Use resource identifiers from manifest relations as unique keys for deduplication
 - Implement efficient lookup mechanisms for checking resource loading status
 
 **Loading Queue Management**:
+
 - Maintain a queue of resources discovered through manifest relations but not yet loaded
 - Process the queue systematically, checking each resource against the loaded registry
 - Add newly discovered relations to the queue during processing
 - Continue processing until all discovered dependencies are resolved
 
 **Cache Integration**:
+
 - Check local cache before initiating network requests for resources
 - Return cached resources immediately when available and current
 - Update cache with newly loaded resources for future deduplication
@@ -1891,6 +1911,7 @@ Applications may only require specific resource types rather than complete depen
 Combine manifest relations with RC link resolution for comprehensive resource loading:
 
 **Cross-Reference Resolution Pattern**:
+
 ```
 User clicks RC link: rc://en/ta/man/translate/figs-metaphor
 
@@ -1905,11 +1926,13 @@ User clicks RC link: rc://en/ta/man/translate/figs-metaphor
 **Practical Implementation Considerations**:
 
 **Circular Dependency Handling**:
+
 - ULT/GLT references TN, TN references ULT/GLT
 - Track loading state (not_loaded, loading, loaded) to prevent cycles
 - Use dependency graph to detect and handle circular references
 
 **Version Compatibility**:
+
 - Relations may specify version constraints (`en/tn?v=85`)
 - Validate version compatibility across dependency chain
 - Handle version conflicts with user notification or fallback strategies
@@ -1917,24 +1940,28 @@ User clicks RC link: rc://en/ta/man/translate/figs-metaphor
 **Resource Filtering Strategies**:
 
 **Subject-Based Filtering**:
+
 - Use resource manifest `subject` field to identify resource types
 - Create inclusion/exclusion lists based on application requirements
 - Filter by subject categories (e.g., only "Translation Notes" and "Translation Academy")
 - Allow users to configure resource type preferences
 
 **Identifier-Based Filtering**:
+
 - Filter relations by resource identifier patterns (tn, tw, ta, tq, etc.)
 - Support wildcard patterns for flexible filtering (e.g., "t*" for translation helps)
 - Enable application-specific resource selection profiles
 - Maintain filtering rules across application sessions
 
 **Dependency Scope Control**:
+
 - **Minimal Scope**: Load only explicitly required resources
 - **Extended Scope**: Include first-level dependencies only
 - **Full Scope**: Load complete dependency chains (traditional approach)
 - **Custom Scope**: User-defined resource type combinations
 
 **Performance Optimization**:
+
 - Load filtered relations in parallel when possible
 - Prioritize critical path resources (alignment data before notes)
 - Implement lazy loading for large dependency trees
@@ -1942,6 +1969,7 @@ User clicks RC link: rc://en/ta/man/translate/figs-metaphor
 - Skip unnecessary network requests through effective filtering
 
 **Organization-Aware Loading**:
+
 ```yaml
 # Handle cross-organization dependencies
 relation:
@@ -1951,6 +1979,7 @@ relation:
 ```
 
 **Error Handling in Dependency Chains**:
+
 - **Missing Dependencies**: Graceful degradation when relations cannot be resolved
 - **Partial Loading**: Continue loading available resources when some dependencies fail
 - **Fallback Strategies**: Use alternative resources when primary dependencies unavailable
