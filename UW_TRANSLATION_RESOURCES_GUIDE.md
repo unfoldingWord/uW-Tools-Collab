@@ -349,41 +349,30 @@ While technical expertise is assumed, developers benefit from understanding:
 
 For comprehensive information about Bible translation methodology and workflow, see [unfoldingWord's Translator Resources](https://unfoldingword.org/for-translators/).
 
-### Resource Discovery Strategy
+### Resource Discovery Basics
 
-#### Starting Point: Catalog API Exploration
+#### Understanding Resource Availability
 
-Developers should begin by exploring available resources through the Door43 Catalog API:
+Before diving into implementation, developers should understand what resources are available and how to access them:
 
-**Resource Discovery Process**:
+**Key Resource Locations**:
+- **Primary Platform**: Door43 Content Service at `https://git.door43.org/`
+- **Organization Structure**: Resources organized under various organizations (some language-specific like `es-419_gl`, others multi-language like `unfoldingWord`)
+- **Repository Naming**: Language code + underscore + resource identifier (e.g., `en_ult`, `es-419_tn`, `fr_tw`)
+- **Resource Type Identification**: Resource types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
 
-1. **Query Available Languages**: Identify which gateway languages have complete resource sets
-2. **Resource Type Assessment**: Determine which resource types are available for target languages
-3. **Version Identification**: Find the most recent stable versions of each resource
-4. **Completeness Evaluation**: Verify that all required resources exist for chosen language
-5. **Quality Assessment**: Check resource quality levels and checking status
+#### Recommended Starting Approach
 
-**Catalog API Exploration Strategy**:
+**Language Selection for First Implementation**:
+- **English (`en`)**: Most complete resource set, best for initial development and testing
+- **Proven Ecosystem**: All resource types available with high quality levels
+- **Reference Implementation**: Serves as the model for other gateway languages
 
-- Start with broad queries to understand the ecosystem scope
-- Filter by production stage to focus on stable resources
-- Examine resource relationships through manifest metadata
-- Identify resource dependencies and integration requirements
-
-#### Language Selection Considerations
-
-When choosing which gateway language to integrate first:
-
-**Recommended Starting Languages**:
-
-- **English (`en`)**: Most complete resource set, reference implementation
-
-**Evaluation Criteria**:
-
-- Resource completeness across all required types
-- Recent update activity and maintenance
-- Quality checking levels and validation status
-- Community support and documentation availability
+**Simple Access Strategy**:
+- Begin with direct repository URLs for well-known resources
+- Use basic Git platform APIs for file retrieval  
+- Focus on one resource type initially (e.g., ULT/GLT text)
+- Validate basic functionality before expanding to other resources
 
 ### Basic Integration Patterns
 
@@ -1186,6 +1175,70 @@ For more information, see [Translate Names](rc://en/ta/man/translate/translate-n
 
 This section covers practical API usage, authentication methods, and multi-platform integration strategies that developers need for robust resource access and application deployment across different hosting environments.
 
+### Advanced Resource Discovery
+
+This section provides comprehensive guidance for programmatic resource discovery using the Door43 Catalog API and other discovery methods for production applications.
+
+#### Catalog API Resource Discovery
+
+Door43 Content Service provides a specialized Catalog API that enables sophisticated resource discovery beyond basic repository access:
+
+**Strategic Resource Discovery Process**:
+
+1. **Ecosystem Assessment**: Query catalog API to understand complete resource landscape
+2. **Language Availability Analysis**: Identify which gateway languages have complete resource sets  
+3. **Quality and Version Evaluation**: Assess resource maturity, checking levels, and update frequency
+4. **Dependency Mapping**: Build comprehensive resource dependency graphs
+5. **Production Readiness Validation**: Verify resources meet quality standards for deployment
+
+**Multi-Language Discovery Strategy**:
+
+- Query catalog without language filters to discover all available gateway language implementations
+- Group resources by language identifier to assess ecosystem completeness
+- Use subject filters to identify specific resource types across languages
+- Prioritize languages with recent updates and high checking levels
+- Plan fallback strategies for incomplete language implementations
+
+**Subject-Based Resource Discovery**:
+
+- Filter by `subject=Bible` to find translation texts across all languages
+- Filter by `subject=Translation Notes` to find translation helps
+- Filter by `subject=Translation Words` to find terminology resources
+- Filter by `subject=Open Bible Stories` to find OBS resources
+- Filter by `subject=Translation Academy` to find training materials
+- Use multiple subject queries to assess complete resource coverage for specific languages
+- Cross-reference subject availability with language codes to map ecosystem completeness
+- Query without subject filters to discover all available subjects in the ecosystem
+- Monitor for new subjects as organizations extend the ecosystem with specialized resources
+
+**Advanced Filtering and Selection**:
+
+- Use stage filters (`stage=prod`) to focus on production-ready resources
+- Apply quality filters (`checking_level=3`) to identify thoroughly reviewed content
+- Combine subject and language filters for precise resource discovery
+- Sort by release dates to identify most recently updated implementations
+- Cross-reference resource relationships through manifest metadata
+
+#### Enterprise Resource Discovery Patterns
+
+**Automated Resource Validation**:
+- Implement automated checks for resource completeness across target languages
+- Validate resource version compatibility within language ecosystems
+- Monitor resource update frequency and quality level changes
+- Detect and report resource dependency conflicts or missing links
+
+**Multi-Organization Discovery**:
+- Discover resources across different gateway language organizations
+- Map organizational patterns and resource naming conventions
+- Identify authoritative sources for each gateway language
+- Plan integration strategies for multi-organizational deployments
+
+**Performance-Optimized Discovery**:
+- Cache catalog responses to minimize API calls during resource discovery
+- Implement incremental discovery for large-scale applications
+- Use batch requests for efficient multi-resource discovery
+- Plan discovery schedules that respect API rate limits
+
 ### Hosting Infrastructure: Git-Based Platforms
 
 While the primary hosting is **Door43 Content Service (DCS)**, applications should support multiple hosting platforms:
@@ -1370,17 +1423,77 @@ https://git.door43.org/unfoldingWord/en_ta      # Translation Academy
 
 #### Gateway Language Strategy
 
-unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Other organizations have created parallel ecosystems for different strategic languages:
+unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Multiple organizations contribute resources for different gateway languages:
 
-- **Spanish**: `https://git.door43.org/es-419_gl/`
-- **French**: `https://git.door43.org/fr_gl/`
-- **Hindi**: `https://git.door43.org/hi_gl/`
-- **Portuguese**: `https://git.door43.org/pt-br_gl/`
+**Organization Types**:
+- **Language-Specific Organizations**: Like `es-419_gl` (Latin American Spanish Gateway Language resources)
+- **Multi-Language Organizations**: Like `unfoldingWord` (hosting resources for multiple languages)
+- **Mixed Organizations**: Some organizations host both gateway language and other language resources
 
-#### Naming Conventions
+#### Repository Naming Patterns
 
-- **unfoldingWord (English)**: Uses ULT/GLT/UST/GST codes (unfoldingWord Literal/Simplified Text)
-- **Other Gateway Languages**: Use GLT/GST codes (Gateway Language Literal/Simplified Text)
+**Standard Format**: `{language-code}_{resource-identifier}`
+
+**Examples**:
+- `en_ult` - English Literal Translation
+- `es-419_tn` - Latin American Spanish Translation Notes  
+- `fr_tw` - French Translation Words
+- `hi_glt` - Hindi Gateway Literal Translation
+
+#### Resource Type Identification
+
+Resource types are definitively identified by the `subject` field in each repository's manifest file, not just the repository name. The Door43 Catalog API uses these subjects as searchable parameters. The ecosystem is extensible, allowing new subjects to be created as translation needs evolve.
+
+**Complete List of Current Resource Subjects**:
+
+- Aligned Bible
+- Aramaic Grammar  
+- Bible
+- Greek Grammar
+- Greek Lexicon
+- Greek New Testament
+- Hebrew Grammar
+- Hebrew Old Testament
+- Hebrew-Aramaic Lexicon
+- OBS Study Notes
+- OBS Study Questions
+- OBS Translation Notes
+- OBS Translation Questions
+- Open Bible Stories
+- Study Notes
+- Study Questions
+- Training Library
+- Translation Academy
+- Translation Notes
+- Translation Questions
+- Translation Words
+- TSV Study Notes
+- TSV Study Questions
+- TSV Translation Notes
+- TSV Translation Questions
+- TSV Translation Words Links
+- TSV OBS Study Notes
+- TSV OBS Study Questions
+- TSV OBS Translation Notes
+- TSV OBS Translation Questions
+- TSV OBS Translation Words Links
+
+**Resource Identifier Extensibility**:
+
+The resource identifiers used in repository names (the part after the underscore) are also extensible. These identifiers serve dual purposes:
+- **Repository Naming**: Form part of the repository name pattern `{language}_{identifier}`
+- **Resource Relations**: Used in manifest `relation` fields to establish connections between resources
+
+**Example Resource Relations in Manifest**:
+```yaml
+relation:
+  - en/tn           # English Translation Notes
+  - en/tw           # English Translation Words  
+  - hbo/uhb         # Hebrew Bible
+  - el-x-koine/ugnt # Greek New Testament
+```
+
+Organizations can create new resource identifiers and subjects as needed for specialized resources, following the established patterns while extending the ecosystem capabilities.
 
 The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts. For detailed guidance on gateway language translation and adaptation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
@@ -1417,7 +1530,7 @@ This section covers advanced integration topics including creating custom resour
 
 ### Creating New Resources
 
-Gateway language organizations can create additional resources following RC specifications:
+The unfoldingWord ecosystem is designed for extensibility. Gateway language organizations can create additional resources following RC specifications, including new resource types with custom subjects and identifiers.
 
 #### Required Components
 
@@ -1425,6 +1538,8 @@ Gateway language organizations can create additional resources following RC spec
 2. **Manifest Compliance**: Use Dublin Core metadata standards
 3. **Linking Compatibility**: Support RC link resolution
 4. **Format Standards**: Use established file formats (USFM, TSV, Markdown)
+5. **Subject Definition**: Choose appropriate subject for resource type (existing or new)
+6. **Identifier Selection**: Select unique resource identifier for repository naming and relations
 
 #### Example: New Commentary Resource
 
@@ -1678,19 +1793,179 @@ Applications should support configurable resource sources rather than hardcoding
 
 #### Dependency Resolution Strategy
 
-**Resource Loading Hierarchy:**
+**Automated Resource Loading Using Manifest Relations**
 
-1. **Core Resources First**: Load ULT/GLT and UST/GST as foundational texts
-2. **Supporting Resources**: Load TN, TW, TWL, and TA that depend on core texts
-3. **Cross-Resource Linking**: Build connections between resources using alignment data and RC links
-4. **Validation**: Verify that all resource references are resolvable
+Applications can leverage the `relation` field in Resource Container manifests to automatically discover and load related resources, creating a comprehensive resource environment with minimal configuration.
 
-**Resource Interdependencies:**
+**Manifest-Driven Dependency Chain Example**:
 
-- Translation Notes reference specific words through alignment data
-- Translation Words Links connect aligned words to Translation Words articles  
-- Translation Academy articles are referenced by Translation Notes
-- All resources coordinate through standardized versification
+Starting with `en_glt` (English Literal Translation):
+```yaml
+# en_glt/manifest.yaml
+relation:
+  - en/tn           # Translation Notes
+  - en/twl          # Translation Words Links
+  - en/tq          # Translation Questions
+  - hbo/uhb         # Hebrew Bible (source)
+```
+
+Loading `en_tn` reveals additional dependencies:
+```yaml
+# en_tn/manifest.yaml  
+relation:
+  - en/glt          # Back reference to ULT/GLT
+  - en/gst          # Back reference to UST/GST
+  - en/ta           # Translation Academy methodology
+```
+
+Loading `en_twl` shows further connections:
+```yaml
+# en_tw/manifest.yaml
+relation:
+  - en/tw           # Translation Words
+  - en/glt          # Literal translation reference
+  - en/gst          # Simplified translation reference
+```
+
+**Selective Dependency Loading Algorithm**:
+
+Applications may only require specific resource types rather than complete dependency chains. The loading strategy should support selective resource filtering based on application requirements.
+
+**Filtered Loading Process**:
+```
+1. Load initial resource (e.g., en_glt)
+2. Parse manifest relations array
+3. Apply resource type filters based on application needs
+4. For each filtered relation identifier:
+   a. Convert to repository URL/path
+   b. Check if already loaded (deduplication)
+   c. If not loaded, add to loading queue
+   d. Load resource and parse its manifest
+   e. Apply filters to its relations before adding to queue
+5. Continue until all required dependencies resolved
+6. Build dependency graph for proper initialization order
+```
+
+**Application-Specific Resource Filtering Examples**:
+
+**Translation Review App** (only needs GLT, TN, TA):
+- Load en_glt as primary resource
+- Filter relations to include only Translation Notes (TN) and Translation Academy (TA)
+- Skip Translation Words Links, Translation Questions, and other resources
+- Maintain focused resource set for specific workflow
+
+**Terminology Study App** (only needs TW, TWL, GLT):
+- Load en_tw as primary resource
+- Filter relations to include only Translation Words Links (TWL) and source texts
+- Skip Translation Notes and methodology resources
+- Focus on word-level analysis workflow
+
+**Community Checking App** (only needs GLT, GST, TQ):
+- Load translation texts for comparison
+- Include only Translation Questions for verification workflow
+- Skip detailed notes and terminology resources
+- Streamline interface for community validators
+
+**Deduplication Strategy**:
+
+**Resource Tracking Requirements**:
+- Maintain a registry of already loaded resources using resource identifiers
+- Track loading state for each resource (not_loaded, loading, loaded) to prevent race conditions
+- Use resource identifiers from manifest relations as unique keys for deduplication
+- Implement efficient lookup mechanisms for checking resource loading status
+
+**Loading Queue Management**:
+- Maintain a queue of resources discovered through manifest relations but not yet loaded
+- Process the queue systematically, checking each resource against the loaded registry
+- Add newly discovered relations to the queue during processing
+- Continue processing until all discovered dependencies are resolved
+
+**Cache Integration**:
+- Check local cache before initiating network requests for resources
+- Return cached resources immediately when available and current
+- Update cache with newly loaded resources for future deduplication
+- Implement cache invalidation strategies for resource updates
+
+**RC Link Integration with Relations**:
+
+Combine manifest relations with RC link resolution for comprehensive resource loading:
+
+**Cross-Reference Resolution Pattern**:
+```
+User clicks RC link: rc://en/ta/man/translate/figs-metaphor
+
+1. Parse RC link components
+2. Check if en/ta already loaded via relations
+3. If not loaded, trigger dependency loading for en/ta
+4. Load en/ta and its dependencies via manifest relations
+5. Navigate to specific article within loaded resource
+6. Update dependency graph with newly discovered relations
+```
+
+**Practical Implementation Considerations**:
+
+**Circular Dependency Handling**:
+- ULT/GLT references TN, TN references ULT/GLT
+- Track loading state (not_loaded, loading, loaded) to prevent cycles
+- Use dependency graph to detect and handle circular references
+
+**Version Compatibility**:
+- Relations may specify version constraints (`en/tn?v=85`)
+- Validate version compatibility across dependency chain
+- Handle version conflicts with user notification or fallback strategies
+
+**Resource Filtering Strategies**:
+
+**Subject-Based Filtering**:
+- Use resource manifest `subject` field to identify resource types
+- Create inclusion/exclusion lists based on application requirements
+- Filter by subject categories (e.g., only "Translation Notes" and "Translation Academy")
+- Allow users to configure resource type preferences
+
+**Identifier-Based Filtering**:
+- Filter relations by resource identifier patterns (tn, tw, ta, tq, etc.)
+- Support wildcard patterns for flexible filtering (e.g., "t*" for translation helps)
+- Enable application-specific resource selection profiles
+- Maintain filtering rules across application sessions
+
+**Dependency Scope Control**:
+- **Minimal Scope**: Load only explicitly required resources
+- **Extended Scope**: Include first-level dependencies only
+- **Full Scope**: Load complete dependency chains (traditional approach)
+- **Custom Scope**: User-defined resource type combinations
+
+**Performance Optimization**:
+- Load filtered relations in parallel when possible
+- Prioritize critical path resources (alignment data before notes)
+- Implement lazy loading for large dependency trees
+- Cache dependency graphs to avoid repeated resolution
+- Skip unnecessary network requests through effective filtering
+
+**Organization-Aware Loading**:
+```yaml
+# Handle cross-organization dependencies
+relation:
+  - unfoldingWord/en/tn      # Explicit organization reference
+  - es-419_gl/es-419/glt     # Different organization
+  - en/tw                    # Same organization (implicit)
+```
+
+**Error Handling in Dependency Chains**:
+- **Missing Dependencies**: Graceful degradation when relations cannot be resolved
+- **Partial Loading**: Continue loading available resources when some dependencies fail
+- **Fallback Strategies**: Use alternative resources when primary dependencies unavailable
+- **User Notification**: Inform users about incomplete resource sets
+
+**Resource Loading Hierarchy with Relations**:
+
+1. **Parse Initial Resource**: Load target resource and extract relations
+2. **Resolve Dependencies**: Use relations to discover required resources  
+3. **Build Dependency Graph**: Map relationships and detect cycles
+4. **Load in Dependency Order**: Load foundational resources before dependent ones
+5. **Cross-Link Resources**: Connect resources using alignment data and RC links
+6. **Validate Completeness**: Verify all relations are resolvable and functional
+
+This approach enables applications to provide comprehensive translation environments by starting with a single resource identifier and automatically discovering and loading the complete ecosystem of related materials.
 
 #### RC Link Resolution Process
 
