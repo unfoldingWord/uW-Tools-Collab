@@ -188,8 +188,9 @@ These resources form an interconnected ecosystem where each one enhances the oth
 
 - **Word Alignment** connects gateway language translations to original languages
 - **Translation Notes** reference specific aligned words to provide targeted guidance
-- **Translation Words Links** point from aligned words to comprehensive definitions
-- **Translation Academy** articles explain the methodology behind translation decisions
+- **Translation Academy** articles are referenced by Translation Notes to explain the methodology behind translation decisions
+- **Translation Words Links** point from aligned words to Translation Words articles
+- **Translation Words** articles provide comprehensive definitions of key biblical, theological, and cultural terms
 - **Translation Questions** verify that the final translation communicates effectively
 
 **Example workflow**: A translator working on Romans 1:1 encounters the word "servant." The alignment data shows this translates Greek "doulos." Translation Words Links points to a comprehensive definition of "doulos" explaining slavery in the ancient world. Translation Notes provide specific guidance on how to translate this concept in different cultural contexts. Translation Academy articles explain general principles for translating cultural terms. Translation Questions help verify that the final translation communicates Paul's intended meaning.
@@ -373,11 +374,18 @@ en_ult/
 ```
 
 #### USFM Structure Elements
+
+Some of the most common USFM structure elements are:
+
 - **Book Headers**: `\id`, `\usfm`, `\ide`, `\h`, `\toc1-3`, `\mt` markers
 - **Chapter/Verse**: `\c` and `\v` markers for scripture structure
 - **Alignment Data**: `\zaln-s`/`\zaln-e` and `\w` markers for word-level connections
-- **Formatting**: `\p`, `\m`, `\q1-4` for text layout and poetry
+- **Formatting**: `\p`, `\m`, `\q1`, `\q2` for text layout and poetry
 - **Cross-References**: `\x` markers for scripture cross-references
+- **Footnotes**: `\f` markers for footnotes
+- **Translator sections**: `\ts\*` markers for indicating the start or end of a translator sections.
+
+More information about USFM structure elements can be found in the [USFM Specification](https://docs.usfm.bible/usfm/latest).
 
 #### Purpose and Integration
 - **Translation Foundation**: Provides literal rendering for understanding original meaning
@@ -387,7 +395,7 @@ en_ult/
 
 ### 2. Simplified Translation (UST)
 
-**unfoldingWord® Simplified Text** - A meaning-focused translation that prioritizes clear communication of biblical concepts using dynamic equivalence principles.
+**unfoldingWord® Simplified Text** - A meaning-focused translation that prioritizes clear communication of biblical concepts.
 
 #### Technical Specifications
 - **Format**: USFM 3.0 with embedded word alignment data
@@ -401,7 +409,7 @@ en_ult/
 - **Meaning Clarity**: Provides clear, natural rendering of biblical concepts
 - **Cultural Bridge**: Explains ancient concepts in modern, understandable terms
 - **Complementary Translation**: Works alongside ULT for comprehensive understanding
-- **Translation Model**: Demonstrates dynamic equivalence principles
+
 
 ### 3. Word Alignment Data
 
@@ -633,9 +641,9 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 | 1:3       | abc1 | grammar | rc://en/ta/man/translate/figs-metaphor    | בְּרֵאשִׁית | 1          | The Hebrew word for "beginning"...      |
 
 **Column Definitions**:
-- **Reference**: Chapter:verse (e.g., "1:3") or range ("1:3-5")
+- **Reference**: Chapter:verse (e.g., "1:3") or range ("1:3-5") or (1:2, 1:6)
 - **ID**: Four-character unique identifier (e.g., "abc1")
-- **Tags**: Categorization (grammar, culture, translate)
+- **Tags**: Categorization (grammar, culture, translate, etc.)
 - **SupportReference**: Links to Translation Academy (`rc://*/ta/man/translate/...`)
 - **Quote**: Original language text the note addresses
 - **Occurrence**: Which occurrence (-1=all, 0=none, 1,2,3...=specific)
@@ -645,7 +653,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 - **Translation Alternatives**: Different ways to render difficult terms
 - **Cultural Context**: Background for understanding ancient customs
 - **Grammatical Guidance**: Complex syntactic structure explanations
-- **Theological Clarification**: Doctrinal or conceptual explanations
+- **Theological Clarification**: Conceptual explanations
 - **Figures of Speech**: Metaphors, idioms, and rhetorical devices
 
 #### Integration Points
@@ -725,7 +733,9 @@ Aaron was Moses' older brother. God chose Aaron to be the first high priest...
 
 | Reference | ID   | Tags | Quote  | Occurrence | Question                     | Response                      |
 |-----------|------|------|--------|------------|------------------------------|-------------------------------|
-| 1:3       | swi9 |      | δοῦλος | 1          | What does Paul call himself? | Paul calls himself a servant  |
+| 1:3       | swi9 |      |  |  | What does Paul call himself? | Paul calls himself a servant  |
+
+The quote and occurrence columns are not used in translation questions.
 
 #### Purpose and Usage
 - **Translation Verification**: Confirm translated meaning matches original intent
@@ -920,9 +930,11 @@ rc://en/ta/man/translate/translate-unknowns    # TA module
 ### Wildcard Support
 ```
 rc://en/ult/book/*                # Any book in English ULT
-rc://*/ult/book/gen               # Genesis in ULT in any language
+rc://*/ult/book/gen               # Genesis in ULT in any language (Default)
 rc://en/*/book/gen/01/01          # Genesis 1:1 in any English translation
 ```
+
+Language wildcards in RC links are commonly used for language codes (e.g. `rc://*/ult/book/gen`) because they allow applications to dynamically resolve the appropriate language based on user preferences and settings. Rather than hardcoding specific language codes, using wildcards enables the same RC link structure to work across multiple languages. The application's language selection feature determines which language resources to load when resolving these wildcarded links. This pattern promotes resource reusability and simplifies multilingual support.
 
 ### Link Resolution Process
 
@@ -935,7 +947,7 @@ rc://en/*/book/gen/01/01          # Genesis 1:1 in any English translation
 #### Translation Notes TSV
 ```tsv
 Reference	ID	SupportReference	Quote	Note
-1:1	tn001	rc://en/ta/man/translate/translate-names	Παῦλος	See how to translate names
+1:1	tn001	rc://en/ta/man/translate/translate-names	Παῦλος	Paul is the name of a man
 1:1	tn002	rc://en/tw/dict/bible/other/servant	δοῦλος	Paul calls himself a servant
 ```
 
@@ -1375,7 +1387,7 @@ async function showTranslationWordsPopup(clickedWord, verse) {
 
 | Reference | ID    | SupportReference                              | Quote  | Note                        |
 |-----------|-------|-----------------------------------------------|--------|-----------------------------|
-| 1:1       | tn001 | rc://en/ta/man/translate/translate-names     | Παῦλος | See how to translate names  |
+| 1:1       | tn001 | rc://en/ta/man/translate/translate-names     | Παῦλος | Paul is the name of a man  |
 
 **Implementation Process**:
 1. Display Translation Note with clickable TA link
