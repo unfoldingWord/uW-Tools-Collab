@@ -46,7 +46,6 @@ The translation resource ecosystem consists of three foundational layers:
 - **Multilingual**: Gateway language organizations can create parallel resource sets
 - **Open Access**: Creative Commons licensing ensures global accessibility
 
-
 ## Resource Ecosystem Concepts
 
 This section provides developers with a comprehensive understanding of what each resource contains, why translation teams need them, and how they work together. Understanding these concepts is essential before diving into technical implementation details.
@@ -56,6 +55,7 @@ This section provides developers with a comprehensive understanding of what each
 These resources provide the structural framework for all translation work:
 
 #### **Versification**
+
 **What it contains**: The canonical chapter and verse structure for all 66 books of the Protestant Bible canon.
 
 **Purpose**: Establishes a consistent reference system that all other resources use to coordinate with each other. When you look at Genesis 1:1, every resource knows exactly which verse you're referencing.
@@ -63,7 +63,9 @@ These resources provide the structural framework for all translation work:
 **Why translators need it**: Enables precise navigation and ensures that notes, word definitions, and questions all align to the correct Scripture passages.
 
 #### **Original Language Texts**
-**What they contain**: 
+
+**What they contain**:
+
 - **Hebrew Bible (UHB)**: The complete Old Testament in Hebrew and Aramaic
 - **Greek New Testament (UGNT)**: The complete New Testament in Koine Greek
 
@@ -76,6 +78,7 @@ These resources provide the structural framework for all translation work:
 These are complete Bible translations in gateway languages (like English, Spanish, French) that serve as bridges for mother tongue translators:
 
 #### **Literal Translation (ULT/GLT)**
+
 **What it contains**: A complete Bible translation that follows a form-centric approach, preserving the structures of the original Hebrew and Greek texts while remaining understandable in the gateway language.
 
 **Purpose**: Shows translators exactly what the original text says by retaining original language word order, grammatical forms, idioms, and figures of speech as much as possible.
@@ -83,6 +86,7 @@ These are complete Bible translations in gateway languages (like English, Spanis
 **Why translators need it**: Provides access to the structural patterns and specific forms used in the original languages, helping translators understand how the biblical authors expressed their thoughts and enabling them to make informed decisions about how to render these forms in their target languages.
 
 #### **Simplified Translation (UST/GST)**
+
 **What it contains**: A complete Bible translation that follows a meaning-based approach, prioritizing clear, natural communication of biblical concepts using contemporary language and cultural expressions.
 
 **Purpose**: Demonstrates how to express the meaning of the original text in natural, understandable language that communicates effectively to modern readers.
@@ -90,6 +94,7 @@ These are complete Bible translations in gateway languages (like English, Spanis
 **Why translators need it**: Provides a model for meaning-based translation, showing how to communicate biblical concepts clearly and naturally while maintaining the essential meaning of the original text.
 
 #### **Word Alignment Data**
+
 **What it contains**: Precise connections showing exactly which words in the gateway language translate which words in Hebrew/Greek.
 
 **Purpose**: Creates a bridge between the original languages and gateway language translations at the individual word level.
@@ -101,6 +106,7 @@ These are complete Bible translations in gateway languages (like English, Spanis
 The supporting resources provide contextual guidance, definitions, methodology, and quality assurance tools that work together with the core translation texts. These resources follow standardized formats and linking mechanisms to enable precise integration with translation applications.
 
 #### **Translation Notes (TN)**
+
 **What they contain**: Verse-by-verse explanations for difficult, ambiguous, or culturally complex passages throughout the Bible that require special attention for accurate translation.
 
 **Purpose**: Provide specific guidance for translating challenging passages, including alternative translation options, cultural background, theological clarifications, and explanations of figures of speech or grammatical constructions.
@@ -110,6 +116,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **Example**: For a metaphor like "God is my rock," a note would explain that this refers to God as a source of protection and stability, not a literal stone.
 
 #### **Translation Words (TW)**
+
 **What they contain**: Comprehensive definitions and explanations of key biblical, theological, and cultural terms that appear throughout Scripture, focusing on how these words are used in the Bible rather than modern dictionary definitions.
 
 **Purpose**: Ensure translators understand important biblical concepts consistently across the entire Bible, providing biblical context for terms that may not be used in everyday life or may have different meanings in modern usage.
@@ -119,6 +126,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **Example**: The entry for "covenant" would explain the biblical concept of formal agreements between God and people, with examples from throughout Scripture.
 
 #### **Translation Words Links (TWL)**
+
 **What they contain**: Connections showing exactly which occurrences of original language words should be linked to Translation Words definitions.
 
 **Purpose**: Connect specific word instances in the text to their corresponding definitions and explanations.
@@ -126,6 +134,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **Why translators need them**: When a translator encounters the Hebrew word "hesed" in Psalm 23, this resource points them to the Translation Words entry explaining "steadfast love" or "mercy."
 
 #### **Translation Questions (TQ)**
+
 **What they contain**: Comprehension questions with answers that test whether a translation successfully communicates the intended meaning of the original text.
 
 **Purpose**: Provide a quality assurance tool for conducting community checks of Bible translations, helping verify that the translation is clear, accurate, and understandable to the target audience.
@@ -135,6 +144,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **Example**: For the passage "Paul, a servant of Christ Jesus," a question might be "What does Paul call himself?" with the answer "Paul calls himself a servant."
 
 #### **Translation Academy (TA)**
+
 **What they contain**: Comprehensive training materials covering translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation.
 
 **Purpose**: Provide the theoretical foundation and practical guidance needed for high-quality Bible translation work, serving as the educational foundation for translation teams.
@@ -167,6 +177,7 @@ This section demonstrates how developers can understand the practical connection
 The unfoldingWord ecosystem is built on a foundation of precise interdependencies that developers must understand to build effective translation tools:
 
 #### Core Dependency Chain
+
 ```mermaid
 graph TB
     subgraph "Foundation Layer"
@@ -222,6 +233,7 @@ graph TB
 #### Critical Implementation Insights
 
 **Word Alignment as the Central Hub**: The word alignment data serves as the crucial connection point that enables all other resources to reference specific words in context. Without understanding alignment data, developers cannot properly implement:
+
 - Translation Note highlighting
 - Translation Words popup functionality  
 - Quality assurance validation
@@ -234,6 +246,7 @@ graph TB
 ### Practical Integration Workflows
 
 #### Translation Review Workflow
+
 This workflow demonstrates how resources work together to support translation review:
 
 1. **Context Loading**: Application loads ULT/GLT and UST/GST for verse comparison
@@ -243,6 +256,7 @@ This workflow demonstrates how resources work together to support translation re
 5. **Quality Verification**: Translation Questions enable community checking of translation effectiveness
 
 #### Resource Discovery Workflow  
+
 This workflow shows how developers should approach resource discovery:
 
 1. **Language Detection**: Identify available gateway languages with complete resource sets
@@ -252,6 +266,7 @@ This workflow shows how developers should approach resource discovery:
 5. **Fallback Strategy**: Define alternative resources when primary resources are unavailable
 
 #### Cross-Resource Navigation Workflow
+
 This workflow demonstrates how users move between interconnected resources:
 
 1. **Entry Point**: User encounters difficult term in ULT/GLT or UST/GST text
@@ -263,21 +278,27 @@ This workflow demonstrates how users move between interconnected resources:
 ### Data Flow Patterns for Developers
 
 #### Highlighting Implementation Pattern
+
 When implementing Translation Note highlighting:
+
 - Parse TN Quote and Occurrence fields
 - Locate matching alignment markers in USFM
 - Extract gateway language words within alignment spans
 - Apply visual highlighting with clear connection to note content
 
 #### Cross-Reference Resolution Pattern  
+
 When implementing RC link navigation:
+
 - Parse RC URI components (language, resource, type, project, reference)
 - Resolve to appropriate Resource Container
 - Navigate to specific content location
 - Maintain navigation context for user return path
 
 #### Multi-Resource Coordination Pattern
+
 When displaying comprehensive verse analysis:
+
 - Load all relevant resources for target verse concurrently
 - Build cross-resource connections using alignment data as foundation
 - Present unified interface showing interconnected information
@@ -286,12 +307,14 @@ When displaying comprehensive verse analysis:
 ### Performance and Architecture Considerations
 
 #### Resource Loading Strategy
+
 - **Dependency-Aware Loading**: Load foundational resources (versification, alignment) before dependent resources
 - **Lazy Loading Patterns**: Load supporting resources only when needed for specific features
 - **Caching Strategies**: Cache alignment data and resource connections for responsive user interface
 - **Concurrent Loading**: Load multiple resources simultaneously when dependencies allow
 
 #### Error Handling Patterns  
+
 - **Graceful Degradation**: Continue operation when some resources are unavailable
 - **Fallback Resources**: Substitute alternative resources when primary resources fail
 - **Resource Validation**: Verify resource consistency and completeness before integration
@@ -308,6 +331,7 @@ This section provides developers with practical guidance for beginning integrati
 Before beginning integration, developers should understand these fundamental concepts:
 
 #### Essential Knowledge Requirements
+
 - **Git Repository Structure**: Basic understanding of Git-based content management
 - **REST API Concepts**: Experience with RESTful web services and JSON data handling  
 - **Text File Formats**: Familiarity with structured text formats (TSV, YAML, Markdown, USFM)
@@ -315,7 +339,9 @@ Before beginning integration, developers should understand these fundamental con
 - **Resource Linking**: Concept of URI-based resource identification and resolution
 
 #### Translation Domain Awareness
+
 While technical expertise is assumed, developers benefit from understanding:
+
 - **Bible Reference Systems**: Chapter and verse numbering concepts
 - **Translation Philosophy**: Difference between literal and meaning-based translation approaches
 - **Cross-Language Challenges**: Cultural and linguistic barriers in translation work
@@ -326,9 +352,11 @@ For comprehensive information about Bible translation methodology and workflow, 
 ### Resource Discovery Strategy
 
 #### Starting Point: Catalog API Exploration
+
 Developers should begin by exploring available resources through the Door43 Catalog API:
 
 **Resource Discovery Process**:
+
 1. **Query Available Languages**: Identify which gateway languages have complete resource sets
 2. **Resource Type Assessment**: Determine which resource types are available for target languages
 3. **Version Identification**: Find the most recent stable versions of each resource
@@ -336,18 +364,22 @@ Developers should begin by exploring available resources through the Door43 Cata
 5. **Quality Assessment**: Check resource quality levels and checking status
 
 **Catalog API Exploration Strategy**:
+
 - Start with broad queries to understand the ecosystem scope
 - Filter by production stage to focus on stable resources
 - Examine resource relationships through manifest metadata
 - Identify resource dependencies and integration requirements
 
 #### Language Selection Considerations
+
 When choosing which gateway language to integrate first:
 
 **Recommended Starting Languages**:
+
 - **English (`en`)**: Most complete resource set, reference implementation
 
 **Evaluation Criteria**:
+
 - Resource completeness across all required types
 - Recent update activity and maintenance
 - Quality checking levels and validation status
@@ -356,42 +388,50 @@ When choosing which gateway language to integrate first:
 ### Basic Integration Patterns
 
 #### Simple Resource Access Pattern
+
 For developers beginning integration, start with read-only access to individual resources:
 
 **Basic Access Strategy**:
+
 1. **Single Resource Focus**: Begin with one resource type (e.g., ULT/GLT)
 2. **Direct Repository Access**: Use standard Git platform APIs for file retrieval
 3. **Simple Content Parsing**: Focus on basic content extraction without complex linking
 4. **Progressive Enhancement**: Add additional resources and features incrementally
 
 **Resource Access Priorities**:
+
 1. **Gateway Language Texts**: ULT/GLT and UST/GST for foundational content
 2. **Versification**: Chapter and verse structure for navigation
 3. **Supporting Resources**: Add TN, TW, and other resources as features expand
 4. **Cross-Resource Linking**: Implement resource connections after basic functionality works
 
 #### Incremental Feature Development
+
 Build translation tool features progressively rather than attempting comprehensive integration immediately:
 
 **Phase 1 - Basic Text Display**:
+
 - Display ULT/GLT and UST/GST side by side
 - Implement basic navigation between chapters and verses
 - Handle USFM formatting for readable text presentation
 - Provide simple search functionality within texts
 
 **Phase 2 - Enhanced Navigation**:
+
 - Add versification-based reference system
 - Implement cross-reference navigation within texts
 - Enable bookmarking and history functionality
 - Provide text comparison features between ULT/GLT and UST/GST
 
 **Phase 3 - Supporting Resource Integration**:
+
 - Display Translation Notes for selected verses
 - Show Translation Words definitions for key terms
 - Enable Translation Academy article access
 - Implement Translation Questions for quality checking
 
 **Phase 4 - Advanced Integration**:
+
 - Enable precise word-level highlighting through alignment data
 - Implement cross-resource navigation and linking
 - Add multi-language support for different gateway languages
@@ -400,45 +440,54 @@ Build translation tool features progressively rather than attempting comprehensi
 ### Common Integration Approaches
 
 #### Web Application Strategy
+
 For web-based translation tools:
 
 **Technical Approach Considerations**:
+
 - **Client-Side vs. Server-Side**: Determine whether to load resources in browser or server
 - **Caching Strategy**: Implement appropriate caching for resource content and API responses
 - **Progressive Loading**: Load essential resources first, supporting resources as needed
 - **Offline Capability**: Consider service worker strategies for offline resource access
 
 **User Experience Priorities**:
+
 - **Fast Initial Load**: Prioritize showing basic text content quickly
 - **Responsive Design**: Ensure functionality across desktop, tablet, and mobile devices
 - **Accessibility**: Implement proper semantic markup and keyboard navigation
 - **Performance**: Optimize resource loading and text rendering for smooth interaction
 
 #### Desktop Application Strategy  
+
 For native desktop translation tools:
 
 **Architecture Considerations**:
+
 - **Local Resource Storage**: Download and cache resources locally for offline access
 - **Update Management**: Implement system for checking and downloading resource updates
 - **Cross-Platform Compatibility**: Ensure resource handling works across operating systems
 - **Integration APIs**: Provide APIs for other desktop applications to access loaded resources
 
 **Performance Optimization**:
+
 - **Resource Indexing**: Build local indexes for fast search and navigation
 - **Memory Management**: Efficiently handle large resource files and multiple open books
 - **Concurrent Access**: Support multiple simultaneous resource operations
 - **Background Processing**: Load and process resources without blocking user interface
 
 #### Mobile Application Strategy
+
 For mobile translation tools:
 
 **Mobile-Specific Considerations**:
+
 - **Bandwidth Optimization**: Minimize network usage through efficient resource loading
 - **Storage Management**: Handle limited device storage for resource caching
 - **Touch Interface**: Design resource navigation for touch-based interaction
 - **Battery Efficiency**: Optimize resource processing to minimize battery drain
 
 **Connectivity Handling**:
+
 - **Offline Priority**: Ensure core functionality works without network connection
 - **Sync Strategy**: Implement efficient synchronization of resource updates
 - **Progressive Download**: Allow users to download specific books or resources as needed
@@ -447,24 +496,29 @@ For mobile translation tools:
 ### Integration Testing Strategy
 
 #### Resource Validation Testing
+
 Before deploying integration features, developers should test:
 
 **Content Integrity Testing**:
+
 - **Format Validation**: Verify that USFM, TSV, and other formats parse correctly
 - **Character Encoding**: Test handling of Unicode characters and multilingual content
 - **Cross-Resource Consistency**: Validate that resource references resolve correctly
 - **Version Compatibility**: Ensure resources work together across different versions
 
 **Functionality Testing**:
+
 - **Navigation Accuracy**: Verify that chapter and verse navigation works correctly
 - **Search Functionality**: Test search accuracy across different resource types
 - **Cross-Reference Resolution**: Validate that links between resources function properly
 - **Performance Testing**: Measure resource loading times and application responsiveness
 
 #### User Experience Validation
+
 Test integration from translator perspective:
 
 **Workflow Testing**:
+
 - **Translation Review Process**: Verify that resources support actual translation workflows
 - **Learning Curve Assessment**: Evaluate how quickly new users can become productive
 - **Error Handling**: Test application behavior when resources are unavailable or incomplete
@@ -485,6 +539,7 @@ The core translation resources form the foundation of the unfoldingWord ecosyste
 **unfoldingWord® Literal Text** - A form-centric translation that preserves the structures, word order, grammatical forms, idioms, and figures of speech of the original Hebrew and Greek texts while remaining understandable in the gateway language.
 
 #### Technical Specifications
+
 - **Format**: USFM 3.0 with embedded word alignment data
 - **Base**: Derived from 1901 American Standard Version with modern updates
 - **Philosophy**: Form-centric, preserving original word order and grammatical structures
@@ -493,6 +548,7 @@ The core translation resources form the foundation of the unfoldingWord ecosyste
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### File Structure
+
 ```
 en_ult/
 ├── manifest.yaml               # Resource Container manifest
@@ -518,6 +574,7 @@ Some of the most common USFM structure elements are:
 More information about USFM structure elements can be found in the [USFM 3.1 Specification](https://docs.usfm.bible/usfm/3.1/index.html).
 
 #### Purpose and Integration
+
 - **Translation Foundation**: Provides literal rendering for understanding original meaning
 - **Structural Reference**: Shows original language grammatical patterns
 - **Alignment Anchor**: Serves as gateway language connection to Hebrew/Greek
@@ -528,6 +585,7 @@ More information about USFM structure elements can be found in the [USFM 3.1 Spe
 **unfoldingWord® Simplified Text** - A meaning-based translation that prioritizes clear, natural communication of biblical concepts using contemporary language and expressions.
 
 #### Technical Specifications
+
 - **Format**: USFM 3.0 with embedded word alignment data
 - **Philosophy**: Meaning-based, prioritizing clarity and natural expression over structural preservation
 - **Approach**: Communicates the meaning of the original text using natural, contemporary language
@@ -536,21 +594,23 @@ More information about USFM structure elements can be found in the [USFM 3.1 Spe
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### Purpose and Integration
+
 - **Meaning Clarity**: Provides clear, natural rendering of biblical concepts
 - **Cultural Bridge**: Explains ancient concepts in modern, understandable terms
 - **Complementary Translation**: Works alongside ULT/GLT for comprehensive understanding
-
 
 ### 3. Word Alignment Data
 
 **USFM 3.0 Embedded Alignment** - Precise word-level connections between gateway language translations and original Hebrew, Greek, and Aramaic texts.
 
 #### Alignment Syntax Structure
+
 ```usfm
 \zaln-s |x-strong="G35880" x-lemma="ὁ" x-morph="Gr,EA,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="ὁ"\*\w The|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
 ```
 
 #### Alignment Attributes
+
 - **x-strong**: Strong's concordance number (G35880, H01234)
 - **x-lemma**: Dictionary form of the original word (ὁ, אֱלֹהִים)
 - **x-morph**: Morphological parsing (Gr,EA,,,,NMS,)
@@ -561,6 +621,7 @@ More information about USFM structure elements can be found in the [USFM 3.1 Spe
 #### Alignment Relationship Types
 
 **1. One-to-One**: Single original word ↔ single gateway word
+
 ```usfm
 \zaln-s |x-strong="G2316" x-lemma="θεός" x-morph="Gr,N,,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="θεὸς"\*\w God|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
 ```
@@ -581,6 +642,7 @@ graph LR
 ```
 
 **2. One-to-Many**: Single original word ↔ multiple gateway words (nested structure)
+
 ```usfm
 \zaln-s |x-strong="G2980" x-lemma="λαλέω" x-morph="Gr,V,IFA1,,P," x-occurrence="1" x-occurrences="1" x-content="λαλήσομεν"\*\w we|x-occurrence="1" x-occurrences="1"\w* \w will|x-occurrence="1" x-occurrences="1"\w* \w speak|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
 ```
@@ -607,6 +669,7 @@ graph LR
 ```
 
 **3. Many-to-One**: Multiple original words ↔ single gateway word (overlapping alignments)
+
 ```usfm
 \zaln-s |x-strong="G1223" x-lemma="διά" x-morph="Gr,P,,,,,G,,," x-occurrence="1" x-occurrences="1" x-content="διὰ"\*\zaln-s |x-strong="G5124" x-lemma="οὗτος" x-morph="Gr,RD,,,,ANS," x-occurrence="1" x-occurrences="1" x-content="τοῦτο"\*\w therefore|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*\zaln-e\*
 ```
@@ -631,6 +694,7 @@ graph LR
 ```
 
 **4. Many-to-Many**: Multiple original words ↔ multiple gateway words (nested combinations)
+
 ```usfm
 \zaln-s |x-strong="G3756" x-lemma="οὐ" x-morph="Gr,D,,,,,,,," x-occurrence="1" x-occurrences="1" x-content="οὐ"\*\zaln-s |x-strong="G3361" x-lemma="μή" x-morph="Gr,D,,,,,,,," x-occurrence="1" x-occurrences="1" x-content="μὴ"\*\w by|x-occurrence="1" x-occurrences="1"\w* \w no|x-occurrence="1" x-occurrences="1"\w* \w means|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*\zaln-e\*
 ```
@@ -667,6 +731,7 @@ graph LR
 > Paul, a servant of Christ Jesus
 
 **Alignment Visualization**:
+
 ```mermaid
 graph TD
     subgraph "Greek Original"
@@ -717,33 +782,36 @@ graph TD
 ```
 
 **USFM Alignment Code**:
+
 ```usfm
 \v 1 \zaln-s |x-strong="G39720" x-lemma="Παῦλος" x-morph="Gr,N,,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="Παῦλος"\*\w Paul|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*, \zaln-s |x-strong="G14010" x-lemma="δοῦλος" x-morph="Gr,N,,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="δοῦλος"\*\w a|x-occurrence="1" x-occurrences="1"\w* \w servant|x-occurrence="1" x-occurrences="1"\w*\zaln-e\* \zaln-s |x-strong="G55470" x-lemma="Χριστός" x-morph="Gr,N,,,,,GMS," x-occurrence="1" x-occurrences="1" x-content="Χριστοῦ"\*\w of|x-occurrence="1" x-occurrences="1"\w* \w Christ|x-occurrence="1" x-occurrences="1"\w*\zaln-e\* \zaln-s |x-strong="G24240" x-lemma="Ἰησοῦς" x-morph="Gr,N,,,,,GMS," x-occurrence="1" x-occurrences="1" x-content="Ἰησοῦ"\*\w Jesus|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
 ```
 
 **3. Many-to-One**: Multiple original words ↔ single gateway word
+
 ```usfm
 \zaln-s |x-strong="G1223" x-content="διὰ"\*\zaln-s |x-strong="G5124" x-content="τοῦτο"\*\w therefore\w*\zaln-e\*\zaln-e\*
 ```
 
 **4. Many-to-Many**: Multiple original words ↔ multiple gateway words
+
 ```usfm
 \zaln-s |x-strong="G2570" x-content="καλῶς"\*\zaln-s |x-strong="G4160" x-content="ποιεῖς"\*\w do\w* \w good\w*\zaln-e\*\zaln-e\*
 ```
-
-
 
 ### 4. Versification
 
 **Chapter and Verse Structure** - Standardized reference framework defining canonical structure for precise resource coordination.
 
 #### Purpose
+
 - **Reference Framework**: Enables consistent scripture references across all resources
 - **Context Loading**: Tools know which resources to load for current verse
 - **Navigation**: Uniform reference system for user interface coordination
 - **Validation**: Ensures all resource references point to valid scripture locations
 
 #### Technical Implementation
+
 - **Format**: JSON or structured data defining chapter/verse boundaries
 - **Scope**: Covers all 66 books of the Protestant canon
 - **Standards**: Follows established versification systems (KJV, etc.)
@@ -758,6 +826,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **unfoldingWord® Translation Notes** - Comprehensive verse-by-verse guidance providing specific help for translating difficult, complex, or ambiguous passages.
 
 #### Technical Specifications
+
 - **Format**: TSV (Tab-Separated Values) files, one per book
 - **Structure**: Flat directory structure (files in root directory)
 - **Naming**: `tn_[BOOK].tsv` (e.g., `tn_GEN.tsv`, `tn_MAT.tsv`)
@@ -771,6 +840,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 | 1:3       | abc1 | grammar | rc://en/ta/man/translate/figs-metaphor    | בְּרֵאשִׁית | 1          | The Hebrew word for "beginning"...      |
 
 **Column Definitions**:
+
 - **Reference**: Chapter:verse (e.g., "1:3") or range ("1:3-5") or (1:2, 1:6)
 - **ID**: Four-character unique identifier (e.g., "abc1")
 - **Tags**: Categorization (grammar, culture, translate, etc.)
@@ -780,6 +850,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 - **Note**: Markdown-formatted explanation and guidance
 
 #### Note Categories
+
 - **Translation Alternatives**: Different ways to render difficult terms
 - **Cultural Context**: Background for understanding ancient customs
 - **Grammatical Guidance**: Complex syntactic structure explanations
@@ -787,6 +858,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 - **Figures of Speech**: Metaphors, idioms, and rhetorical devices
 
 #### Integration Points
+
 - **Quote + Occurrence**: Links to ULT/GLT/UST/GST alignment data for highlighting
 - **SupportReference**: Links to Translation Academy methodology
 - **Reference**: Coordinates with versification system
@@ -796,17 +868,20 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 **unfoldingWord® Translation Words** - Comprehensive definitions of key biblical, theological, and cultural terms throughout Scripture.
 
 #### Technical Specifications
+
 - **Format**: Markdown articles in hierarchical directories
 - **Organization**: `/bible/kt/`, `/bible/names/`, `/bible/other/`
 - **Repository**: [unfoldingWord Translation Words](https://git.door43.org/unfoldingWord/en_tw)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### Content Categories
+
 - **Key Terms (`/kt/`)**: Central theological concepts (God, salvation, covenant)
 - **Names (`/names/`)**: People, places, and proper nouns
 - **Other Terms (`/other/`)**: Cultural, historical, and general concepts
 
 #### Article Structure
+
 ```markdown
 # Aaron
 
@@ -830,6 +905,7 @@ Aaron was Moses' older brother. God chose Aaron to be the first high priest...
 **unfoldingWord® Translation Words Links** - Precise mapping connecting specific original language word occurrences to Translation Words definitions.
 
 #### Technical Specifications
+
 - **Format**: TSV files, one per book
 - **Naming**: `twl_[BOOK].tsv` (e.g., `twl_GEN.tsv`)
 - **Repository**: [unfoldingWord Translation Words Links](https://git.door43.org/unfoldingWord/en_twl)
@@ -842,6 +918,7 @@ Aaron was Moses' older brother. God chose Aaron to be the first high priest...
 | 1:3       | xyz9 | kt   | אֱלֹהִים    | 1          | rc://en/tw/dict/bible/kt/god     |
 
 **Column Definitions**:
+
 - **Reference**: Chapter:verse where term occurs
 - **ID**: Four-character unique identifier
 - **Tags**: Term category (kt, names, other)
@@ -854,6 +931,7 @@ Aaron was Moses' older brother. God chose Aaron to be the first high priest...
 **unfoldingWord® Translation Questions** - Comprehensive questions enabling translators to verify their translation communicates intended meaning clearly.
 
 #### Technical Specifications
+
 - **Format**: TSV files, one per book
 - **Naming**: `tq_[BOOK].tsv` (e.g., `tq_GEN.tsv`)
 - **Repository**: [unfoldingWord Translation Questions](https://git.door43.org/unfoldingword/en_tq)
@@ -868,6 +946,7 @@ Aaron was Moses' older brother. God chose Aaron to be the first high priest...
 The quote and occurrence columns are not used in translation questions.
 
 #### Purpose and Usage
+
 - **Translation Verification**: Confirm translated meaning matches original intent
 - **Comprehension Testing**: Verify target language speakers understand translation
 - **Quality Assurance**: Systematic checking of translation accuracy
@@ -878,18 +957,21 @@ The quote and occurrence columns are not used in translation questions.
 **unfoldingWord® Translation Academy** - Comprehensive training materials providing theoretical foundation and practical guidance for Bible translation.
 
 #### Technical Specifications
+
 - **Format**: Markdown articles in hierarchical structure
 - **Organization**: `/translate/`, `/checking/`, `/process/` categories
 - **Repository**: [unfoldingWord Translation Academy](https://git.door43.org/unfoldingWord/en_ta)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### Content Categories
+
 - **Translation Principles**: Fundamental translation theory concepts
 - **Translation Methods**: Specific techniques for different text types
 - **Cultural Issues**: Cross-cultural communication guidance
 - **Quality Assurance**: Standards and checking processes
 
 #### Article Structure
+
 ```markdown
 # Translate Unknowns
 
@@ -913,6 +995,7 @@ If the word is not known, here are strategies...
 All unfoldingWord resources follow the [Resource Container (RC) specification](https://resource-container.readthedocs.io/en/latest/), providing standardized structure, metadata, and linking mechanisms.
 
 ### RC Directory Structure
+
 ```
 en_resource_name/
 ├── .apps/                      # Application metadata
@@ -928,7 +1011,9 @@ en_resource_name/
 ### RC Container Types
 
 #### 1. Bundle (`bundle`)
+
 Flat directory structure for USFM collections:
+
 ```
 en_ult/
 ├── manifest.yaml
@@ -937,7 +1022,9 @@ en_ult/
 ```
 
 #### 2. Help (`help`)
+
 Supplemental content like Translation Notes (flat structure):
+
 ```
 en_tn/
 ├── manifest.yaml
@@ -948,7 +1035,9 @@ en_tn/
 ```
 
 #### 3. Dictionary (`dict`)
+
 Term definitions like Translation Words:
+
 ```
 en_tw/
 ├── manifest.yaml
@@ -959,7 +1048,9 @@ en_tw/
 ```
 
 #### 4. Manual (`man`)
+
 Instructional content like Translation Academy:
+
 ```
 en_ta/
 ├── manifest.yaml
@@ -971,7 +1062,9 @@ en_ta/
 ```
 
 #### 5. Book (`book`)
+
 Chapter/chunk structured content:
+
 ```
 en_obs/
 ├── manifest.yaml
@@ -1058,6 +1151,7 @@ rc://en/ta/man/translate/translate-unknowns    # TA module
 ```
 
 ### Wildcard Support
+
 ```
 rc://en/ult/book/*                # Any book in English ULT/GLT
 rc://*/ult/book/gen               # Genesis in ULT/GLT in any language (Default)
@@ -1075,13 +1169,15 @@ Language wildcards in RC links are commonly used for language codes (e.g. `rc://
 ### Practical Usage Examples
 
 #### Translation Notes TSV
+
 ```tsv
-Reference	ID	SupportReference	Quote	Note
-1:1	tn001	rc://en/ta/man/translate/translate-names	Παῦλος	Paul is the name of a man
-1:1	tn002	rc://en/tw/dict/bible/other/servant	δοῦλος	Paul calls himself a servant
+Reference ID SupportReference Quote Note
+1:1 tn001 rc://en/ta/man/translate/translate-names Παῦλος Paul is the name of a man
+1:1 tn002 rc://en/tw/dict/bible/other/servant δοῦλος Paul calls himself a servant
 ```
 
 #### Translation Academy Cross-References
+
 ```markdown
 For more information, see [Translate Names](rc://en/ta/man/translate/translate-names).
 ```
@@ -1095,6 +1191,7 @@ This section covers practical API usage, authentication methods, and multi-platf
 While the primary hosting is **Door43 Content Service (DCS)**, applications should support multiple hosting platforms:
 
 #### Primary Platform: Door43 Content Service
+
 - **Platform**: `https://git.door43.org/`
 - **Organization**: `unfoldingWord` for English resources
 - **Technology**: Gitea-based Git platform with Door43 extensions
@@ -1103,7 +1200,9 @@ While the primary hosting is **Door43 Content Service (DCS)**, applications shou
 - **Catalog API**: Extended endpoints for resource discovery and organization
 
 #### Alternative Hosting Considerations
+
 Applications should be designed to work with:
+
 - **Door43 Clones**: Mirror instances of the main DCS platform
 - **Other Gitea Instances**: Self-hosted Gitea platforms with unfoldingWord resources
 - **Generic Git Platforms**: GitHub, GitLab, or other Git-based hosting
@@ -1117,6 +1216,7 @@ Applications should be designed to work with:
 Door43 extends the standard Gitea API with specialized endpoints for Bible translation resources. The API provides both standard Git repository access and enhanced catalog functionality for resource discovery.
 
 **API Documentation**:
+
 - **Swagger UI**: [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 - **OpenAPI Specification**: [https://git.door43.org/swagger.v1.json](https://git.door43.org/swagger.v1.json)
 - **Base URL**: `https://git.door43.org/api/v1`
@@ -1207,13 +1307,15 @@ openapi-generator-cli generate \
 
 **1. Resource Discovery Process**:
 Applications should query the catalog API to find available resources by language and type:
-- Filter catalog entries by language (`lang=en`) and resource type (`resource=ult`) 
+
+- Filter catalog entries by language (`lang=en`) and resource type (`resource=ult`)
 - Include stage filter (`stage=prod`) to get production-ready resources only
 - Sort results by release date to identify the most recent version
 - Handle cases where no resources are found for a given language/type combination
 
 **2. Resource Download Process**:
 Applications can obtain resource content through multiple methods:
+
 - **ZIP Download**: Use the `zipball_url` from catalog entries for complete resource packages
 - **Direct File Access**: Access individual files through repository API endpoints
 - **Manifest Access**: Retrieve metadata through `metadata_json_url` for resource information
@@ -1221,6 +1323,7 @@ Applications can obtain resource content through multiple methods:
 
 **3. Multi-Language Resource Discovery**:
 To find available languages for a specific resource type:
+
 - Query catalog without language filter to get all available implementations
 - Extract unique language identifiers from the results
 - Group resources by language to understand completeness
@@ -1228,6 +1331,7 @@ To find available languages for a specific resource type:
 
 **4. Gateway Language Ecosystem Assessment**:
 To identify complete gateway language implementations:
+
 - Define core resource requirements (`ult`, `ust`, `tn`, `tw`, `twl`, `ta`)
 - Query catalog for all production resources across languages
 - Group catalog entries by language identifier
@@ -1237,12 +1341,14 @@ To identify complete gateway language implementations:
 #### Authentication and Rate Limiting Considerations
 
 **Authentication Requirements:**
+
 - Most public resources are accessible without authentication
 - Private repositories or enhanced API features may require API tokens
 - Authentication should use standard `Authorization: token <TOKEN>` headers
 - Content-Type should be set to `application/json` for API requests
 
 **Rate Limiting Management:**
+
 - APIs typically include rate limit information in response headers
 - Check `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers when available
 - Implement backoff strategies when approaching rate limits
@@ -1250,6 +1356,7 @@ To identify complete gateway language implementations:
 - For high-volume applications, consider local resource mirrors
 
 ### Repository Organization
+
 ```
 https://git.door43.org/unfoldingWord/en_ult     # ULT/GLT
 https://git.door43.org/unfoldingWord/en_ust     # UST/GST
@@ -1262,6 +1369,7 @@ https://git.door43.org/unfoldingWord/en_ta      # Translation Academy
 ### Multilingual Gateway Language Ecosystem
 
 #### Gateway Language Strategy
+
 unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Other organizations have created parallel ecosystems for different strategic languages:
 
 - **Spanish**: `https://git.door43.org/es-419_gl/`
@@ -1270,12 +1378,14 @@ unfoldingWord created English resources for Mother Tongue Translators, serving a
 - **Portuguese**: `https://git.door43.org/pt-br_gl/`
 
 #### Naming Conventions
+
 - **unfoldingWord (English)**: Uses ULT/GLT/UST/GST codes (unfoldingWord Literal/Simplified Text)
 - **Other Gateway Languages**: Use GLT/GST codes (Gateway Language Literal/Simplified Text)
 
 The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts. For detailed guidance on gateway language translation and adaptation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
 #### Consistent Linking Strategy
+
 All gateway language organizations maintain the same internal linking patterns:
 
 ```yaml
@@ -1290,11 +1400,13 @@ relation:
 ### Quality Assurance Integration
 
 #### Alignment-Based Validation
+
 - **Coverage**: Every original word has gateway language alignment
 - **Accuracy**: Aligned words appropriately represent original meaning
 - **Consistency**: Same original words consistently aligned across contexts
 
 #### Cross-Resource Coherence
+
 - **Note Accuracy**: Translation Notes reference actually aligned words
 - **Link Validity**: TWL points to words present in alignments
 - **Methodology**: Alignment decisions follow Translation Academy principles
@@ -1308,6 +1420,7 @@ This section covers advanced integration topics including creating custom resour
 Gateway language organizations can create additional resources following RC specifications:
 
 #### Required Components
+
 1. **RC Directory Structure**: Follow standard layout with manifest
 2. **Manifest Compliance**: Use Dublin Core metadata standards
 3. **Linking Compatibility**: Support RC link resolution
@@ -1316,6 +1429,7 @@ Gateway language organizations can create additional resources following RC spec
 #### Example: New Commentary Resource
 
 **Directory Structure**:
+
 ```
 en_biblical-commentary/
 ├── .apps/
@@ -1327,6 +1441,7 @@ en_biblical-commentary/
 ```
 
 **Manifest**:
+
 ```yaml
 dublin_core:
   conformsto: 'rc0.2'
@@ -1360,12 +1475,14 @@ projects:
 ### Integration Requirements
 
 #### For Translation Tools
+
 1. **Resource Discovery**: Scan for RC manifest files
 2. **Type Recognition**: Handle all RC container types
 3. **Format Processing**: Parse USFM, TSV, and Markdown content
 4. **Link Resolution**: Support RC link navigation
 
 #### For Resource Creators
+
 1. **Reference Format**: Use standard chapter:verse format
 2. **Quote Matching**: Include exact original language text for alignment
 3. **Occurrence Tracking**: Number multiple instances correctly
@@ -1390,23 +1507,27 @@ This section demonstrates how applications can combine multiple resources to cre
 | 1:1       | abc1 | δοῦλος | 1          | Paul calls himself a servant of Jesus Christ... |
 
 **Alignment Data in ULT/GLT**:
+
 ```usfm
 \zaln-s |x-strong="G14010" x-lemma="δοῦλος" x-occurrence="1" x-content="δοῦλος"\*\w a servant\w*\zaln-e\*
 ```
 
 **Implementation Process**:
+
 1. Parse Translation Note: Quote = "δοῦλος", Occurrence = 1
 2. Search alignment for `x-content="δοῦλος"` with `x-occurrence="1"`
 3. Extract gateway text: "a servant"
 4. Highlight "a servant" in displayed ULT/GLT text
 
 **Visual Result**:
+
 ```
 ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
                               ↑ highlighted because it aligns to δοῦλος
 ```
 
 **Implementation Requirements**:
+
 1. Parse Translation Note Quote and Occurrence fields from TSV data
 2. Search alignment data for matching `x-content` attribute with specified occurrence
 3. Extract the gateway language words contained within the matching alignment markers
@@ -1426,6 +1547,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 | 1:1       | xyz9 | kt   | אֱלֹהִים    | 1          | rc://en/tw/dict/bible/kt/god     |
 
 **Implementation Process**:
+
 1. User clicks on "God" in ULT/GLT text
 2. Find alignment data for clicked word
 3. Match original word (אֱלֹהִים) with TWL entry
@@ -1433,6 +1555,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 5. Display popup with definition and examples
 
 **Implementation Requirements**:
+
 1. Identify which gateway language word was clicked in the displayed text
 2. Locate the corresponding alignment data for that word position
 3. Extract the original language word from the alignment `x-content` attribute
@@ -1453,12 +1576,14 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 | 1:1       | tn001 | rc://en/ta/man/translate/translate-names     | Παῦλος | Paul is the name of a man  |
 
 **Implementation Process**:
+
 1. Display Translation Note with clickable TA link
 2. Parse RC link: `rc://en/ta/man/translate/translate-names`
 3. Load Translation Academy article
 4. Provide breadcrumb navigation back to original context
 
 **Implementation Requirements**:
+
 1. Parse RC link from Translation Note SupportReference field
 2. Resolve the RC link to locate the appropriate Translation Academy article
 3. Load the article content from the Translation Academy resource
@@ -1472,6 +1597,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 **Resources Used**: ULT/GLT + UST/GST + TN + TW + TWL + TQ + Alignment Data
 
 **Implementation Process**:
+
 1. Load all resources for target verse
 2. Build cross-resource connections
 3. Create unified interface showing:
@@ -1482,6 +1608,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
    - Original language alignment data
 
 **Implementation Requirements**:
+
 1. Load all relevant resources for the target verse concurrently for optimal performance
 2. Extract verse-specific content from each resource type (ULT/GLT, UST/GST, TN, TW, TWL, TQ)
 3. Build cross-resource connections using alignment data as the linking foundation
@@ -1496,6 +1623,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 **Resources Used**: All resources with cross-validation
 
 **Implementation Process**:
+
 1. Check alignment coverage (every original word aligned)
 2. Validate Translation Note quotes exist in alignment
 3. Verify TWL links point to existing TW articles
@@ -1503,6 +1631,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 5. Report inconsistencies for correction
 
 **Quality Validation Requirements**:
+
 1. **Alignment Coverage**: Verify every original language word has corresponding gateway language alignment
 2. **Translation Note Accuracy**: Confirm all TN Quote fields reference words that exist in alignment data
 3. **TWL Link Validity**: Ensure all Translation Words Links point to existing Translation Words articles
@@ -1517,6 +1646,7 @@ ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
 Applications should support configurable resource sources rather than hardcoding specific URLs:
 
 **Configuration Requirements:**
+
 - **Base URL**: Configurable base URL for resource hosting platform (default: Door43)
 - **Organization**: Configurable organization/user for resource repositories (default: unfoldingWord)
 - **API Endpoint**: Configurable API path for programmatic access (default: /api/v1)
@@ -1524,12 +1654,14 @@ Applications should support configurable resource sources rather than hardcoding
 - **API Preference**: Configurable preference for using catalog API vs. direct repository access
 
 **Resource Loading Strategy:**
+
 1. **Primary Method**: Attempt catalog API access when available for enhanced discovery
 2. **Fallback Method**: Use standard Git platform API for direct repository access
 3. **Final Fallback**: Direct Git protocol access for maximum compatibility
 4. **Error Handling**: Graceful degradation between access methods with appropriate logging
 
 **Access Method Selection:**
+
 - Catalog API provides enhanced metadata and filtering capabilities
 - Standard Git APIs offer broad platform compatibility
 - Direct Git access ensures availability even when web APIs are unavailable
@@ -1538,6 +1670,7 @@ Applications should support configurable resource sources rather than hardcoding
 #### Platform Detection and Adaptation
 
 **Platform Adaptation Strategy:**
+
 - Detect platform type from base URL patterns (Door43, GitHub, GitLab, generic Git)
 - Adapt API calls and authentication methods based on detected platform
 - Use platform-specific optimizations when available
@@ -1546,12 +1679,14 @@ Applications should support configurable resource sources rather than hardcoding
 #### Dependency Resolution Strategy
 
 **Resource Loading Hierarchy:**
+
 1. **Core Resources First**: Load ULT/GLT and UST/GST as foundational texts
 2. **Supporting Resources**: Load TN, TW, TWL, and TA that depend on core texts
 3. **Cross-Resource Linking**: Build connections between resources using alignment data and RC links
 4. **Validation**: Verify that all resource references are resolvable
 
 **Resource Interdependencies:**
+
 - Translation Notes reference specific words through alignment data
 - Translation Words Links connect aligned words to Translation Words articles  
 - Translation Academy articles are referenced by Translation Notes
@@ -1560,6 +1695,7 @@ Applications should support configurable resource sources rather than hardcoding
 #### RC Link Resolution Process
 
 **Link Parsing Requirements:**
+
 1. Parse RC link components (language, resource, type, project, chapter, chunk)
 2. Locate appropriate Resource Container based on language and resource type
 3. Navigate to specific project within the Resource Container
@@ -1569,6 +1705,7 @@ Applications should support configurable resource sources rather than hardcoding
 ### User Interface Integration
 
 #### Unified Navigation
+
 - **Context Preservation**: Maintain reference when switching resources
 - **Visual Connections**: Highlight relationships between aligned words and notes
 - **Seamless Movement**: Enable jumping between interconnected resources
@@ -1576,6 +1713,7 @@ Applications should support configurable resource sources rather than hardcoding
 #### Translation Note Highlighting Strategy
 
 **Highlighting Process:**
+
 1. Extract Quote and Occurrence data from Translation Note entries
 2. Locate corresponding alignment markers in the USFM text
 3. Identify gateway language words within the alignment spans
@@ -1585,6 +1723,7 @@ Applications should support configurable resource sources rather than hardcoding
 ### Quality Checking Features
 
 #### Automated Validation
+
 - **Link Validation**: Check RC links resolve correctly
 - **Reference Validation**: Verify scripture references are valid
 - **Alignment Completeness**: Ensure all original words are aligned
@@ -1593,6 +1732,7 @@ Applications should support configurable resource sources rather than hardcoding
 #### Error Handling Strategy
 
 **Resource Fallback Approach:**
+
 - Define alternative resource types for fallback (ULT/GLT, UST/GST, etc.)
 - Attempt to substitute missing resources with available alternatives
 - Provide clear indication when fallback resources are being used
@@ -1602,11 +1742,13 @@ Applications should support configurable resource sources rather than hardcoding
 ### Performance Optimization
 
 #### Caching Strategy
+
 - **Resource Caching**: Cache parsed RC manifests and content
 - **Link Resolution**: Cache resolved RC links
 - **Alignment Data**: Pre-process alignment for fast highlighting
 
 #### Lazy Loading
+
 - **On-Demand**: Load resources only when needed
 - **Progressive**: Load core resources first, then supporting materials
 - **Background**: Pre-load likely-needed resources
@@ -1616,12 +1758,14 @@ Applications should support configurable resource sources rather than hardcoding
 Applications should support offline usage and local resource storage:
 
 **Multi-Source Loading Strategy:**
+
 - **Local Files**: Check for locally stored resource files first
 - **Cache Storage**: Use cached versions of previously downloaded resources
 - **Remote Access**: Fetch from remote Git repositories when needed
 - **Fallback URLs**: Support multiple remote sources for redundancy
 
 **Offline Support Requirements:**
+
 1. **Cache Management**: Store successful downloads for offline use
 2. **Source Prioritization**: Prefer local/cached over remote sources
 3. **Graceful Degradation**: Continue operation when some sources are unavailable
@@ -1630,12 +1774,14 @@ Applications should support offline usage and local resource storage:
 #### Resource Discovery and Validation
 
 **Resource Source Validation:**
+
 - **Manifest Verification**: Check for valid manifest.yaml files with proper Dublin Core metadata
 - **RC Compliance**: Verify conformance to Resource Container specification
 - **Platform Compatibility**: Ensure resource structure works with different hosting platforms
 - **Version Tracking**: Identify RC specification version and compatibility requirements
 
 **Validation Process:**
+
 1. **Access Test**: Verify that resource repositories are accessible
 2. **Format Validation**: Confirm that resources follow expected file structures
 3. **Metadata Parsing**: Extract and validate Dublin Core metadata from manifests
@@ -1674,15 +1820,18 @@ This documentation provides the foundation for building translation tools that s
 ## Further Reading and Resources
 
 ### Technical Specifications and Standards
+
 - **[USFM 3.1 Specification](https://docs.usfm.bible/usfm/3.1/index.html)** - Complete technical specification for Unified Standard Format Markers used in scripture texts
 - **[Resource Container Specification](https://resource-container.readthedocs.io/en/latest/)** - Official documentation for the Resource Container standard including structure, manifest format, and linking mechanisms
 - **[Dublin Core Metadata Terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/)** - Metadata standards used in Resource Container manifests
 
 ### Translation Methodology and Workflow
+
 - **[Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html)** - Comprehensive guide for translating and adapting unfoldingWord resources into gateway languages
 - **[unfoldingWord Translator Resources](https://unfoldingword.org/for-translators/)** - Complete collection of tools, training materials, and resources for Bible translation teams
 
 ### Platform and API Documentation
+
 - **[Door43 Content Service](https://git.door43.org/about)** - Information about the primary hosting platform for unfoldingWord resources
 - **[Door43 API Documentation](https://git.door43.org/api/swagger)** - Interactive API documentation and testing interface for programmatic access to resources
 
