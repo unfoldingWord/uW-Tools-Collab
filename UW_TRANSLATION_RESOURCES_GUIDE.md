@@ -343,9 +343,6 @@ When choosing which gateway language to integrate first:
 
 **Recommended Starting Languages**:
 - **English (`en`)**: Most complete resource set, reference implementation
-- **Spanish (`es-419`)**: Mature gateway language implementation  
-- **French (`fr`)**: Well-developed resource ecosystem
-- **Portuguese (`pt-br`)**: Growing gateway language resources
 
 **Evaluation Criteria**:
 - Resource completeness across all required types
