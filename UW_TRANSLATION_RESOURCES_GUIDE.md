@@ -196,7 +196,7 @@ These resources form an interconnected ecosystem where each one enhances the oth
 
 - **Word Alignment** connects gateway language translations to original languages
 - **Translation Notes** reference specific aligned words to provide targeted guidance
-- **Translation Academy** articles are referenced by Translation Notes to explain the methodology behind translation decisions
+- **Translation Academy** articles are referenced by Translation Notes, they explain the methodology behind translation decisions and provide training in translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation
 - **Translation Words Links** point from aligned words to Translation Words articles
 - **Translation Words** articles provide comprehensive definitions of key biblical, theological, and cultural terms
 - **Translation Questions** verify that the final translation communicates effectively
