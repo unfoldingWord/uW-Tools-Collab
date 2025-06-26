@@ -270,85 +270,6 @@ graph TB
 
 **Gateway Language Flexibility**: The system supports multiple gateway languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any gateway language implementation, not just English. For detailed information about gateway language translation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
-### Practical Integration Workflows
-
-#### Translation Review Workflow
-
-This workflow demonstrates how resources work together to support translation review:
-
-1. **Context Loading**: Application loads ULT/GLT and UST/GST for verse comparison
-2. **Note Integration**: Translation Notes provide specific guidance, with Quote/Occurrence data pointing to aligned words
-3. **Term Definition**: Translation Words Links connect aligned words to comprehensive definitions
-4. **Methodology Reference**: Translation Academy articles explain the principles behind translation decisions
-5. **Quality Verification**: Translation Questions enable community checking of translation effectiveness
-
-#### Resource Discovery Workflow  
-
-This workflow shows how developers should approach resource discovery:
-
-1. **Language Detection**: Identify available gateway languages with complete resource sets
-2. **Resource Validation**: Verify that all required resources exist for the target language
-3. **Version Coordination**: Ensure compatible versions across all resources in the ecosystem
-4. **Dependency Mapping**: Build resource dependency graph for proper loading order
-5. **Fallback Strategy**: Define alternative resources when primary resources are unavailable
-
-#### Cross-Resource Navigation Workflow
-
-This workflow demonstrates how users move between interconnected resources:
-
-1. **Entry Point**: User encounters difficult term in ULT/GLT or UST/GST text
-2. **Alignment Resolution**: System identifies original language word through alignment data  
-3. **Resource Linking**: Translation Words Links provide path to definition
-4. **Extended Learning**: Translation Academy articles offer deeper methodology training
-5. **Context Return**: User returns to original translation context with enhanced understanding
-
-### Data Flow Patterns for Developers
-
-#### Highlighting Implementation Pattern
-
-When implementing Translation Note highlighting:
-
-- Parse TN Quote and Occurrence fields
-- Locate matching alignment markers in USFM
-- Extract gateway language words within alignment spans
-- Apply visual highlighting with clear connection to note content
-
-#### Cross-Reference Resolution Pattern  
-
-When implementing RC link navigation:
-
-- Parse RC URI components (language, resource, type, project, reference)
-- Resolve to appropriate Resource Container
-- Navigate to specific content location
-- Maintain navigation context for user return path
-
-#### Multi-Resource Coordination Pattern
-
-When displaying comprehensive verse analysis:
-
-- Load all relevant resources for target verse concurrently
-- Build cross-resource connections using alignment data as foundation
-- Present unified interface showing interconnected information
-- Enable seamless navigation between related content
-
-### Performance and Architecture Considerations
-
-#### Resource Loading Strategy
-
-- **Dependency-Aware Loading**: Load foundational resources (versification, alignment) before dependent resources
-- **Lazy Loading Patterns**: Load supporting resources only when needed for specific features
-- **Caching Strategies**: Cache alignment data and resource connections for responsive user interface
-- **Concurrent Loading**: Load multiple resources simultaneously when dependencies allow
-
-#### Error Handling Patterns  
-
-- **Graceful Degradation**: Continue operation when some resources are unavailable
-- **Fallback Resources**: Substitute alternative resources when primary resources fail
-- **Resource Validation**: Verify resource consistency and completeness before integration
-- **User Communication**: Provide clear feedback when resources are incomplete or unavailable
-
-This understanding of resource relationships and workflows prepares developers for the technical implementation details covered in the following sections.
-
 ## Getting Started with Integration
 
 This section provides developers with practical guidance for beginning integration with the unfoldingWord ecosystem. It covers essential first steps, basic resource access patterns, and common integration approaches without diving into complex technical details.
@@ -385,11 +306,13 @@ Before diving into implementation, developers should understand what resources a
 **Key Resource Locations**:
 
 - **Primary Platform**: Door43 Content Service at `https://git.door43.org/`
-- **Organization Structure**: Resources organized under various organizations (some language-specific like [`es-419_gl`](https://git.door43.org/es-419_gl/), others multi-language like [`unfoldingWord`](https://git.door43.org/unfoldingWord/))
-- **Repository Naming**: Language code + underscore + resource identifier (e.g., [`en_ult`](https://git.door43.org/unfoldingWord/en_ult/), [`es-419_tn`](https://git.door43.org/es-419_gl/es-419_tn/), [`fr_tw`](https://git.door43.org/fr_gl/fr_tw/))
-- **Resource Subject Identification**: Resource content types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
+- **Organization Structure**: Resources organized under various organizations (some language-specific like `es-419_gl` in [https://git.door43.org/es-419_gl/](https://git.door43.org/es-419_gl/), others multi-language like `unfoldingWord` in [https://git.door43.org/unfoldingWord/](https://git.door43.org/unfoldingWord/))
+- **Repository Naming**: Language code + underscore + resource identifier (e.g., `en_ult` in [https://git.door43.org/unfoldingWord/en_ult/](https://git.door43.org/unfoldingWord/en_ult/), `es-419_tn` in [https://git.door43.org/es-419_gl/es-419_tn/](https://git.door43.org/es-419_gl/es-419_tn/), `fr_tw` in [https://git.door43.org/fr_gl/fr_tw/](https://git.door43.org/fr_gl/fr_tw/))
+- **Resource Subject Identification**: Resource content types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger#/catalog/catalogSearch). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
 
 #### Recommended Starting Approach
+
+If you are a new comer to the unfoldingWord ecosystem and want to try and get confidence integrating it into an application here are some recommendations to get started:
 
 **Language Selection for First Implementation**:
 
@@ -400,7 +323,7 @@ Before diving into implementation, developers should understand what resources a
 **Simple Access Strategy**:
 
 - Begin with direct repository URLs for well-known resources
-- Use basic Git platform APIs for file retrieval  
+- Use basic Git platform APIs for file retrieval
 - Focus on one resource type initially (e.g., ULT/GLT text)
 - Validate basic functionality before expanding to other resources
 
@@ -555,15 +478,13 @@ The core translation resources form the foundation of the unfoldingWord ecosyste
 
 ### 1. Literal Translation (ULT/GLT)
 
-**unfoldingWord® Literal Text** - A form-centric translation that preserves the structures, word order, grammatical forms, idioms, and figures of speech of the original Hebrew and Greek texts while remaining understandable in the gateway language.
-
 #### Technical Specifications
 
 - **Format**: USFM 3.0 with embedded word alignment data
 - **Base**: Derived from 1901 American Standard Version with modern updates
 - **Philosophy**: Form-centric, preserving original word order and grammatical structures
 - **Alignment**: Every word aligned to Hebrew (UHB) and Greek (UGNT) sources
-- **Repository**: [unfoldingWord Literal Text](https://git.door43.org/unfoldingWord/en_ult)
+- **Reference Repository**: [unfoldingWord Literal Text](https://git.door43.org/unfoldingWord/en_ult)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### File Structure
@@ -578,20 +499,6 @@ en_ult/
 └── 66-REV.usfm               # Revelation with alignment data
 ```
 
-#### USFM Structure Elements
-
-Some of the most common USFM structure elements are:
-
-- **Book Headers**: `\id`, `\usfm`, `\ide`, `\h`, `\toc1-3`, `\mt` markers
-- **Chapter/Verse**: `\c` and `\v` markers for scripture structure
-- **Alignment Data**: `\zaln-s`/`\zaln-e` and `\w` markers for word-level connections
-- **Formatting**: `\p`, `\m`, `\q1`, `\q2` for text layout and poetry
-- **Cross-References**: `\x` markers for scripture cross-references
-- **Footnotes**: `\f` markers for footnotes
-- **Translator sections**: `\ts\*` markers for indicating the start or end of a translator sections.
-
-More information about USFM structure elements can be found in the [USFM 3.1 Specification](https://docs.usfm.bible/usfm/3.1/index.html).
-
 #### Purpose and Integration
 
 - **Translation Foundation**: Provides literal rendering for understanding original meaning
@@ -601,15 +508,13 @@ More information about USFM structure elements can be found in the [USFM 3.1 Spe
 
 ### 2. Simplified Translation (UST/GST)
 
-**unfoldingWord® Simplified Text** - A meaning-based translation that prioritizes clear, natural communication of biblical concepts using contemporary language and expressions.
-
 #### Technical Specifications
 
 - **Format**: USFM 3.0 with embedded word alignment data
 - **Philosophy**: Meaning-based, prioritizing clarity and natural expression over structural preservation
 - **Approach**: Communicates the meaning of the original text using natural, contemporary language
 - **Alignment**: Every word aligned to Hebrew (UHB) and Greek (UGNT) sources
-- **Repository**: [unfoldingWord Simplified Text](https://git.door43.org/unfoldingWord/en_ust)
+- **Reference Repository**: [unfoldingWord Simplified Text](https://git.door43.org/unfoldingWord/en_ust)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### Purpose and Integration
@@ -849,7 +754,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 - **Format**: TSV (Tab-Separated Values) files, one per book
 - **Structure**: Flat directory structure (files in root directory)
 - **Naming**: `tn_[BOOK].tsv` (e.g., `tn_GEN.tsv`, `tn_MAT.tsv`)
-- **Repository**: [unfoldingWord Translation Notes](https://git.door43.org/unfoldingWord/en_tn)
+- **Reference Repository**: [unfoldingWord Translation Notes](https://git.door43.org/unfoldingWord/en_tn)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
 
 #### TSV Column Structure
@@ -1195,7 +1100,7 @@ Reference ID SupportReference Quote Note
 1:1 tn002 rc://en/tw/dict/bible/other/servant δοῦλος Paul calls himself a servant
 ```
 
-#### Translation Academy Cross-References
+#### Cross-References to other resources (commonly translationAcademy and translationWords articles)
 
 ```markdown
 For more information, see [Translate Names](rc://en/ta/man/translate/translate-names).
@@ -1205,73 +1110,6 @@ For more information, see [Translate Names](rc://en/ta/man/translate/translate-n
 
 This section covers practical API usage, authentication methods, and multi-platform integration strategies that developers need for robust resource access and application deployment across different hosting environments.
 
-### Advanced Resource Discovery
-
-This section provides comprehensive guidance for programmatic resource discovery using the Door43 Catalog API and other discovery methods for production applications.
-
-#### Catalog API Resource Discovery
-
-Door43 Content Service provides a specialized Catalog API that enables sophisticated resource discovery beyond basic repository access:
-
-**Strategic Resource Discovery Process**:
-
-1. **Ecosystem Assessment**: Query catalog API to understand complete resource landscape
-2. **Language Availability Analysis**: Identify which gateway languages have complete resource sets  
-3. **Quality and Version Evaluation**: Assess resource maturity, checking levels, and update frequency
-4. **Dependency Mapping**: Build comprehensive resource dependency graphs
-5. **Production Readiness Validation**: Verify resources meet quality standards for deployment
-
-**Multi-Language Discovery Strategy**:
-
-- Query catalog without language filters to discover all available gateway language implementations
-- Group resources by language identifier to assess ecosystem completeness
-- Use subject filters to identify specific resource types across languages
-- Prioritize languages with recent updates and high checking levels
-- Plan fallback strategies for incomplete language implementations
-
-**Subject-Based Resource Discovery**:
-
-- Filter by `subject=Bible` to find translation texts across all languages
-- Filter by `subject=Translation Notes` to find translation helps
-- Filter by `subject=Translation Words` to find terminology resources
-- Filter by `subject=Open Bible Stories` to find OBS resources
-- Filter by `subject=Translation Academy` to find training materials
-- Use multiple subject queries to assess complete resource coverage for specific languages
-- Cross-reference subject availability with language codes to map ecosystem completeness
-- Query without subject filters to discover all available subjects in the ecosystem
-- Monitor for new subjects as organizations extend the ecosystem with specialized resources
-
-**Advanced Filtering and Selection**:
-
-- Use stage filters (`stage=prod`) to focus on production-ready resources
-- Apply quality filters (`checking_level=3`) to identify thoroughly reviewed content
-- Combine subject and language filters for precise resource discovery
-- Sort by release dates to identify most recently updated implementations
-- Cross-reference resource relationships through manifest metadata
-
-#### Enterprise Resource Discovery Patterns
-
-**Automated Resource Validation**:
-
-- Implement automated checks for resource completeness across target languages
-- Validate resource version compatibility within language ecosystems
-- Monitor resource update frequency and quality level changes
-- Detect and report resource dependency conflicts or missing links
-
-**Multi-Organization Discovery**:
-
-- Discover resources across different gateway language organizations
-- Map organizational patterns and resource naming conventions
-- Identify authoritative sources for each gateway language
-- Plan integration strategies for multi-organizational deployments
-
-**Performance-Optimized Discovery**:
-
-- Cache catalog responses to minimize API calls during resource discovery
-- Implement incremental discovery for large-scale applications
-- Use batch requests for efficient multi-resource discovery
-- Plan discovery schedules that respect API rate limits
-
 ### Hosting Infrastructure: Git-Based Platforms
 
 While the primary hosting is **Door43 Content Service (DCS)**, applications should support multiple hosting platforms:
@@ -1279,7 +1117,6 @@ While the primary hosting is **Door43 Content Service (DCS)**, applications shou
 #### Primary Platform: Door43 Content Service
 
 - **Platform**: `https://git.door43.org/`
-- **Organization**: `unfoldingWord` for English resources
 - **Technology**: Gitea-based Git platform with Door43 extensions
 - **API Access**: REST API for programmatic access
 - **Version Control**: Full Git history and branching
@@ -1287,12 +1124,17 @@ While the primary hosting is **Door43 Content Service (DCS)**, applications shou
 
 #### Alternative Hosting Considerations
 
-Applications should be designed to work with:
+IT is expected that applications would be designed to work with other git-based hosting platforms that host resource containers:
 
 - **Door43 Clones**: Mirror instances of the main DCS platform
 - **Other Gitea Instances**: Self-hosted Gitea platforms with unfoldingWord resources
-- **Generic Git Platforms**: GitHub, GitLab, or other Git-based hosting
+
+In an online environment, Door43 clones are the easiest to support since they would include the custom API endpoints that Door43 uses to manage resources in the Door43 Catalog. With Gitea instances as the second best option. Since DCS itself is a Gitea instance, they share most of the same API endpoints.
+
+Other git-based hosting platforms that would be more challenging to support:
+
 - **Local Repositories**: Offline or network-isolated environments
+- **Generic Git Platforms**: GitHub, GitLab, or other Git-based hosting
 - **Custom Servers**: Organization-specific hosting solutions
 
 ### API Documentation and Access
