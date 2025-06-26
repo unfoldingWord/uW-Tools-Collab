@@ -358,8 +358,8 @@ Before diving into implementation, developers should understand what resources a
 **Key Resource Locations**:
 
 - **Primary Platform**: Door43 Content Service at `https://git.door43.org/`
-- **Organization Structure**: Resources organized under various organizations (some language-specific like `es-419_gl`, others multi-language like `unfoldingWord`)
-- **Repository Naming**: Language code + underscore + resource identifier (e.g., `en_ult`, `es-419_tn`, `fr_tw`)
+- **Organization Structure**: Resources organized under various organizations (some language-specific like [`es-419_gl`](https://git.door43.org/es-419_gl/), others multi-language like [`unfoldingWord`](https://git.door43.org/unfoldingWord/))
+- **Repository Naming**: Language code + underscore + resource identifier (e.g., [`en_ult`](https://git.door43.org/unfoldingWord/en_ult/), [`es-419_tn`](https://git.door43.org/es-419_gl/es-419_tn/), [`fr_tw`](https://git.door43.org/fr_gl/fr_tw/))
 - **Resource Subject Identification**: Resource content types are identified by `subject` and queried by this field by the [Door43 Catalog API](https://git.door43.org/api/swagger). The ecosystem is extensible, allowing new subjects and resource identifiers to be created as needed.
 
 #### Recommended Starting Approach
