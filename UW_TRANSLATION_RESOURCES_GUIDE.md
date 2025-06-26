@@ -19,7 +19,15 @@ This document provides comprehensive technical documentation for developers buil
 
 ### Mission and Philosophy
 
-unfoldingWord translation resources are developed under Creative Commons Attribution-ShareAlike 4.0 licenses to provide the global church with high-quality, interconnected Bible translation tools. The ecosystem serves **Mother Tongue Translators (MTTs)** who use gateway languages as their bridge to translate Scripture into their heart languages.
+unfoldingWord translation resources are developed under Creative Commons Attribution-ShareAlike 4.0 licenses to provide the global church with high-quality, interconnected Bible translation tools. The ecosystem serves **Mother Tongue Translators (MTTs)** who use **gateway languages** as their bridge to translate Scripture into their **heart languages**.
+
+### Key Definitions
+
+**Gateway Languages**: Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that serve as intermediary bridges between the original biblical languages (Hebrew, Greek, Aramaic) and target heart languages. Gateway languages are major languages that Mother Tongue Translators can understand and use as a foundation for translating Scripture into their native languages.
+
+**Mother Tongue Translators (MTTs)**: Translators who are native speakers of the target language and are working to translate Scripture into their own heart language - the language they know best and speak most naturally.
+
+**Heart Languages**: The native languages that Mother Tongue Translators speak most naturally and are translating Scripture into. These are the target languages for the final Bible translations that will serve local communities.
 
 ### Resource Ecosystem Architecture
 
@@ -48,8 +56,8 @@ graph TD
     end
     
     subgraph "Gateway Language Texts"
-        ULT[ULT - Literal Translation]
-        UST[UST - Simplified Translation]
+        ULT/GLT[ULT/GLT - Literal Translation]
+        UST/GST[UST/GST - Simplified Translation]
         WA[Word Alignment Data]
     end
     
@@ -61,23 +69,23 @@ graph TD
         TA[Translation Academy]
     end
     
-    V --> ULT
-    V --> UST
+    V --> ULT/GLT
+    V --> UST/GST
     UHB --> WA
     UGNT --> WA
-    WA --> ULT
-    WA --> UST
+    WA --> ULT/GLT
+    WA --> UST/GST
     
     TN --> |Quote/Occurrence| WA
     TN --> |SupportReference| TA
     TWL --> |OrigWords| WA
     TWL --> |TWLink| TW
-    TQ --> |Reference| ULT
-    TQ --> |Reference| UST
+    TQ --> |Reference| ULT/GLT
+    TQ --> |Reference| UST/GST
     
     style V fill:#fff2cc
-    style ULT fill:#e1f5fe
-    style UST fill:#e1f5fe
+    style ULT/GLT fill:#e1f5fe
+    style UST/GST fill:#e1f5fe
     style WA fill:#f0f4c3
     style UHB fill:#f3e5f5
     style UGNT fill:#f3e5f5
@@ -114,19 +122,19 @@ These resources provide the structural framework for all translation work:
 
 These are complete Bible translations in gateway languages (like English, Spanish, French) that serve as bridges for mother tongue translators:
 
-#### **Literal Translation (ULT)**
-**What it contains**: A complete Bible translation that stays as close as possible to the original language word order, grammar, and structure while remaining understandable.
+#### **Literal Translation (ULT/GLT)**
+**What it contains**: A complete Bible translation that follows a form-centric approach, preserving the structures of the original Hebrew and Greek texts while remaining understandable in the gateway language.
 
-**Purpose**: Shows translators exactly what the original text says, preserving Hebrew and Greek grammatical patterns.
+**Purpose**: Shows translators exactly what the original text says by retaining original language word order, grammatical forms, idioms, and figures of speech as much as possible.
 
-**Why translators need it**: Helps translators understand the precise meaning and structure of the original, especially for complex passages where word order or grammar affects meaning.
+**Why translators need it**: Provides access to the structural patterns and specific forms used in the original languages, helping translators understand how the biblical authors expressed their thoughts and enabling them to make informed decisions about how to render these forms in their target languages.
 
-#### **Simplified Translation (UST)**
-**What it contains**: A complete Bible translation that prioritizes clear, natural communication of the original meaning using everyday language and cultural adaptations.
+#### **Simplified Translation (UST/GST)**
+**What it contains**: A complete Bible translation that follows a meaning-based approach, prioritizing clear, natural communication of biblical concepts using contemporary language and cultural expressions.
 
-**Purpose**: Demonstrates how to express biblical concepts in clear, contemporary language that ordinary people can understand.
+**Purpose**: Demonstrates how to express the meaning of the original text in natural, understandable language that communicates effectively to modern readers.
 
-**Why translators need it**: Provides a model for dynamic equivalence translation, showing how to make ancient concepts accessible to modern readers.
+**Why translators need it**: Provides a model for meaning-based translation, showing how to communicate biblical concepts clearly and naturally while maintaining the essential meaning of the original text.
 
 #### **Word Alignment Data**
 **What it contains**: Precise connections showing exactly which words in the gateway language translate which words in Hebrew/Greek.
@@ -140,20 +148,20 @@ These are complete Bible translations in gateway languages (like English, Spanis
 These resources provide contextual help and training for translators:
 
 #### **Translation Notes (TN)**
-**What they contain**: Verse-by-verse explanations for difficult, ambiguous, or culturally complex passages throughout the Bible.
+**What they contain**: Verse-by-verse explanations for difficult, ambiguous, or culturally complex passages throughout the Bible that require special attention for accurate translation.
 
-**Purpose**: Provide specific guidance for translating challenging passages, including alternative translation options, cultural background, and theological clarifications.
+**Purpose**: Provide specific guidance for translating challenging passages, including alternative translation options, cultural background, theological clarifications, and explanations of figures of speech or grammatical constructions.
 
-**Why translators need them**: Many passages in Scripture require specialized knowledge to translate accurately - these notes provide that expertise in a targeted, practical format.
+**Why translators need them**: Many passages in Scripture require specialized knowledge about language, culture, or context to translate accurately - these notes provide that expertise in a practical format that can be adapted for different gateway languages.
 
 **Example**: For a metaphor like "God is my rock," a note would explain that this refers to God as a source of protection and stability, not a literal stone.
 
 #### **Translation Words (TW)**
-**What they contain**: Comprehensive definitions and explanations of key biblical, theological, and cultural terms that appear throughout Scripture.
+**What they contain**: Comprehensive definitions and explanations of key biblical, theological, and cultural terms that appear throughout Scripture, focusing on how these words are used in the Bible rather than modern dictionary definitions.
 
-**Purpose**: Ensure translators understand important concepts consistently across the entire Bible.
+**Purpose**: Ensure translators understand important biblical concepts consistently across the entire Bible, providing biblical context for terms that may not be used in everyday life or may have different meanings in modern usage.
 
-**Why translators need them**: Terms like "covenant," "righteousness," or "Sabbath" carry specific meanings that must be translated consistently throughout Scripture.
+**Why translators need them**: Many biblical terms like "covenant," "righteousness," or "Sabbath" carry specific biblical meanings that differ from modern usage and must be translated consistently throughout Scripture to preserve the integrity of biblical concepts.
 
 **Example**: The entry for "covenant" would explain the biblical concept of formal agreements between God and people, with examples from throughout Scripture.
 
@@ -165,20 +173,20 @@ These resources provide contextual help and training for translators:
 **Why translators need them**: When a translator encounters the Hebrew word "hesed" in Psalm 23, this resource points them to the Translation Words entry explaining "steadfast love" or "mercy."
 
 #### **Translation Questions (TQ)**
-**What they contain**: Comprehension questions with answers that test whether a translation successfully communicates the intended meaning.
+**What they contain**: Comprehension questions with answers that test whether a translation successfully communicates the intended meaning of the original text.
 
-**Purpose**: Provide a quality assurance method for translators to verify their translation is clear and accurate.
+**Purpose**: Provide a quality assurance tool for conducting community checks of Bible translations, helping verify that the translation is clear, accurate, and understandable to the target audience.
 
-**Why translators need them**: After translating a passage, translators can use these questions to test whether their target audience would understand the intended meaning.
+**Why translators need them**: These questions enable translators to conduct systematic checks with community members to ensure their translation communicates the intended biblical message clearly and that readers understand what the original text meant to convey.
 
 **Example**: For the passage "Paul, a servant of Christ Jesus," a question might be "What does Paul call himself?" with the answer "Paul calls himself a servant."
 
 #### **Translation Academy (TA)**
-**What they contain**: Comprehensive training materials covering translation theory, methodology, cultural issues, and quality standards.
+**What they contain**: Comprehensive training materials covering translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation.
 
-**Purpose**: Provide the theoretical foundation and practical guidance needed for high-quality Bible translation work.
+**Purpose**: Provide the theoretical foundation and practical guidance needed for high-quality Bible translation work, serving as the educational foundation for translation teams.
 
-**Why translators need them**: Translation is a complex skill requiring knowledge of linguistics, culture, theology, and communication - these materials provide structured training in all these areas.
+**Why translators need them**: Translation is a complex skill requiring knowledge of linguistics, culture, theology, and communication principles - these materials provide structured training in all these areas and establish the methodological foundation that other translation resources reference.
 
 **Example**: An article on "Translating Metaphors" would explain what metaphors are, why they're challenging to translate, and provide specific strategies for handling them effectively.
 
@@ -253,7 +261,7 @@ git checkout -b improve-genesis-notes
 
 **Distributed Access**: Resources can be cloned, mirrored, and used offline
 ```bash
-# Example: Clone entire ULT repository locally
+# Example: Clone entire ULT/GLT repository locally
 git clone https://git.door43.org/unfoldingWord/en_ult.git
 ```
 
@@ -350,9 +358,9 @@ This infrastructure foundation enables the precise, interconnected resource ecos
 
 The core translation resources form the foundation of the unfoldingWord ecosystem, providing source texts and alignment data that enable precise translation work.
 
-### 1. Literal Translation (ULT)
+### 1. Literal Translation (ULT/GLT)
 
-**unfoldingWord® Literal Text** - A form-centric translation that maintains close adherence to original language structures while remaining understandable in the gateway language.
+**unfoldingWord® Literal Text** - A form-centric translation that preserves the structures, word order, grammatical forms, idioms, and figures of speech of the original Hebrew and Greek texts while remaining understandable in the gateway language.
 
 #### Technical Specifications
 - **Format**: USFM 3.0 with embedded word alignment data
@@ -393,14 +401,14 @@ More information about USFM structure elements can be found in the [USFM Specifi
 - **Alignment Anchor**: Serves as gateway language connection to Hebrew/Greek
 - **Quality Standard**: Maintains high accuracy to original language texts
 
-### 2. Simplified Translation (UST)
+### 2. Simplified Translation (UST/GST)
 
-**unfoldingWord® Simplified Text** - A meaning-focused translation that prioritizes clear communication of biblical concepts.
+**unfoldingWord® Simplified Text** - A meaning-based translation that prioritizes clear, natural communication of biblical concepts using contemporary language and expressions.
 
 #### Technical Specifications
 - **Format**: USFM 3.0 with embedded word alignment data
-- **Philosophy**: Meaning-focused, prioritizing clarity and natural expression
-- **Approach**: Dynamic equivalence rendering thoughts and concepts
+- **Philosophy**: Meaning-based, prioritizing clarity and natural expression over structural preservation
+- **Approach**: Communicates the meaning of the original text using natural, contemporary language
 - **Alignment**: Every word aligned to Hebrew (UHB) and Greek (UGNT) sources
 - **Repository**: [unfoldingWord Simplified Text](https://git.door43.org/unfoldingWord/en_ust)
 - **License**: Creative Commons Attribution-ShareAlike 4.0
@@ -408,7 +416,7 @@ More information about USFM structure elements can be found in the [USFM Specifi
 #### Purpose and Integration
 - **Meaning Clarity**: Provides clear, natural rendering of biblical concepts
 - **Cultural Bridge**: Explains ancient concepts in modern, understandable terms
-- **Complementary Translation**: Works alongside ULT for comprehensive understanding
+- **Complementary Translation**: Works alongside ULT/GLT for comprehensive understanding
 
 
 ### 3. Word Alignment Data
@@ -533,7 +541,7 @@ graph LR
 **Original Greek Text**:
 > Παῦλος δοῦλος Χριστοῦ Ἰησοῦ
 
-**ULT Translation**:
+**ULT/GLT Translation**:
 > Paul, a servant of Christ Jesus
 
 **Alignment Visualization**:
@@ -552,7 +560,7 @@ graph TD
         end
     end
     
-    subgraph "English ULT"
+    subgraph "English ULT/GLT"
         subgraph "Personal Name"
             E1["Paul"]
         end
@@ -657,7 +665,7 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 - **Figures of Speech**: Metaphors, idioms, and rhetorical devices
 
 #### Integration Points
-- **Quote + Occurrence**: Links to ULT/UST alignment data for highlighting
+- **Quote + Occurrence**: Links to ULT/GLT/UST/GST alignment data for highlighting
 - **SupportReference**: Links to Translation Academy methodology
 - **Reference**: Coordinates with versification system
 
@@ -914,8 +922,8 @@ rc://language/resource/type/project/chapter/chunk
 
 ```
 # Translation texts
-rc://en/ult/book/gen/01/02        # ULT Genesis 1:2
-rc://en/ust/book/mat/05/01        # UST Matthew 5:1
+rc://en/ult/book/gen/01/02        # ULT/GLT Genesis 1:2
+rc://en/ust/book/mat/05/01        # UST/GST Matthew 5:1
 
 # Translation Notes
 rc://en/tn/help/gen/01/02         # Translation Note for Genesis 1:2
@@ -929,8 +937,8 @@ rc://en/ta/man/translate/translate-unknowns    # TA module
 
 ### Wildcard Support
 ```
-rc://en/ult/book/*                # Any book in English ULT
-rc://*/ult/book/gen               # Genesis in ULT in any language (Default)
+rc://en/ult/book/*                # Any book in English ULT/GLT
+rc://*/ult/book/gen               # Genesis in ULT/GLT in any language (Default)
 rc://en/*/book/gen/01/01          # Genesis 1:1 in any English translation
 ```
 
@@ -1074,7 +1082,7 @@ openapi-generator-cli generate \
 
 **1. Resource Discovery**:
 ```javascript
-// Find all English ULT resources
+// Find all English ULT/GLT resources
 const response = await fetch(
   'https://git.door43.org/api/v1/catalog/list?lang=en&resource=ult&stage=prod'
 );
@@ -1105,13 +1113,13 @@ async function getResourceManifest(catalogEntry) {
 
 **3. Multi-Language Resource Discovery**:
 ```javascript
-// Find all available languages for ULT
+// Find all available languages for ULT/GLT
 const allUlt = await fetch(
   'https://git.door43.org/api/v1/catalog/list?resource=ult&stage=prod'
 ).then(r => r.json());
 
 const languages = [...new Set(allUlt.map(entry => entry.language.identifier))];
-console.log('Available ULT languages:', languages);
+console.log('Available ULT/GLT languages:', languages);
 ```
 
 **4. Gateway Language Ecosystem Discovery**:
@@ -1174,8 +1182,8 @@ const apiClient = {
 
 ### Repository Organization
 ```
-https://git.door43.org/unfoldingWord/en_ult     # ULT
-https://git.door43.org/unfoldingWord/en_ust     # UST
+https://git.door43.org/unfoldingWord/en_ult     # ULT/GLT
+https://git.door43.org/unfoldingWord/en_ust     # UST/GST
 https://git.door43.org/unfoldingWord/en_tn      # Translation Notes
 https://git.door43.org/unfoldingWord/en_tw      # Translation Words
 https://git.door43.org/unfoldingWord/en_twl     # Translation Words Links
@@ -1185,7 +1193,7 @@ https://git.door43.org/unfoldingWord/en_ta      # Translation Academy
 ### Multilingual Gateway Language Ecosystem
 
 #### Gateway Language Strategy
-unfoldingWord created English resources for Mother Tongue Translators. Other organizations have created parallel ecosystems for different strategic languages:
+unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Other organizations have created parallel ecosystems for different strategic languages:
 
 - **Spanish**: `https://git.door43.org/es-419_gl/`
 - **French**: `https://git.door43.org/fr_gl/`
@@ -1193,8 +1201,10 @@ unfoldingWord created English resources for Mother Tongue Translators. Other org
 - **Portuguese**: `https://git.door43.org/pt-br_gl/`
 
 #### Naming Conventions
-- **unfoldingWord (English)**: Uses ULT/UST codes
+- **unfoldingWord (English)**: Uses ULT/GLT/UST/GST codes (unfoldingWord Literal/Simplified Text)
 - **Other Gateway Languages**: Use GLT/GST codes (Gateway Language Literal/Simplified Text)
+
+The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts.
 
 #### Consistent Linking Strategy
 All gateway language organizations maintain the same internal linking patterns:
@@ -1300,7 +1310,7 @@ This section demonstrates how applications can combine multiple resources to cre
 
 **Scenario**: Highlight gateway language text that corresponds to Translation Notes
 
-**Resources Used**: Translation Notes (TN) + Word Alignment Data + ULT/UST
+**Resources Used**: Translation Notes (TN) + Word Alignment Data + ULT/GLT/UST/GST
 
 **Example: Romans 1:1 Translation Note**
 
@@ -1308,7 +1318,7 @@ This section demonstrates how applications can combine multiple resources to cre
 |-----------|------|--------|------------|------------------------------------------------|
 | 1:1       | abc1 | δοῦλος | 1          | Paul calls himself a servant of Jesus Christ... |
 
-**Alignment Data in ULT**:
+**Alignment Data in ULT/GLT**:
 ```usfm
 \zaln-s |x-strong="G14010" x-lemma="δοῦλος" x-occurrence="1" x-content="δοῦλος"\*\w a servant\w*\zaln-e\*
 ```
@@ -1317,12 +1327,12 @@ This section demonstrates how applications can combine multiple resources to cre
 1. Parse Translation Note: Quote = "δοῦλος", Occurrence = 1
 2. Search alignment for `x-content="δοῦλος"` with `x-occurrence="1"`
 3. Extract gateway text: "a servant"
-4. Highlight "a servant" in displayed ULT text
+4. Highlight "a servant" in displayed ULT/GLT text
 
 **Visual Result**:
 ```
-ULT Romans 1:1: Paul **[a servant]** of Jesus Christ...
-                      ↑ highlighted because it aligns to δοῦλος
+ULT/GLT Romans 1:1: Paul **[a servant]** of Jesus Christ...
+                              ↑ highlighted because it aligns to δοῦλος
 ```
 
 **Code Implementation**:
@@ -1354,7 +1364,7 @@ function highlightTranslationNote(note, alignmentData) {
 | 1:1       | xyz9 | kt   | אֱלֹהִים    | 1          | rc://en/tw/dict/bible/kt/god     |
 
 **Implementation Process**:
-1. User clicks on "God" in ULT text
+1. User clicks on "God" in ULT/GLT text
 2. Find alignment data for clicked word
 3. Match original word (אֱלֹהִים) with TWL entry
 4. Load Translation Words article from `rc://en/tw/dict/bible/kt/god`
@@ -1416,13 +1426,13 @@ function handleSupportReference(supportRef, currentContext) {
 
 **Scenario**: Show all available resources for a specific verse in one interface
 
-**Resources Used**: ULT + UST + TN + TW + TWL + TQ + Alignment Data
+**Resources Used**: ULT/GLT + UST/GST + TN + TW + TWL + TQ + Alignment Data
 
 **Implementation Process**:
 1. Load all resources for target verse
 2. Build cross-resource connections
 3. Create unified interface showing:
-   - Side-by-side ULT/UST comparison
+   - Side-by-side ULT/GLT/UST/GST comparison
    - Translation Notes with highlighting
    - Translation Words definitions
    - Translation Questions for verification
