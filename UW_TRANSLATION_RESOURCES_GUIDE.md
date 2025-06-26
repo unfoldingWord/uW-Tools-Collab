@@ -9,11 +9,12 @@ This document provides comprehensive technical documentation for developers buil
 3. [Resource Relationships and Workflow](#resource-relationships-and-workflow)
 4. [Getting Started with Integration](#getting-started-with-integration)
 5. [Technical Specifications](#technical-specifications)
-6. [Infrastructure and Hosting](#infrastructure-and-hosting)
-7. [Resource Container Architecture](#resource-container-architecture)
+6. [Resource Container Architecture](#resource-container-architecture)
+7. [Resource Linking System](#resource-linking-system)
 8. [Integration Patterns and APIs](#integration-patterns-and-apis)
 9. [Implementation Guidelines](#implementation-guidelines)
 10. [Advanced Topics and Extensibility](#advanced-topics-and-extensibility)
+11. [Further Reading and Resources](#further-reading-and-resources)
 
 ## Overview
 
@@ -228,7 +229,7 @@ graph TB
 
 **Versification as the Coordinate System**: Every resource uses the versification system as its reference framework. Developers must ensure their applications handle versification consistently across all resources to maintain proper coordination.
 
-**Gateway Language Flexibility**: The system supports multiple gateway languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any gateway language implementation, not just English.
+**Gateway Language Flexibility**: The system supports multiple gateway languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any gateway language implementation, not just English. For detailed information about gateway language translation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
 ### Practical Integration Workflows
 
@@ -309,7 +310,7 @@ Before beginning integration, developers should understand these fundamental con
 #### Essential Knowledge Requirements
 - **Git Repository Structure**: Basic understanding of Git-based content management
 - **REST API Concepts**: Experience with RESTful web services and JSON data handling  
-- **Text File Formats**: Familiarity with structured text formats (TSV, YAML, Markdown)
+- **Text File Formats**: Familiarity with structured text formats (TSV, YAML, Markdown, USFM)
 - **Unicode and Text Encoding**: Understanding of UTF-8 and multilingual text handling
 - **Resource Linking**: Concept of URI-based resource identification and resolution
 
@@ -319,6 +320,8 @@ While technical expertise is assumed, developers benefit from understanding:
 - **Translation Philosophy**: Difference between literal and meaning-based translation approaches
 - **Cross-Language Challenges**: Cultural and linguistic barriers in translation work
 - **Quality Assurance**: Community-based checking and validation processes
+
+For comprehensive information about Bible translation methodology and workflow, see [unfoldingWord's Translator Resources](https://unfoldingword.org/for-translators/).
 
 ### Resource Discovery Strategy
 
@@ -512,7 +515,7 @@ Some of the most common USFM structure elements are:
 - **Footnotes**: `\f` markers for footnotes
 - **Translator sections**: `\ts\*` markers for indicating the start or end of a translator sections.
 
-More information about USFM structure elements can be found in the [USFM Specification](https://docs.usfm.bible/usfm/latest).
+More information about USFM structure elements can be found in the [USFM 3.1 Specification](https://docs.usfm.bible/usfm/3.1/index.html).
 
 #### Purpose and Integration
 - **Translation Foundation**: Provides literal rendering for understanding original meaning
@@ -907,7 +910,7 @@ If the word is not known, here are strategies...
 
 ### Technical Foundation
 
-All unfoldingWord resources follow the [Resource Container (RC) specification](https://resource-container.readthedocs.io/en/latest/index.html), providing standardized structure, metadata, and linking mechanisms.
+All unfoldingWord resources follow the [Resource Container (RC) specification](https://resource-container.readthedocs.io/en/latest/), providing standardized structure, metadata, and linking mechanisms.
 
 ### RC Directory Structure
 ```
@@ -1031,7 +1034,7 @@ projects:
 
 ### RC Link Structure
 
-The [RC Linking specification](https://resource-container.readthedocs.io/en/latest/linking.html) defines standardized URIs for cross-resource navigation:
+The [RC Linking specification](https://resource-container.readthedocs.io/en/latest/) defines standardized URIs for cross-resource navigation:
 
 ```
 rc://language/resource/type/project/chapter/chunk
@@ -1117,6 +1120,7 @@ Door43 extends the standard Gitea API with specialized endpoints for Bible trans
 - **Swagger UI**: [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 - **OpenAPI Specification**: [https://git.door43.org/swagger.v1.json](https://git.door43.org/swagger.v1.json)
 - **Base URL**: `https://git.door43.org/api/v1`
+- **Platform Information**: [Door43 About Page](https://git.door43.org/about)
 
 #### Standard Gitea API Endpoints
 
@@ -1269,7 +1273,7 @@ unfoldingWord created English resources for Mother Tongue Translators, serving a
 - **unfoldingWord (English)**: Uses ULT/GLT/UST/GST codes (unfoldingWord Literal/Simplified Text)
 - **Other Gateway Languages**: Use GLT/GST codes (Gateway Language Literal/Simplified Text)
 
-The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts.
+The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts. For detailed guidance on gateway language translation and adaptation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
 #### Consistent Linking Strategy
 All gateway language organizations maintain the same internal linking patterns:
@@ -1666,3 +1670,20 @@ The unfoldingWord translation resource ecosystem provides a comprehensive, inter
 - **Community Support**: Active developer community and ongoing maintenance
 
 This documentation provides the foundation for building translation tools that serve the global church's mission of making Scripture accessible in every language. The unfoldingWord ecosystem represents years of collaborative development by translation experts, linguists, and software developers working together to create the most comprehensive Bible translation resource system available today.
+
+## Further Reading and Resources
+
+### Technical Specifications and Standards
+- **[USFM 3.1 Specification](https://docs.usfm.bible/usfm/3.1/index.html)** - Complete technical specification for Unified Standard Format Markers used in scripture texts
+- **[Resource Container Specification](https://resource-container.readthedocs.io/en/latest/)** - Official documentation for the Resource Container standard including structure, manifest format, and linking mechanisms
+- **[Dublin Core Metadata Terms](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/)** - Metadata standards used in Resource Container manifests
+
+### Translation Methodology and Workflow
+- **[Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html)** - Comprehensive guide for translating and adapting unfoldingWord resources into gateway languages
+- **[unfoldingWord Translator Resources](https://unfoldingword.org/for-translators/)** - Complete collection of tools, training materials, and resources for Bible translation teams
+
+### Platform and API Documentation
+- **[Door43 Content Service](https://git.door43.org/about)** - Information about the primary hosting platform for unfoldingWord resources
+- **[Door43 API Documentation](https://git.door43.org/api/swagger)** - Interactive API documentation and testing interface for programmatic access to resources
+
+These resources provide essential background knowledge for developers working with the unfoldingWord ecosystem and offer detailed technical specifications that complement the implementation guidance provided in this document.
