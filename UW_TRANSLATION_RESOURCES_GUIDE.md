@@ -20,11 +20,11 @@ This document provides comprehensive technical documentation for developers buil
 
 ### Mission and Philosophy
 
-unfoldingWord translation resources are developed under Creative Commons Attribution-ShareAlike 4.0 licenses to provide the global church with high-quality, interconnected Bible translation tools. The ecosystem serves **Mother Tongue Translators (MTTs)** who use **gateway languages** as their bridge to translate Scripture into their **heart languages**.
+unfoldingWord translation resources are developed under Creative Commons Attribution-ShareAlike 4.0 licenses to provide the global church with high-quality, interconnected Bible translation tools. The ecosystem serves **Mother Tongue Translators (MTTs)** who use **Strategic Languages** (formerly known as Gateway Languages) as their bridge to translate Scripture into their **heart languages**.
 
 ### Key Definitions
 
-**Gateway Languages**: Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that serve as intermediary bridges between the original biblical languages (Hebrew, Greek, Aramaic) and target heart languages. Gateway languages are major languages that Mother Tongue Translators can understand and use as a foundation for translating Scripture into their native languages.
+**Strategic Languages**: Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that serve as intermediary bridges between the original biblical languages (Hebrew, Greek, Aramaic) and target heart languages. Strategic Languages are major languages that Mother Tongue Translators can understand and use as a foundation for translating Scripture into their native languages.
 
 **Mother Tongue Translators (MTTs)**: Translators who are native speakers of the target language and are working to translate Scripture into their own heart language - the language they know best and speak most naturally.
 
@@ -34,7 +34,7 @@ unfoldingWord translation resources are developed under Creative Commons Attribu
 
 To understand why the unfoldingWord resource ecosystem exists, consider this common translation scenario:
 
-**The Challenge**: A team of Mother Tongue Translators in a remote region is working to translate the book of Romans into their heart language. They're using a popular commercial Bible translation in Spanish (their gateway language) as their primary source, along with basic study helps.
+**The Challenge**: A team of Mother Tongue Translators in a remote region is working to translate the book of Romans into their heart language. They're using a popular commercial Bible translation in Spanish (their Strategic Language) as their primary source, along with basic study helps.
 
 **Problem 1 - Hidden Cultural Adaptations**: In Romans 1:1, their Spanish Bible translates Paul's description of himself as "siervo" (servant), which feels natural and appropriate in Spanish. However, they don't realize that the original Greek word "δοῦλος" (doulos) actually means "slave" - a much stronger concept that implies complete ownership and submission. The Spanish translation adapted this for cultural comfort, but in the translators' culture, the concept of slavery might actually communicate Paul's intended meaning more accurately than the softened "servant." Without access to the original language, they miss this opportunity for a more precise translation.
 
@@ -46,23 +46,23 @@ To understand why the unfoldingWord resource ecosystem exists, consider this com
 
 **How the unfoldingWord Ecosystem Helps**: These resources work together to address each of these common challenges:
 
-- **Literal Translation (ULT/GLT)** provides a form-centric rendering that preserves the structure and wording of the original text, showing exactly what the Greek says about Paul being a "slave" rather than a softened "servant"
-- **Simplified Translation (UST/GST)** demonstrates how to express complex concepts like "propitiation" in clear, natural language that can guide culturally appropriate translation approaches
-- **Translation Notes** provide specific guidance for passages like Romans 3:25, explaining the cultural and theological background needed for accurate translation
+- **Literal Text (ULT/GLT)** provides a form-centric rendering that preserves the structure and wording of the original text, showing exactly what the Greek says about Paul being a "slave" rather than a softened "servant"
+- **Simplified Text (UST/GST)** demonstrates how to express complex concepts such as "propitiation" in clear, natural language that can guide culturally appropriate translation approaches
+- **Translation Notes** provide specific guidance for passages such as Romans 3:25, explaining the cultural and theological background needed for accurate translation
 - **Translation Words** articles give comprehensive definitions of key terms like "covenant" and "propitiation," showing how they're used consistently throughout Scripture
 - **Translation Academy** articles teach general principles for translating metaphors, cultural concepts, and theological terminology
 - **Translation Questions** help the team verify that their translation effectively communicates the intended meaning to their community
 
-Instead of waiting for consultant visits, the translation team has immediate access to expert guidance precisely targeted to the original language words they're translating. Importantly, they don't need to learn Greek or Hebrew themselves - the combination of Literal Translation (showing original structure), Simplified Translation (demonstrating clear meaning), and Translation Notes (explaining context) gives them access to original language insights through their gateway language. They can make informed decisions about how closely to follow their gateway language source versus returning to the original meaning, and they can translate complex concepts with confidence using proven methodologies.
+Instead of waiting for consultant visits, the translation team has immediate access to expert guidance precisely targeted to the original language words they're translating. Importantly, they don't need to learn Greek or Hebrew themselves - the combination of Literal Text (showing original structure), Simplified Text (demonstrating clear meaning), and Translation Notes (explaining context) gives them access to original language insights through their Strategic Language. They can make informed decisions about how closely to follow their Strategic Language source versus returning to the original meaning, and they can translate complex concepts with confidence using proven methodologies.
 
-This scenario illustrates why disconnected resources create translation bottlenecks, while an integrated ecosystem enables Mother Tongue Translators to work efficiently and accurately with expert-level understanding of the original text, all accessible through their gateway language.
+This scenario illustrates why disconnected resources create translation bottlenecks, while an integrated ecosystem enables Mother Tongue Translators to work efficiently and accurately with expert-level understanding of the original text, all accessible through their Strategic Language.
 
 ### Resource Ecosystem Architecture
 
 The translation resource ecosystem consists of three foundational layers:
 
-1. **Source Texts**: Original language texts (Hebrew, Greek, Aramaic) with modern gateway language translations
-2. **Alignment Layer**: Precise word-level connections between original and gateway languages  
+1. **Source Texts**: Original language texts (Hebrew, Greek, Aramaic) with modern Strategic Language translations
+2. **Alignment Layer**: Precise word-level connections between original and Strategic Languages  
 3. **Support Resources**: Contextual guidance, definitions, methodology, and quality assurance tools
 
 ### Key Design Principles
@@ -70,12 +70,12 @@ The translation resource ecosystem consists of three foundational layers:
 - **Interconnectedness**: All resources link together through standardized reference systems
 - **Precision**: Word-level alignment enables exact targeting of translation guidance
 - **Extensibility**: Resource Container specification allows new resource creation
-- **Multilingual**: Gateway language organizations can create parallel resource sets
+- **Multilingual**: Strategic Language organizations can create parallel resource sets
 - **Open Access**: Creative Commons licensing ensures global accessibility
 
 ## Resource Ecosystem Concepts
 
-This section provides developers with a comprehensive understanding of what each resource contains, why translation teams need them, and how they work together. Understanding these concepts is essential before diving into technical implementation details.
+This section provides developers with a comprehensive understanding of what the various resource contains, why translation teams need them, and how they work together. Understanding these concepts is essential before diving into technical implementation details.
 
 ### Foundation Resources
 
@@ -100,21 +100,21 @@ These resources provide the structural framework for all translation work:
 
 **Why translators need them**: These are the "measuring stick" against which all translations are evaluated for accuracy and faithfulness.
 
-### Gateway Language Translation Texts
+### Strategic Language Translation Texts
 
-These are complete Bible translations in gateway languages (like English, Spanish, French) that serve as bridges for mother tongue translators:
+These are complete Bible translations in Strategic Languages (such as English, Spanish, French) that serve as bridges for mother tongue translators:
 
-#### **Literal Translation (ULT/GLT)**
+#### **Literal Text (ULT/GLT)**
 
-**What it contains**: A complete Bible translation that follows a form-centric approach, preserving the structures of the original Hebrew and Greek texts while remaining understandable in the gateway language.
+**What it contains**: A complete Bible translation that follows a form-centric approach, preserving the structures of the original Hebrew and Greek texts while remaining understandable in the Strategic Language.
 
-**Purpose**: Shows translators exactly what the original text says by retaining original language word order, grammatical forms, idioms, and figures of speech as much as possible.
+**Purpose**: Shows translators exactly what the original text says by retaining, as much as possible, original-language word order, grammatical forms, idioms, and figures of speech.
 
 **Why translators need it**: Provides access to the structural patterns and specific forms used in the original languages, helping translators understand how the biblical authors expressed their thoughts and enabling them to make informed decisions about how to render these forms in their target languages.
 
-#### **Simplified Translation (UST/GST)**
+#### **Simplified Text (UST/GST)**
 
-**What it contains**: A complete Bible translation that follows a meaning-based approach, prioritizing clear, natural communication of biblical concepts using contemporary language and cultural expressions.
+**What it contains**: A complete Bible translation that follows a meaning-based approach, prioritizing clear, natural communication of biblical concepts using plain language and general expressions.
 
 **Purpose**: Demonstrates how to express the meaning of the original text in natural, understandable language that communicates effectively to modern readers.
 
@@ -122,37 +122,37 @@ These are complete Bible translations in gateway languages (like English, Spanis
 
 #### **Word Alignment Data**
 
-**What it contains**: Precise connections showing exactly which words in the gateway language translate which words in Hebrew/Greek.
+**What it contains**: Precise connections showing exactly which words in the Strategic Language translate which words in Hebrew/Aramaic/Greek.
 
-**Purpose**: Creates a bridge between the original languages and gateway language translations at the individual word level.
+**Purpose**: Creates a bridge between the original languages and Strategic Language translations at the individual word level.
 
 **Why translators need it**: Enables translation tools to show exactly which Hebrew or Greek word a translator is working on, and to highlight relevant notes and definitions for that specific word.
 
 ### Supporting Resources
 
-The supporting resources provide contextual guidance, definitions, methodology, and quality assurance tools that work together with the core translation texts. These resources follow standardized formats and linking mechanisms to enable precise integration with translation applications.
+These supporting resources provide contextual guidance, definitions, methodology, and quality assurance tools that work together with the core translation texts. These resources follow standardized formats and linking mechanisms to enable precise integration with translation applications.
 
-#### **Translation Notes (TN)**
+#### **Translation Notes (tN)**
 
 **What they contain**: Verse-by-verse explanations for difficult, ambiguous, or culturally complex passages throughout the Bible that require special attention for accurate translation.
 
 **Purpose**: Provide specific guidance for translating challenging passages, including alternative translation options, cultural background, theological clarifications, and explanations of figures of speech or grammatical constructions.
 
-**Why translators need them**: Many passages in Scripture require specialized knowledge about language, culture, or context to translate accurately - these notes provide that expertise in a practical format that can be adapted for different gateway languages.
+**Why translators need them**: Many passages in Scripture require specialized knowledge about language, culture, or context to translate accurately. These notes provide that expertise in a practical format that can be adapted for different Strategic Languages.
 
-**Example**: For a metaphor like "God is my rock," a note would explain that this refers to God as a source of protection and stability, not a literal stone.
+**Example**: For a metaphor such as "God is my rock," a note would explain that this refers to God as a source of protection and stability, not a literal stone.
 
-#### **Translation Words (TW)**
+#### **Translation Words (tW)**
 
-**What they contain**: Comprehensive definitions and explanations of key biblical, theological, and cultural terms that appear throughout Scripture, focusing on how these words are used in the Bible rather than modern dictionary definitions.
+**What they contain**: Comprehensive definitions and explanations of key biblical, theological, and cultural terms that appear throughout Scripture, focusing on how these words are used in the Bible rather than providing modern dictionary definitions.
 
 **Purpose**: Ensure translators understand important biblical concepts consistently across the entire Bible, providing biblical context for terms that may not be used in everyday life or may have different meanings in modern usage.
 
-**Why translators need them**: Many biblical terms like "covenant," "righteousness," or "Sabbath" carry specific biblical meanings that differ from modern usage and must be translated consistently throughout Scripture to preserve the integrity of biblical concepts.
+**Why translators need them**: Many biblical terms such as "covenant," "righteousness," or "Sabbath" carry specific biblical meanings that differ from modern usage and must be translated consistently throughout Scripture to preserve the integrity of biblical concepts.
 
-**Example**: The entry for "covenant" would explain the biblical concept of formal agreements between God and people, with examples from throughout Scripture.
+**Example**: The entry for "covenant" explains the biblical concept of formal agreements between God and people, with examples from throughout Scripture.
 
-#### **Translation Words Links (TWL)**
+#### **Translation Words Links (tWL)**
 
 **What they contain**: Connections showing exactly which occurrences of original language words should be linked to Translation Words definitions.
 
@@ -160,38 +160,38 @@ The supporting resources provide contextual guidance, definitions, methodology, 
 
 **Why translators need them**: When a translator encounters the Hebrew word "hesed" in Psalm 23, this resource points them to the Translation Words entry explaining "steadfast love" or "mercy."
 
-#### **Translation Questions (TQ)**
+#### **Translation Questions (tQ)**
 
-**What they contain**: Comprehension questions with answers that test whether a translation successfully communicates the intended meaning of the original text.
+**What it contains**: Comprehension questions with answers that test whether a translation successfully communicates the intended meaning of the original text.
 
 **Purpose**: Provide a quality assurance tool for conducting community checks of Bible translations, helping verify that the translation is clear, accurate, and understandable to the target audience.
 
-**Why translators need them**: These questions enable translators to conduct systematic checks with community members to ensure their translation communicates the intended biblical message clearly and that readers understand what the original text meant to convey.
+**Why translators need it**: These questions enable translators to conduct systematic checks with community members to ensure their translation communicates the intended biblical message clearly and that readers understand what the original text meant to convey.
 
-**Example**: For the passage "Paul, a servant of Christ Jesus," a question might be "What does Paul call himself?" with the answer "Paul calls himself a servant."
+**Example**: For the passage "Paul, a servant of Christ Jesus," a question might be "What does Paul call himself?" The answer would be, "Paul calls himself a servant."
 
-#### **Translation Academy (TA)**
+#### **Translation Academy (tA)**
 
 **What they contain**: Comprehensive training materials covering translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation.
 
 **Purpose**: Provide the theoretical foundation and practical guidance needed for high-quality Bible translation work, serving as the educational foundation for translation teams.
 
-**Why translators need them**: Translation is a complex skill requiring knowledge of linguistics, culture, theology, and communication principles - these materials provide structured training in all these areas and establish the methodological foundation that other translation resources reference.
+**Why translators need them**: Translation is a complex skill requiring knowledge of linguistics, culture, theology, and communication principles. The materials in translationAcademy provide structured training in all these areas and establish the methodological foundation that other translation resources reference.
 
-**Example**: An article on "Translating Metaphors" would explain what metaphors are, why they're challenging to translate, and provide specific strategies for handling them effectively.
+**Example**: The article on "Translating Metaphors" explains what metaphors are, describes why they're challenging to translate, and provides specific strategies for handling them effectively.
 
 ### How Resources Work Together
 
-These resources form an interconnected ecosystem where each one enhances the others:
+These resources form an interconnected ecosystem in which each one enhances the others:
 
-- **Word Alignment** connects gateway language translations to original languages
+- **Word Alignment** connects Strategic Language translations to original languages
 - **Translation Notes** reference specific aligned words to provide targeted guidance
-- **Translation Academy** articles are referenced by Translation Notes, they explain the methodology behind translation decisions and provide training in translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation
+- **Translation Academy** articles are referenced by Translation Notes, they explain the methodology behind translation decisions and they provide training in translation theory, methodology, best practices, cultural issues, and quality standards for Bible translation
 - **Translation Words Links** point from aligned words to Translation Words articles
 - **Translation Words** articles provide comprehensive definitions of key biblical, theological, and cultural terms
 - **Translation Questions** verify that the final translation communicates effectively
 
-**Example workflow**: A translator working on Romans 1:1 encounters the word "servant." The alignment data shows this translates Greek "doulos." Translation Words Links points to a comprehensive definition of "doulos" explaining slavery in the ancient world. Translation Notes provide specific guidance on how to translate this concept in different cultural contexts. Translation Academy articles explain general principles for translating cultural terms. Translation Questions help verify that the final translation communicates Paul's intended meaning.
+**Example workflow**: A translator working on Romans 1:1 encounters the word "servant." The alignment data shows this translates Greek "doulos." Translation Words Links points to a comprehensive definition of "doulos" explaining slavery in the ancient world. Translation Notes provide specific guidance on how to translate this concept in different cultural contexts. translationAcademy articles explain general principles for translating cultural terms. Translation Questions help verify that the final translation communicates Paul's intended meaning.
 
 This conceptual foundation enables the precise, interconnected resource ecosystem detailed in the following sections.
 
@@ -217,7 +217,7 @@ graph TB
         WA[Word Alignment Data]
     end
     
-    subgraph "Gateway Language Texts"
+    subgraph "Strategic Language Texts"
         ULT[ULT/GLT - Literal Translation]
         UST[UST/GST - Simplified Translation]
     end
@@ -268,7 +268,7 @@ graph TB
 
 **Versification as the Coordinate System**: Every resource uses the versification system as its reference framework. Developers must ensure their applications handle versification consistently across all resources to maintain proper coordination.
 
-**Gateway Language Flexibility**: The system supports multiple gateway languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any gateway language implementation, not just English. For detailed information about gateway language translation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
+**Strategic Language Flexibility**: The system supports multiple Strategic Languages (English, Spanish, French, etc.) with identical structural patterns. Developers should design their applications to work with any Strategic Language implementation, not just English. For detailed information about Strategic Language translation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
 ## Getting Started with Integration
 
@@ -318,7 +318,7 @@ If you are a new comer to the unfoldingWord ecosystem and want to try and get co
 
 - **English (`en`)**: Most complete resource set, best for initial development and testing
 - **Proven Ecosystem**: All resource types available with high quality levels
-- **Reference Implementation**: Serves as the model for other gateway languages
+- **Reference Implementation**: Serves as the model for other Strategic Languages
 
 **Simple Access Strategy**:
 
@@ -342,7 +342,7 @@ For developers beginning integration, start with read-only access to individual 
 
 **Resource Access Priorities**:
 
-1. **Gateway Language Texts**: ULT/GLT and UST/GST for foundational content
+1. **Strategic Language Texts**: ULT/GLT and UST/GST for foundational content
 2. **Versification**: Chapter and verse structure for navigation
 3. **Supporting Resources**: Add TN, TW, and other resources as features expand
 4. **Cross-Resource Linking**: Implement resource connections after basic functionality works
@@ -376,7 +376,7 @@ Build translation tool features progressively rather than attempting comprehensi
 
 - Enable precise word-level highlighting through alignment data
 - Implement cross-resource navigation and linking
-- Add multi-language support for different gateway languages
+- Add multi-language support for different Strategic Languages
 - Provide comprehensive quality assurance features
 
 ### Common Integration Approaches
@@ -503,7 +503,7 @@ en_ult/
 
 - **Translation Foundation**: Provides literal rendering for understanding original meaning
 - **Structural Reference**: Shows original language grammatical patterns
-- **Alignment Anchor**: Serves as gateway language connection to Hebrew/Greek
+- **Alignment Anchor**: Serves as Strategic Language connection to Hebrew/Greek
 - **Quality Standard**: Maintains high accuracy to original language texts
 
 ### 2. Simplified Translation (UST/GST)
@@ -525,7 +525,7 @@ en_ult/
 
 ### 3. Word Alignment Data
 
-**USFM 3.0 Embedded Alignment** - Precise word-level connections between gateway language translations and original Hebrew, Greek, and Aramaic texts.
+**USFM 3.0 Embedded Alignment** - Precise word-level connections between Strategic Language translations and original Hebrew, Greek, and Aramaic texts.
 
 #### Alignment Syntax Structure
 
@@ -1257,8 +1257,8 @@ To find available languages for a specific resource type:
 - Group resources by language to understand completeness
 - Identify which languages have full resource ecosystems
 
-**4. Gateway Language Ecosystem Assessment**:
-To identify complete gateway language implementations:
+**4. Strategic Language Ecosystem Assessment**:
+To identify complete Strategic Language implementations:
 
 - Define core resource requirements (`ult`, `ust`, `tn`, `tw`, `twl`, `ta`)
 - Query catalog for all production resources across languages
@@ -1294,17 +1294,17 @@ https://git.door43.org/unfoldingWord/en_twl     # Translation Words Links
 https://git.door43.org/unfoldingWord/en_ta      # Translation Academy
 ```
 
-### Multilingual Gateway Language Ecosystem
+### Multilingual Strategic Language Ecosystem
 
-#### Gateway Language Strategy
+#### Strategic Language Strategy
 
-unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Multiple organizations contribute resources for different gateway languages:
+unfoldingWord created English resources for Mother Tongue Translators, serving as the reference implementation. Multiple organizations contribute resources for different Strategic Languages:
 
 **Organization Types**:
 
 - **Language-Specific Organizations**: Like `es-419_gl` (Latin American Spanish Gateway Language resources)
 - **Multi-Language Organizations**: Like `unfoldingWord` (hosting resources for multiple languages)
-- **Mixed Organizations**: Some organizations host both gateway language and other language resources
+- **Mixed Organizations**: Some organizations host both Strategic Language and other language resources
 
 #### Repository Naming Patterns
 
@@ -1374,11 +1374,11 @@ relation:
 
 Organizations can create new resource identifiers and subjects as needed for specialized resources, following the established patterns while extending the ecosystem capabilities.
 
-The English implementation serves as the model that other gateway language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts. For detailed guidance on gateway language translation and adaptation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
+The English implementation serves as the model that other Strategic Language organizations follow, maintaining the same structural patterns and resource types while adapting content for their specific linguistic and cultural contexts. For detailed guidance on Strategic Language translation and adaptation processes, see the [Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html).
 
 #### Consistent Linking Strategy
 
-All gateway language organizations maintain the same internal linking patterns:
+All Strategic Language organizations maintain the same internal linking patterns:
 
 ```yaml
 # Spanish GLT manifest
@@ -1393,7 +1393,7 @@ relation:
 
 #### Alignment-Based Validation
 
-- **Coverage**: Every original word has gateway language alignment
+- **Coverage**: Every original word has Strategic Language alignment
 - **Accuracy**: Aligned words appropriately represent original meaning
 - **Consistency**: Same original words consistently aligned across contexts
 
@@ -1409,7 +1409,7 @@ This section covers advanced integration topics including creating custom resour
 
 ### Creating New Resources
 
-The unfoldingWord ecosystem is designed for extensibility. Gateway language organizations can create additional resources following RC specifications, including new resource types with custom subjects and identifiers.
+The unfoldingWord ecosystem is designed for extensibility. Strategic Language organizations can create additional resources following RC specifications, including new resource types with custom subjects and identifiers.
 
 #### Required Components
 
@@ -1439,7 +1439,7 @@ en_biblical-commentary/
 ```yaml
 dublin_core:
   conformsto: 'rc0.2'
-  creator: 'Gateway Language Organization'
+  creator: 'Strategic Language Organization'
   description: 'Biblical commentary for translation teams'
   format: 'text/tab-separated-values'
   identifier: 'biblical-commentary'
@@ -1738,7 +1738,7 @@ This documentation provides the foundation for building translation tools that s
 
 ### Translation Methodology and Workflow
 
-- **[Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html)** - Comprehensive guide for translating and adapting unfoldingWord resources into gateway languages
+- **[Gateway Language Manual](https://gl-manual.readthedocs.io/en/latest/gl_translation.html)** - Comprehensive guide for translating and adapting unfoldingWord resources into Strategic Languages
 - **[unfoldingWord Translator Resources](https://unfoldingword.org/for-translators/)** - Complete collection of tools, training materials, and resources for Bible translation teams
 
 ### Platform and API Documentation
