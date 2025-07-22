@@ -7,7 +7,7 @@ This is a repo for detailed documentation that will facilitate collaborative dev
 
 ### unfoldingWord Translation Resources: Developer Guide
 
-📖 **[unfoldingWord Developer Guide](./unfoldingword-developer-guide.md.md)**
+📖 **[unfoldingWord Developer Guide](./unfoldingword-developer-guide.md)**
 
 A comprehensive technical guide for developers working with unfoldingWord's ecosystem of open-source Bible translation resources. This guide covers:
 
