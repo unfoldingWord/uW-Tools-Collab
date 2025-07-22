@@ -17,6 +17,4 @@ A comprehensive technical guide for developers working with unfoldingWord's ecos
 - **Resource Formats**: USFM, TSV, and Markdown specifications used across the ecosystem
 - **Integration Patterns**: Best practices for loading, caching, and connecting resources
 
-**Quick Start**: The guide includes a TLDR section and comprehensive Table of Contents for easy navigation to specific topics.
-
 This guide is essential reading for anyone developing tools that integrate with unfoldingWord translation resources, including ULT/GLT, UST/GST, Translation Notes, Translation Words, Translation Academy, and Translation Questions.
