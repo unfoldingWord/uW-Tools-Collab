@@ -5,6 +5,7 @@
 This technical guide provides complete documentation for the unfoldingWord Bible translation resource ecosystem - an interconnected system of open-source resources that enables Mother Tongue Translators to create Scripture translations in their heart languages.
 
 **Who This Helps:**
+
 - **Developers**: Build Bible translation apps using APIs, word-level alignment, and cross-resource linking
 - **Technical Decision Makers**: Plan system integration, optimize performance, and design for multiple languages  
 - **Content Creators**: Understand how translation resources connect and support quality workflows
@@ -16,9 +17,6 @@ This technical guide provides complete documentation for the unfoldingWord Bible
 
 - [unfoldingWord Bible Translation Resources Ecosystem: Developer Guide](#unfoldingword-bible-translation-resources-ecosystem-developer-guide)
   - [Introduction](#introduction)
-    - [Purpose \& Scope](#purpose--scope)
-    - [Who This Guide Helps](#who-this-guide-helps)
-    - [Key Benefits](#key-benefits)
   - [Table of Contents](#table-of-contents)
   - [TLDR](#tldr)
   - [Overview](#overview)
@@ -38,10 +36,22 @@ This technical guide provides complete documentation for the unfoldingWord Bible
       - [Manifest Structure (Key Fields)](#manifest-structure-key-fields)
       - [RC Linking System](#rc-linking-system)
     - [Hosting Resource Containers](#hosting-resource-containers)
-    - [Platform Access](#platform-access)
-    - [Key API Endpoints](#key-api-endpoints)
-    - [Authentication \& Rate Limiting](#authentication--rate-limiting)
+    - [API Reference](#api-reference)
+      - [Platform Overview](#platform-overview)
+      - [Catalog API Endpoints](#catalog-api-endpoints)
+      - [Repository API Endpoints](#repository-api-endpoints)
+      - [Authentication \& Access Control](#authentication--access-control)
+      - [Rate Limiting \& Performance](#rate-limiting--performance)
     - [Repository Organization](#repository-organization)
+      - [Organizational Models](#organizational-models)
+      - [Repository Naming Conventions](#repository-naming-conventions)
+      - [Repository Structure](#repository-structure)
+      - [Discovery Patterns](#discovery-patterns)
+      - [Access Patterns \& Performance](#access-patterns--performance)
+      - [Repository Relationships](#repository-relationships)
+      - [Quality Control \& Governance](#quality-control--governance)
+      - [Migration \& Reorganization](#migration--reorganization)
+      - [Best Practices](#best-practices)
     - [Integration Strategy](#integration-strategy)
     - [Loading Patterns](#loading-patterns)
     - [Dependency Resolution](#dependency-resolution)
@@ -70,6 +80,19 @@ This technical guide provides complete documentation for the unfoldingWord Bible
   - [Extensibility](#extensibility)
     - [Creating New Resources](#creating-new-resources)
     - [Memory Management](#memory-management)
+  - [Development Workflow](#development-workflow)
+    - [Local Development Setup](#local-development-setup)
+      - [Environment Prerequisites](#environment-prerequisites)
+      - [Resource Discovery \& Loading](#resource-discovery--loading)
+    - [Testing Strategies](#testing-strategies)
+      - [Unit Testing Approaches](#unit-testing-approaches)
+      - [Test Data Management](#test-data-management)
+    - [Debugging Approaches](#debugging-approaches)
+      - [Common Issues \& Solutions](#common-issues--solutions)
+      - [Debugging Tools \& Techniques](#debugging-tools--techniques)
+    - [Performance Optimization](#performance-optimization)
+      - [Resource Loading Optimization](#resource-loading-optimization)
+      - [Memory Management](#memory-management-1)
   - [Key Success Factors](#key-success-factors)
   - [Further Reading](#further-reading)
 - [Glossary](#glossary)
@@ -82,11 +105,13 @@ This technical guide provides complete documentation for the unfoldingWord Bible
 unfoldingWord provides an interconnected ecosystem of open-source Bible translation resources designed to help Mother Tongue Translators create Scripture in their heart languages. The system centers around **word-level alignment** between original biblical texts and gateway language translations, with supporting resources that provide contextual guidance.
 
 **Key Components:**
+
 - **Source Texts**: Hebrew Bible (UHB) and Greek New Testament (UGNT)
 - **Gateway Translations**: Literal (ULT/GLT) and Simplified (UST/GST) texts with word-level alignment to originals
 - **Support Resources**: Translation Notes (TN), Translation Words (TW), Translation Academy (TA), and Translation Questions (TQ)
 
 **For Developers:**
+
 - All resources follow [**Resource Container (RC)** specification](https://resource-container.readthedocs.io/) with standardized manifest files.
 - Resources are hosted on [Door43 Content Service](https://git.door43.org/) with REST API access
 - Word alignment enables precise cross-resource navigation and features like word-level highlighting
@@ -232,6 +257,7 @@ en_ult/
 **Key Files:**
 
 **`manifest.yaml`** - Declares resource identity, dependencies, and file structure:
+
 ```yaml
 dublin_core:
   conformsto: 'rc0.2'                    # RC specification version
@@ -266,6 +292,7 @@ projects:                                # File mappings for each book
 ```
 
 **`01-GEN.usfm`** - USFM text with embedded word alignment:
+
 ```usfm
 \v 1 \zaln-s |x-strong="H07225" x-lemma="רֵאשִׁית" x-content="בְּרֵאשִׁית"\*\w In|x-occurrence="1"\w* \w the|x-occurrence="1"\w* \w beginning|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H0430" x-lemma="אֱלֹהִים" x-content="אֱלֹהִים"\*\w God|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H01254" x-lemma="בָּרָא" x-content="בָּרָא"\*\w created|x-occurrence="1"\w*\zaln-e\*...
 ```
@@ -441,84 +468,477 @@ This flexible organizational structure supports both large-scale community colla
 
 You can find the unfoldingWord organization containing all its resources at [https://git.door43.org/unfoldingWord](https://git.door43.org/unfoldingWord).
 
-### Platform Access
+### API Reference
 
-The Door43 Content Service provides a REST API for managing resources. This API is documented in an [OpenAPI](https://swagger.io/) document and can be accessed at [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger).
+#### Platform Overview
+
+The Door43 Content Service provides a comprehensive REST API for managing and accessing unfoldingWord resources. This Git-based platform (fork of Gitea) enables both resource discovery through enhanced catalog endpoints and direct repository access through standard Git API patterns.
 
 **Primary Platform:** Door43 Content Service (`https://git.door43.org/`)
 
 - **API Documentation:** [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 - **Base URL:** `https://git.door43.org/api/v1`
-- **Catalog API:** Enhanced resource discovery with filtering
-- **Repository API:** Standard Gitea endpoints for direct access
+- **API Version:** v1 (current)
+- **Response Format:** JSON
 
-### Key API Endpoints
+#### Catalog API Endpoints
 
-**Catalog Discovery:**
+The Catalog API provides enhanced resource discovery with intelligent filtering and relationship resolution.
 
-```javascript
-// Find all resources for a specific language and subject
-GET /api/v1/catalog/search?lang=en&subject=Bible&stage=prod
+**Resource Discovery:**
 
-// List all organizations (resource types)
+```http
+GET /api/v1/catalog/search
+Query Parameters:
+  - lang: Language code (en, es-419, fr, etc.)
+  - subject: Resource subject (Bible, Translation Notes, etc.)
+  - stage: Release stage (prod, preprod, draft)
+  - owner: Organization name
+  - repo: Repository name
+  - tag: Specific version tag
+
+Response: Array of catalog entries with metadata and relationships
+```
+
+**Organization & Language Listing:**
+
+```http
 GET /api/v1/catalog/list/owners
+Response: Array of organization objects with resource counts
 
-// List all languages
-GET /api/v1/catalog/list/languages
+GET /api/v1/catalog/list/languages  
+Response: Array of language objects with available resources
 
-// Get a specific resource
-GET /api/v1/catalog/entry/{owner}/{repo}/{ref}?lang=en
+GET /api/v1/catalog/list/subjects
+Response: Array of subject categories with resource counts
 ```
 
-**Direct Repository Access:**
+**Individual Resource Access:**
 
-```javascript
-// Get repository metadata
+```http
+GET /api/v1/catalog/entry/{owner}/{repo}/{ref}
+Query Parameters:
+  - lang: Filter by language (optional)
+  
+Response: Complete catalog entry with manifest data and file listings
+```
+
+#### Repository API Endpoints
+
+Standard Gitea-compatible endpoints for direct repository manipulation and content access.
+
+**Repository Metadata:**
+
+```http
 GET /api/v1/repos/{owner}/{repo}
+Response: Repository object with metadata, clone URLs, and statistics
 
-// Download resource content
-GET /api/v1/repos/{owner}/{repo}/archive/master.zip
+GET /api/v1/repos/{owner}/{repo}/branches
+Response: Array of branch objects with commit information
 
-// Get specific file content
+GET /api/v1/repos/{owner}/{repo}/tags
+Response: Array of tag objects with release information
+```
+
+**Content Access:**
+
+```http
 GET /api/v1/repos/{owner}/{repo}/contents/{filepath}
+Query Parameters:
+  - ref: Branch or tag name (default: master)
+  
+Response: File content object with base64 encoding or download URL
 
-// List repository releases/tags
+GET /api/v1/repos/{owner}/{repo}/archive/{ref}.{format}
+Formats: zip, tar.gz
+Response: Binary archive download
+```
+
+**Release Management:**
+
+```http
 GET /api/v1/repos/{owner}/{repo}/releases
+Response: Array of release objects with assets and metadata
+
+GET /api/v1/repos/{owner}/{repo}/releases/{id}
+Response: Individual release object with detailed information
 ```
 
-### Authentication & Rate Limiting
+#### Authentication & Access Control
 
-**Authentication (Optional):**
+**Authentication Methods:**
 
-```javascript
-// Most resources are public, but authentication enables:
-// - Higher rate limits
-// - Access to private repositories
-// - Enhanced API features 
-// - CRUD operations on resources
+Most unfoldingWord resources are publicly accessible, but authentication provides enhanced capabilities:
 
-headers: {
-  'Authorization': 'token <API_TOKEN>',
-  'Content-Type': 'application/json'
-}
+**API Token Authentication:**
+
+```http
+Authorization: token <API_TOKEN>
+Content-Type: application/json
 ```
 
-**Rate Limiting Best Practices:**
+**Benefits of Authentication:**
 
-- Check `X-RateLimit-Remaining` header
-- Implement exponential backoff on 429 responses
-- Cache responses locally to minimize API calls
-- Use ZIP downloads for bulk resource access
+- Increased rate limits (1000+ requests/hour vs 60/hour)
+- Access to private repositories
+- CRUD operations on resources
+- Enhanced catalog filtering options
+- Priority access during high traffic
+
+**Token Generation:**
+
+1. Create account on Door43 Content Service
+2. Use the API to generate a token (/api/v1/users/{username}/tokens)
+3. Use the token to authenticate your requests
+
+#### Rate Limiting & Performance
+
+**Rate Limit Headers:**
+
+```http
+X-RateLimit-Limit: 60        # Maximum requests per hour
+X-RateLimit-Remaining: 45     # Remaining requests in current window
+X-RateLimit-Reset: 1640995200 # Reset time (Unix timestamp)
+```
+
+**Performance Optimization Strategies:**
+
+**Caching Strategy:**
+
+- Cache manifest files for dependency resolution
+- Store frequently accessed content locally
+- Implement intelligent cache invalidation based on version tags
+- Use ETags for conditional requests
+
+**Batch Operations:**
+
+- Download complete resource archives for offline usage
+- Use catalog API for bulk discovery operations
+- Implement parallel requests for independent resources
+- Combine multiple file requests into archive downloads
+
+**Error Resilience:**
+
+- Implement exponential backoff for 429 (rate limit) responses
+- Handle network timeouts with retry logic
+- Gracefully degrade when optional resources are unavailable
+- Provide fallback mechanisms for core functionality
 
 ### Repository Organization
 
-**Naming Pattern:** `{language-code}_{resource-identifier}`
+#### Organizational Models
 
-**Examples:**
+The Door43 Content Service supports multiple organizational patterns to accommodate different community structures and collaboration models:
 
-- `unfoldingWord/en_ult` - English Literal Translation
-- `es-419_gl/es-419_tn` - Spanish Translation Notes
-- `fr_gl/fr_tw` - French Translation Words
+**1. Single-Language Organizations:**
+
+The most common pattern where gateway language communities create dedicated organizations containing all resources for their specific language:
+
+```
+Organization: es-419_gl (Spanish Gateway Language)
+├── es-419_glt      # Spanish Literal Translation
+├── es-419_gst      # Spanish Simplified Translation  
+├── es-419_tn       # Spanish Translation Notes
+├── es-419_tw       # Spanish Translation Words
+├── es-419_twl      # Spanish Translation Words Links
+├── es-419_tq       # Spanish Translation Questions
+└── es-419_ta       # Spanish Translation Academy
+```
+
+**Benefits:**
+
+- Centralized language-specific collaboration
+- Clear ownership and governance model
+- Simplified discovery for language communities
+- Consistent quality control within language group
+
+**2. Multi-Language Organizations:**
+
+Organizations hosting resources across multiple languages, typically for foundational or cross-community resources:
+
+```
+Organization: unfoldingWord (Multi-Language)
+├── en_ult          # English Literal Translation
+├── en_ust          # English Simplified Translation
+├── hbo_uhb         # Hebrew Bible (original language)
+├── el-x-koine_ugnt # Greek New Testament (original language)
+├── fr_ult          # French Literal Translation
+└── hi_ult          # Hindi Literal Translation
+```
+
+**Use Cases:**
+
+- Original language texts (Hebrew, Greek)
+- Reference implementations for new languages
+- Cross-community resource standards
+- Experimental or prototype resources
+
+**3. Individual User Repositories:**
+
+Personal accounts hosting resources for development, testing, or specialized purposes:
+
+```
+User: translator_john
+├── hi_ult_draft    # Hindi translation in development
+├── hi_tn_personal  # Personal translation notes
+└── test_resources  # Experimental resource formats
+```
+
+#### Repository Naming Conventions
+
+**Standard Naming Pattern:** `{language-code}_{resource-identifier}`
+
+**Language Code Standards:**
+
+- **BCP 47 Compliance**: Use standard language tags (e.g., `en`, `es-419`, `fr`, `hi`)
+- **Script Variants**: Include script codes when necessary (e.g., `ur-Arab`, `hi-Deva`)
+- **Regional Variants**: Specify regions for localized versions (e.g., `es-419` for Latin American Spanish)
+- **Original Languages**: Use scholarly conventions (`hbo` for Biblical Hebrew, `el-x-koine` for Koine Greek)
+
+**Resource Identifier Conventions:**
+
+| Resource Type | Identifier | Example Repository |
+|---------------|------------|-------------------|
+| Literal Translation | `ult` or `glt` | `en_ult`, `es-419_glt` |
+| Simplified Translation | `ust` or `gst` | `en_ust`, `fr_gst` |
+| Translation Notes | `tn` | `en_tn`, `hi_tn` |
+| Translation Words | `tw` | `en_tw`, `ur_tw` |
+| Translation Words Links | `twl` | `en_twl`, `es-419_twl` |
+| Translation Questions | `tq` | `en_tq`, `fr_tq` |
+| Translation Academy | `ta` | `en_ta`, `hi_ta` |
+| Hebrew Bible | `uhb` | `hbo_uhb` |
+| Greek New Testament | `ugnt` | `el-x-koine_ugnt` |
+
+#### Repository Structure
+
+**Release Management:**
+
+```
+Tagging Strategy:
+├── v1.0.0          # Major release with breaking changes
+├── v1.1.0          # Minor release with new content
+├── v1.1.1          # Patch release with bug fixes
+├── latest          # Points to current stable release
+└── production      # Production deployment tag
+```
+
+#### Discovery Patterns
+
+**Hierarchical Resource Discovery:**
+
+```
+Discovery Flow:
+1. Organization Discovery
+   GET /api/v1/catalog/list/owners
+   
+2. Repository Enumeration  
+   GET /api/v1/repos?org={organization}
+   
+3. Resource Classification
+   Parse repository names for language/resource patterns
+   
+4. Dependency Resolution
+   GET /api/v1/repos/{owner}/{repo}/contents/manifest.yaml
+```
+
+**Language-Based Filtering:**
+
+```
+Filter Strategies:
+1. Language Code Matching: Extract language from repository names
+2. Manifest Language Field: Check dublin_core.language.identifier  
+3. Resource Type Detection: Parse resource identifier patterns
+4. Cross-Reference Validation: Verify language consistency across dependencies
+```
+
+**Subject-Based Filtering:**
+
+Subject-based filtering uses the `dublin_core.subject` field in manifest files to categorize and filter resources by their content type and purpose.
+
+**Standard Subject Categories:**
+
+| Subject | Description | Example Resources |
+|---------|-------------|-------------------|
+| `Bible` | Original language biblical texts or other unaligned texts | `hbo_uhb`, `el-x-koine_ugnt` |
+| `Aligned Bible` | Gateway language texts with word alignment | `en_ult`, `en_ust`, `fr_glt` |
+| `Translation Notes` | Verse-specific translation guidance | `en_tn`, `es-419_tn` |
+| `Translation Words` | Biblical term definitions and explanations | `en_tw`, `hi_tw` |
+| `Translation Words Links` | Cross-reference links between texts and definitions | `en_twl`, `fr_twl` |
+| `Translation Questions` | Quality assurance questions for checking | `en_tq`, `ur_tq` |
+| `Translation Academy` | Training and methodology resources | `en_ta`, `es-419_ta` |
+
+**Subject-Based Discovery Workflow:**
+
+```
+Resource Discovery by Subject:
+1. Catalog Query by Subject
+   GET /api/v1/catalog/search?subject=Bible&stage=prod
+   
+2. Subject-Specific Filtering
+   Filter results by exact subject match or category grouping
+   
+3. Quality Level Filtering
+   Further filter by checking_level (1-3) within subject category
+   
+4. Language Cross-Reference
+   Find parallel resources in same subject across languages
+```
+
+**Subject Hierarchy & Relationships:**
+
+```
+Subject Dependency Patterns:
+├── Bible (Source Texts)
+│   └── Aligned Bible (Gateway Translations)
+│       ├── Translation Notes (Contextual Guidance)
+│       ├── Translation Words Links (Term References)
+│       └── Translation Questions (Quality Checks)
+├── Translation Words (Term Definitions)
+│   └── Referenced by Translation Words Links
+└── Translation Academy (Methodology)
+    └── Referenced by Translation Notes
+```
+
+**Advanced Subject Filtering:**
+
+```
+Complex Subject Queries:
+1. Multi-Subject Filtering
+   Find resources spanning multiple subjects (e.g., Bible + Aligned Bible)
+   
+2. Subject Exclusion
+   Filter out specific subject categories (e.g., exclude drafts)
+   
+3. Subject-Language Intersection
+   Find all resources of specific subject in target language
+   
+4. Dependency-Aware Subject Loading
+   Load complete subject chains (e.g., Bible → Aligned Bible → Translation Notes)
+```
+
+**Implementation Patterns:**
+
+```
+Subject Filter Implementation:
+1. Manifest Parsing: Extract subject from dublin_core.subject field
+2. Category Mapping: Map subjects to application feature sets
+3. Progressive Loading: Load core subjects first, enhancement subjects later
+4. User Preferences: Allow users to select preferred subject categories
+5. Offline Prioritization: Cache high-priority subjects for offline access
+```
+
+#### Access Patterns & Performance
+
+**Efficient Repository Access:**
+
+| Access Pattern | Use Case | Performance Consideration |
+|----------------|----------|-------------------------|
+| Single Resource | Load specific translation | Direct repository access |
+| Language Set | Load all resources for language | Parallel repository queries |
+| Cross-Language | Compare translations | Batch manifest loading |
+| Dependency Chain | Follow resource relations | Recursive dependency resolution |
+
+**Caching Strategies:**
+
+```
+Repository Cache Layers:
+1. Organization Metadata: Cache organization listings and descriptions
+2. Repository Index: Cache repository names and basic metadata  
+3. Manifest Cache: Cache parsed manifest files with TTL
+4. Content Cache: Cache frequently accessed resource content
+5. Dependency Graph: Cache resolved dependency relationships
+```
+
+#### Repository Relationships
+
+**Direct Dependencies:**
+
+```yaml
+# Example: en_ult manifest.yaml
+relation:
+  - hbo/uhb           # Source text dependency
+  - el-x-koine/ugnt   # Source text dependency  
+  - en/ust            # Parallel translation
+```
+
+**Implicit Relationships:**
+
+```
+Resource Ecosystem Connections:
+├── Source Texts (UHB/UGNT)
+│   └── Gateway Translations (ULT/UST)
+│       ├── Translation Notes (TN)
+│       ├── Translation Words Links (TWL)
+│       └── Translation Questions (TQ)
+├── Reference Materials
+│   ├── Translation Words (TW) ← Referenced by TWL
+│   └── Translation Academy (TA) ← Referenced by TN
+└── Cross-Language Parallels
+    └── Same resource type across languages
+```
+
+#### Quality Control & Governance
+
+**Repository-Level Quality Gates:**
+
+| Quality Check | Implementation | Enforcement Level |
+|---------------|----------------|------------------|
+| Naming Compliance | Automated validation on creation | Mandatory |
+| Manifest Schema | CI/CD pipeline validation | Mandatory |
+| Content Format | Format-specific validators | Recommended |
+| Cross-Reference | Dependency resolution testing | Recommended |
+| Version Consistency | Compatibility matrix checking | Advisory |
+
+**Governance Models:**
+
+```
+Permission Structures:
+1. Organization Admins: Full access to all repositories in organization
+2. Repository Maintainers: Write access to specific repositories
+3. Contributors: Submit changes via pull requests
+4. Readers: Public read access to published resources
+```
+
+#### Migration & Reorganization
+
+**Repository Movement Patterns:**
+
+```
+Common Migration Scenarios:
+1. User → Organization: Personal project becomes community resource
+2. Organization → Organization: Language community reorganization  
+3. Multi-Language → Single-Language: Resource localization
+4. Repository Splitting: Large repository divided by book/resource type
+5. Repository Merging: Multiple related repositories consolidated
+```
+
+**URL Preservation:**
+
+```
+Redirect Strategies:
+1. GitHub-style redirects for moved repositories
+2. Catalog API redirect responses for deprecated locations
+3. Manifest relation updates for dependency redirection
+4. API versioning to maintain backward compatibility
+```
+
+#### Best Practices
+
+**Repository Creation Guidelines:**
+
+1. **Consistent Naming**: Follow established language code and resource identifier patterns
+2. **Complete Manifests**: Include all required Dublin Core metadata fields
+3. **Clear Dependencies**: Explicitly declare all resource relationships
+4. **Version Tagging**: Use semantic versioning for all releases
+5. **Documentation**: Provide README files with resource-specific guidance
+
+**Organizational Strategies:**
+
+1. **Language Focus**: Prefer single-language organizations for community management
+2. **Resource Grouping**: Keep related resources in same organization when possible
+3. **Access Management**: Implement appropriate permission levels for collaboration
+4. **Quality Standards**: Establish consistent quality gates across repositories
+5. **Discovery Optimization**: Structure organizations for efficient resource discovery
 
 ### Integration Strategy
 
@@ -577,7 +997,9 @@ Example:
 A verse like this:
 
 > ## 1
+>
 > ### The creation
+>
 > **1** In the beginning God created the heavens and the earth. **2** And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.
 
 Would be represented like this in a usfm file:
@@ -611,7 +1033,6 @@ a table like this:
 | 1:1 | abc1 | grammar | rc://en/ta/man/translate/figs-metaphor | δοῦλος | 1 | Paul calls himself a **slave**, which indicates... |
 | 1:2 | abc2 | culture | rc://en/ta/man/translate/translate-names | Ἰησοῦ | 1 | This is the name of the **Son of God**... |
 
-
 would be represented like this in a TSV file:
 
 ```tsv
@@ -619,6 +1040,7 @@ Reference ID Tags SupportReference Quote Occurrence Note
 1:1 abc1 grammar rc://en/ta/man/translate/figs-metaphor δοῦλος 1 Paul calls himself a slave, which indicates...
 1:2 abc2 culture rc://en/ta/man/translate/translate-names Ἰησοῦ 1 This is the name of the Son of God...
 ```
+
 where:
 
 - `Reference` is the reference to the original text
@@ -692,7 +1114,6 @@ If an abstract noun would be natural and give the right meaning in your language
   - ...
   - 66-REV.usfm
 
-
 See: [https://git.door43.org/unfoldingWord/hbo_uhb](https://git.door43.org/unfoldingWord/hbo_uhb)
 
 ### 2. UGNT (Greek New Testament)
@@ -758,7 +1179,7 @@ See: [https://git.door43.org/unfoldingWord/en_ust](https://git.door43.org/unfold
 - identifier: `tn`
 - relation: `en/ult`, `en/ust`, `el-x-koine/ugnt`, `hbo/uhb`, `en/ta`
 - link: `rc://en/tn/help/gen/01/02`
-- TSV columns: 
+- TSV columns:
   - Reference - the reference to the original text (e.g. 1:1-2)
   - ID - a unique identifier for the note (e.g. abc1)
   - Tags - the tags for the note (e.g. grammar, culture)
@@ -962,10 +1383,9 @@ where:
 - `\*` - end of alignment start marker
 - `\w` - word marker
   - `The` - the word being aligned
-  -  `|x-occurrence="1" x-occurrences="1"` - occurrence information
+  - `|x-occurrence="1" x-occurrences="1"` - occurrence information
 - `\w*` - end of word marker
 - `\zaln-e\*` - end of alignment pair
-
 
 #### Alignment Relationship Types
 
@@ -1215,6 +1635,226 @@ projects:
 - **Resource Cleanup:** Unload unused resources after time threshold
 - **Streaming Parsing:** Parse large USFM files in chunks
 - **Index Generation:** Create searchable indexes for faster lookup
+
+## Development Workflow
+
+### Local Development Setup
+
+#### Environment Prerequisites
+
+**Basic Requirements:**
+
+- Git client for repository access
+- HTTP client library for API access
+- JSON/YAML parser for manifest processing
+- UTF-8 text processing capabilities
+- Archive extraction utilities (ZIP/TAR)
+
+**Development Tools:**
+
+- USFM parser/validator library
+- TSV processing capabilities
+- Markdown renderer (for TA/TW content)
+- Regular expression engine (for alignment parsing)
+- Caching mechanism (file system or memory-based)
+
+#### Resource Discovery & Loading
+
+**Initial Setup Workflow:**
+
+1. **Environment Configuration**: Set base API URL and authentication tokens
+2. **Language Selection**: Choose target gateway language(s) for development
+3. **Resource Discovery**: Use Catalog API to identify available resources
+4. **Dependency Resolution**: Parse manifest files to understand resource relationships
+5. **Selective Loading**: Download only required resources for development scope
+
+**Development Data Sources:**
+
+```
+Recommended Development Resources:
+- Primary: en_ult, en_ust (English gateway texts)
+- Testing: Small book sets (e.g., Philippians, 1 John)
+- Validation: Complete resource sets for integration testing
+- Performance: Large books (e.g., Genesis, Matthew) for optimization
+```
+
+### Testing Strategies
+
+#### Unit Testing Approaches
+
+**Format Validation Testing:**
+
+```
+Test Categories:
+1. USFM Parser Tests
+   - Valid markup parsing
+   - Alignment marker extraction
+   - Error handling for malformed content
+   - Character encoding validation
+
+2. TSV Structure Tests
+   - Column header validation
+   - Data type verification
+   - Reference format checking
+   - Markdown content parsing
+
+3. Manifest Processing Tests
+   - Schema validation
+   - Dependency resolution
+   - Version compatibility checking
+   - Link format validation
+```
+
+**Integration Testing Patterns:**
+
+```
+Cross-Resource Testing:
+1. Reference Resolution
+   - RC link validation
+   - Cross-resource navigation
+   - Version compatibility
+   - Missing resource handling
+
+2. Alignment System Testing
+   - Word-level mapping accuracy
+   - Occurrence counting validation
+   - Nested alignment parsing
+   - Performance under load
+
+3. Content Consistency Testing
+   - Translation note accuracy
+   - Word link validation
+   - Question relevance checking
+   - Academy article references
+```
+
+#### Test Data Management
+
+**Sample Data Sets:**
+
+- **Minimal Set**: Single chapter for basic functionality testing
+- **Standard Set**: Complete book for integration testing
+- **Comprehensive Set**: Multi-book collection for system testing
+- **Stress Test Set**: Complete Bible for performance validation
+
+**Mock Data Strategies:**
+
+- **API Response Mocking**: Simulate catalog and repository API responses
+- **Content Stubbing**: Generate minimal valid content for testing
+- **Error Simulation**: Create invalid content for error handling tests
+- **Performance Testing**: Use large datasets for optimization validation
+
+### Debugging Approaches
+
+#### Common Issues & Solutions
+
+**Resource Loading Problems:**
+
+```
+Debugging Checklist:
+1. API Connectivity
+   - Verify network access to git.door43.org
+   - Check authentication token validity
+   - Validate rate limiting status
+   - Test fallback mechanisms
+
+2. Content Parsing Issues
+   - Validate UTF-8 encoding
+   - Check format specification compliance
+   - Verify alignment marker syntax
+   - Test cross-reference resolution
+
+3. Performance Problems
+   - Profile memory usage during loading
+   - Analyze network request patterns
+   - Measure parsing performance
+   - Optimize caching strategies
+```
+
+**Alignment Processing Debugging:**
+
+```
+Common Alignment Issues:
+1. Nested Marker Problems
+   - Validate opening/closing pairs
+   - Check nesting depth limits
+   - Verify occurrence counting
+   - Test edge case handling
+
+2. Reference Resolution Failures
+   - Validate Strong's number format
+   - Check original language text availability
+   - Verify word occurrence accuracy
+   - Test missing reference handling
+
+3. Performance Bottlenecks
+   - Profile alignment parsing speed
+   - Optimize regular expression usage
+   - Implement incremental processing
+   - Cache parsed alignment data
+```
+
+#### Debugging Tools & Techniques
+
+**Logging Strategies:**
+
+- **Request Logging**: Track all API calls with timing information
+- **Parse Logging**: Record content parsing steps and errors
+- **Reference Logging**: Log cross-resource reference resolution
+- **Performance Logging**: Track memory usage and processing times
+
+**Validation Tools:**
+
+- **Content Validators**: Real-time format and content validation
+- **Link Checkers**: Automated cross-reference validation
+- **Performance Profilers**: Memory and CPU usage analysis
+- **Error Aggregators**: Centralized error collection and analysis
+
+### Performance Optimization
+
+#### Resource Loading Optimization
+
+**Caching Strategies:**
+
+```
+Multi-Layer Caching:
+1. Network Layer: Cache API responses with appropriate TTL
+2. Content Layer: Cache parsed resources in memory/disk
+3. Index Layer: Cache search indexes and cross-references
+4. Result Layer: Cache computed results and aggregations
+```
+
+**Parallel Processing:**
+
+```
+Concurrency Patterns:
+1. Parallel Resource Loading: Download multiple resources simultaneously
+2. Background Processing: Parse content while loading additional resources
+3. Lazy Loading: Load resources on-demand rather than upfront
+4. Progressive Enhancement: Start with minimal features, add complexity
+```
+
+#### Memory Management
+
+**Resource Lifecycle:**
+
+```
+Memory Optimization:
+1. Load Planning: Determine minimum required resource set
+2. Selective Loading: Load only needed books/chapters
+3. Resource Cleanup: Unload unused resources after timeout
+4. Garbage Collection: Monitor and optimize memory usage patterns
+```
+
+**Processing Optimization:**
+
+```
+Performance Patterns:
+1. Streaming Parsing: Process large files in chunks
+2. Index Generation: Pre-compute search indexes
+3. Reference Caching: Cache frequently accessed cross-references
+4. Batch Operations: Group similar operations for efficiency
+```
 
 ## Key Success Factors
 
