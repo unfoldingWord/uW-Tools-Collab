@@ -1,8 +1,24 @@
 # unfoldingWord Bible Translation Resources Ecosystem: Developer Guide
 
+## Introduction
+
+This technical guide provides complete documentation for the unfoldingWord Bible translation resource ecosystem - an interconnected system of open-source resources that enables Mother Tongue Translators to create Scripture translations in their heart languages.
+
+**Who This Helps:**
+- **Developers**: Build Bible translation apps using APIs, word-level alignment, and cross-resource linking
+- **Technical Decision Makers**: Plan system integration, optimize performance, and design for multiple languages  
+- **Content Creators**: Understand how translation resources connect and support quality workflows
+- **Open Source Contributors**: Follow technical standards, contribute new resources, and extend the ecosystem
+
+**Key Benefits:** Saves development time with ready-to-use specifications, ensures new tools integrate seamlessly with existing apps, includes quality checks for reliable implementations, and simplifies working with interconnected Bible translation resources.
+
 ## Table of Contents
 
 - [unfoldingWord Bible Translation Resources Ecosystem: Developer Guide](#unfoldingword-bible-translation-resources-ecosystem-developer-guide)
+  - [Introduction](#introduction)
+    - [Purpose \& Scope](#purpose--scope)
+    - [Who This Guide Helps](#who-this-guide-helps)
+    - [Key Benefits](#key-benefits)
   - [Table of Contents](#table-of-contents)
   - [TLDR](#tldr)
   - [Overview](#overview)
@@ -258,13 +274,15 @@ projects:                                # File mappings for each book
 
 To create a valid Resource Container, you need:
 
-1. **Manifest File** (`manifest.yaml`) with required Dublin Core metadata
+1. **Manifest File** (`manifest.yaml`) with required [Dublin Core metadata](https://dublincore.org/specifications/dublin-core/dcmi-terms/#terms-defined-by-dc)
 2. **License File** (`LICENSE.md`) - typically CC BY-SA 4.0 for unfoldingWord resources
 3. **Content Files** in the appropriate format (USFM for texts, TSV for data, Markdown for articles)
 4. **Consistent Structure** following RC directory patterns for your container type
 5. **Valid Identifiers** using established conventions (language codes, book codes, etc.)
 
 This standardized structure ensures that all unfoldingWord resources work together seamlessly, regardless of language or resource type.
+
+**Dublin Core**: The manifest file uses [Dublin Core metadata standards](https://dublincore.org/specifications/dublin-core/dcmi-terms/#terms-defined-by-dc) to describe the resource with standardized fields like `identifier`, `language`, `subject`, `type`, and `relation`. This ensures consistent metadata across all Resource Containers and enables automatic discovery and interconnection of resources.
 
 **RC Core Functions:**
 
@@ -286,7 +304,7 @@ graph TD
 
 #### Core RC Principles
 
-1. **Standardized Metadata**: Every resource has Dublin Core metadata in `manifest.yaml`
+1. **Standardized Metadata**: Every resource has [Dublin Core metadata](https://dublincore.org/specifications/dublin-core/dcmi-terms/#terms-defined-by-dc) in `manifest.yaml`
 2. **Predictable Structure**: Consistent directory layout and file naming
 3. **Cross-Resource Linking**: URI-based references enable automatic navigation
 4. **Version Management**: Built-in versioning and dependency tracking
@@ -735,7 +753,7 @@ See: [https://git.door43.org/unfoldingWord/en_ust](https://git.door43.org/unfold
 
 - format: `tsv`
 - language: `en`
-- subject: `Aligned Bible`
+- subject: `Translation Notes`
 - type: `help` (RC)
 - identifier: `tn`
 - relation: `en/ult`, `en/ust`, `el-x-koine/ugnt`, `hbo/uhb`, `en/ta`
@@ -867,7 +885,7 @@ See: [https://git.door43.org/unfoldingWord/en_tw](https://git.door43.org/unfoldi
 
 - format: `tsv`
 - language: `en`
-- subject: `Translation Words`
+- subject: `Translation Words Links`
 - type: `help` (RC)
 - identifier: `twl`
 - relation: `en/ult`, `en/ust`, `en/tw`, `el-x-koine/ugnt`, `hbo/uhb`
