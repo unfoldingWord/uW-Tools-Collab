@@ -1,0 +1,42 @@
+# Understanding the unfoldingWord Translation Ecosystem: Supporting Mother Tongue Translators
+
+## Introduction
+
+The unfoldingWord (uW) translation ecosystem represents a comprehensive approach to supporting Bible translation work worldwide. This document explains how interconnected translation resources work together to empower Mother Tongue Translators, enabling them to produce accurate and culturally appropriate Scripture translations in their heart languages.
+
+This guide demonstrates how the unfoldingWord ecosystem addresses common translation challenges, reduces dependency on external consultants, and provides immediate access to expert-level biblical scholarship through gateway languages.
+
+### Key Definitions
+
+**Gateway Languages**: Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that serve as intermediary bridges between the original biblical languages (Hebrew, Greek, Aramaic) and target heart languages. Gateway languages are major languages that Mother Tongue Translators can understand and use as a foundation for translating Scripture into their native languages.
+
+**Mother Tongue Translators (MTTs)**: Translators who are native speakers of the target language and are working to translate Scripture into their own heart language - the language they know best and speak most naturally.
+
+**Heart Languages**: The native languages that Mother Tongue Translators speak most naturally and are translating Scripture into. These are the target languages for the final Bible translations that will serve local communities.
+
+### Translation Challenges: A Real-World Scenario
+
+To understand why the unfoldingWord resource ecosystem exists, consider this common translation scenario:
+
+**The Challenge**: A team of Mother Tongue Translators in a remote region is working to translate the book of Romans into their heart language. They're using a popular commercial Bible translation in Spanish (their gateway language) as their primary source, along with basic study helps.
+
+**Problem 1 - Hidden Cultural Adaptations**: In Romans 1:1, their Spanish Bible translates Paul's description of himself as "siervo" (servant), which feels natural and appropriate in Spanish. However, they don't realize that the original Greek word "δοῦλος" (doulos) actually means "slave" - a much stronger concept that implies complete ownership and submission. The Spanish translation adapted this for cultural comfort, but in the translators' culture, the concept of slavery might actually communicate Paul's intended meaning more accurately than the softened "servant." Without access to the original language, they miss this opportunity for a more precise translation.
+
+**Problem 2 - Metaphor Translation Barriers**: When they reach Romans 3:25, they encounter the phrase "propitiation through his blood." This theological metaphor combines ancient Jewish sacrificial concepts with legal terminology that has no direct equivalent in their culture. They spend days trying to understand what "propitiation" means and how blood relates to forgiveness in their worldview. Without cultural and linguistic guidance, they struggle to find meaningful expressions in their language.
+
+**Problem 3 - Consultant Dependency**: As these difficult passages accumulate, the translation team must wait weeks or months or years for a visiting consultant to help them understand the meaning and suggest translation approaches. This creates frustrating delays and leaves team members feeling uncertain about their translation decisions. The consultant, while helpful, may not fully understand their cultural context and might suggest solutions that don't work naturally in their language.
+
+**Problem 4 - Inconsistent Terminology**: The team encounters the word "covenant" throughout Romans but translates it differently each time because they don't have a systematic understanding of how this theological concept appears across the entire Bible. Without comprehensive terminology guidance, their translation lacks the conceptual consistency that helps readers understand biblical themes.
+
+**How the unfoldingWord Ecosystem Helps**: These resources work together to address each of these common challenges:
+
+- **Literal Translation (ULT/GLT)** provides a form-centric rendering that preserves the structure and wording of the original text, showing exactly what the Greek says about Paul being a "slave" rather than a softened "servant"
+- **Simplified Translation (UST/GST)** demonstrates how to express complex concepts like "propitiation" in clear, natural language that can guide culturally appropriate translation approaches
+- **Translation Notes** provide specific guidance for passages like Romans 3:25, explaining the cultural and theological background needed for accurate translation
+- **Translation Words** articles give comprehensive definitions of key terms like "covenant" and "propitiation," showing how they're used consistently throughout Scripture
+- **Translation Academy** articles teach general principles for translating metaphors, cultural concepts, and theological terminology
+- **Translation Questions** help the team verify that their translation effectively communicates the intended meaning to their community
+
+Instead of waiting for consultant visits, the translation team has immediate access to expert guidance precisely targeted to the original language words they're translating. Importantly, they don't need to learn Greek or Hebrew themselves - the combination of Literal Translation (showing original structure), Simplified Translation (demonstrating clear meaning), and Translation Notes (explaining context) gives them access to original language insights through their gateway language. They can make informed decisions about how closely to follow their gateway language source versus returning to the original meaning, and they can translate complex concepts with confidence using proven methodologies.
+
+This scenario illustrates why disconnected resources create translation bottlenecks, while an integrated ecosystem enables Mother Tongue Translators to work efficiently and accurately with expert-level understanding of the original text, all accessible through their gateway language.
