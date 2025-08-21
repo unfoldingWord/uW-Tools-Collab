@@ -1,0 +1,314 @@
+# Translation Words Links Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Translation Words Links repositories in Door43. These repositories contain cross-reference links between specific word occurrences in Bible texts and Translation Words definitions, enabling precise word-level navigation and highlighting.
+
+**Repository Types Covered:**
+- **Translation Words Links**: Links between Bible words and TW definitions
+- **OBS Translation Words Links**: Links for Open Bible Stories
+
+## Repository Characteristics
+
+### Translation Words Links Repositories
+
+**Examples**: `en_twl`, `en_obs-twl`
+
+**Key Characteristics:**
+- Subject: "Translation Words Links" or "OBS Translation Words Links"
+- Container type: "help"
+- Content: TSV files with word-to-definition links
+- Format: Tab-separated values
+- Organization: One TSV file per Bible book or OBS story
+- Scope: Word-level cross-referencing
+
+## How to Identify Translation Words Links Repositories
+
+**Step 1: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should be "Translation Words Links" or "OBS Translation Words Links"
+
+**Step 2: Verify Container Type**
+- Check `dublin_core.type` field
+- Should be "help" for Translation Words Links repositories
+
+**Step 3: Confirm File Structure**
+- Look for TSV files with "twl_" prefix (twl_GEN.tsv, twl_EXO.tsv, etc.)
+- Files should cover Bible books or OBS stories
+- All files should be in TSV format
+
+## Manifest Structure
+
+### Translation Words Links Manifest
+
+```yaml
+dublin_core:
+  identifier: 'twl'                    # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Translation Words Links'   # Resource type
+  type: 'help'                        # Help/guidance resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/ult'                        # Literal translation
+    - 'en/ust'                        # Simplified translation
+    - 'en/tw'                         # Translation Words
+    - 'hbo/uhb'                       # Hebrew Bible
+    - 'el-x-koine/ugnt'               # Greek NT
+
+projects:                             # TSV files for each book
+  - identifier: 'gen'                 # Book identifier
+    title: 'Genesis'                  # Human-readable title
+    path: './twl_GEN.tsv'            # TSV file path
+    sort: 1                          # Display order
+    versification: 'ufw'             # Versification system
+    categories: ['bible-ot']         # Old Testament
+```
+
+## File Structure Patterns
+
+### Bible Translation Words Links Structure
+
+```
+en_twl/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 twl_GEN.tsv                   # Genesis word links
+├── 📄 twl_EXO.tsv                   # Exodus word links
+├── 📄 twl_LEV.tsv                   # Leviticus word links
+├── ...                              # All Bible books
+├── 📄 twl_MAT.tsv                   # Matthew word links
+├── ...                              # All NT books
+└── 📄 twl_REV.tsv                   # Revelation word links
+```
+
+### OBS Translation Words Links Structure
+
+```
+en_obs-twl/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 twl_01.tsv                    # Story 1 word links
+├── 📄 twl_02.tsv                    # Story 2 word links
+├── ...                              # All 50 stories
+└── 📄 twl_50.tsv                    # Story 50 word links
+```
+
+## TSV Content Structure
+
+### Translation Words Links TSV Format
+
+**Column Headers**:
+| Column | Purpose | Example |
+|--------|---------|---------|
+| **Reference** | Verse reference | "1:1" or "1:1-2" |
+| **ID** | Unique link identifier | "xyz1" |
+| **Tags** | Word categories | "kt", "names", "other" |
+| **OrigWords** | Original language words | "בְּרֵאשִׁית" |
+| **Occurrence** | Which occurrence in verse | "1" |
+| **TWLink** | Link to Translation Words | "rc://*/tw/dict/bible/kt/god" |
+
+**Sample TSV Content**:
+```tsv
+Reference	ID	Tags	OrigWords	Occurrence	TWLink
+1:1	xyz1	kt	אֱלֹהִים	1	rc://*/tw/dict/bible/kt/god
+1:1	xyz2	other	בְּרֵאשִׁית	1	rc://*/tw/dict/bible/other/creation
+1:2	xyz3	kt	רוּחַ	1	rc://*/tw/dict/bible/kt/holyspirit
+```
+
+**Key Features**:
+- **OrigWords**: Contains original Hebrew/Greek words
+- **TWLink**: Uses rc:// URI format to link to Translation Words
+- **Occurrence**: Tracks which instance of a word in the verse
+- **Tags**: Categorizes words (kt=key terms, names=proper names, other=general)
+
+## How to Process Translation Words Links Repositories
+
+### Step 1: Verify Repository Type
+
+**Check Manifest Fields**:
+- Confirm subject is "Translation Words Links"
+- Verify container type is "help"
+- Check that projects array contains TSV files with "twl_" prefix
+
+### Step 2: Extract Book Coverage
+
+**From Projects Array**:
+- Get list of all books covered
+- Note the TSV file path for each book
+- Check versification system used
+
+### Step 3: Process TSV File Structure
+
+**For Each TSV File**:
+- Download the file content
+- Parse as tab-separated values
+- Validate expected column headers
+- Process word links and references
+
+### Step 4: Parse Translation Words Links
+
+**TWLink Processing**:
+- Parse rc:// URI format: `rc://*/tw/dict/bible/{category}/{term}`
+- Extract category (kt, names, other)
+- Extract term identifier
+- Build connection to Translation Words repository
+
+### Step 5: Build Word-Level Index
+
+**Create Cross-Reference Database**:
+- Index original words by verse reference
+- Map original words to Translation Words entries
+- Track word occurrences for precise highlighting
+- Build reverse lookup from TW to Bible verses
+
+## Content Characteristics
+
+### Link Distribution Analysis
+
+**Links per Book**: 100-500 depending on book length
+**Word Categories**:
+- **Key Terms (kt)**: ~40% of links - theological concepts
+- **Names**: ~30% of links - people and places
+- **Other**: ~30% of links - general vocabulary
+
+**Original Language Distribution**:
+- Hebrew words: Old Testament books
+- Greek words: New Testament books
+- Aramaic words: Occasional (Daniel, Ezra)
+
+### Cross-Reference Patterns
+
+**TWLink Patterns**:
+- `rc://*/tw/dict/bible/kt/{term}` - Key theological terms
+- `rc://*/tw/dict/bible/names/{name}` - Proper names
+- `rc://*/tw/dict/bible/other/{word}` - General vocabulary
+
+**Reference Patterns**:
+- Single verse: "1:1", "2:5"
+- Verse range: "1:1-3", "2:4-6"
+- Chapter references: Rare, usually specific verses
+
+## Application Integration
+
+### How to Display Translation Words Links in Preview Apps
+
+**Step 1: Enable Word-Level Highlighting**
+- Use OrigWords and Occurrence data to highlight specific words in Bible text
+- Show which words have Translation Words definitions available
+- Enable click-to-see-definition functionality
+
+**Step 2: Organize Links by Categories**
+- Group links by Tags (kt, names, other)
+- Show category-based word lists
+- Enable filtering by word category
+
+**Step 3: Connect to Translation Words**
+- Parse TWLink URIs to connect to Translation Words definitions
+- Enable seamless navigation from Bible words to definitions
+- Show definition previews on hover or click
+
+**Step 4: Show Word Distribution**
+- Display word frequency across Bible books
+- Show which books have the most linked terms
+- Enable word-based Bible navigation
+
+### How to Use Translation Words Links in Editing Apps
+
+**Step 1: Set Up Word-Level Integration**
+- Index all word links by verse reference
+- Build mapping from original words to Translation Words
+- Enable real-time word highlighting in Bible texts
+
+**Step 2: Enable Interactive Word Features**
+- Show Translation Words definitions when users click linked words
+- Highlight all occurrences of a word across the Bible
+- Enable word-based cross-reference navigation
+
+**Step 3: Support Translation Workflow**
+- Show relevant word definitions contextually during translation
+- Enable quick access to term guidance
+- Support consistency checking across word usage
+
+**Step 4: Configure Cross-Reference Features**
+- Connect to Translation Words repository for definitions
+- Link to aligned Bible texts for word highlighting
+- Enable bidirectional navigation (word to definition, definition to occurrences)
+
+## Cross-Reference Integration
+
+### Connection to Translation Words
+
+**Link Resolution Process**:
+- Parse rc:// URI from TWLink column
+- Extract category and term identifier
+- Map to corresponding Translation Words article
+- Enable navigation to full definition
+
+### Connection to Bible Texts
+
+**Word Highlighting Process**:
+- Use OrigWords and Occurrence to identify specific words
+- Connect to word alignment data in ULT/UST
+- Enable precise word-level highlighting
+- Show definitions contextually
+
+### Connection to Translation Notes
+
+**Complementary Usage**:
+- Translation Notes may reference the same words
+- TWL provides definitions, TN provides contextual guidance
+- Enable cross-navigation between TN and TWL
+
+## Best Practices
+
+### 1. TSV Processing
+- Validate column headers and handle variations
+- Parse OrigWords in original language scripts correctly
+- Handle rc:// URI format for TWLink resolution
+
+### 2. Word-Level Features
+- Use Occurrence data for precise word targeting
+- Handle multiple occurrences of same word in verse
+- Enable accurate word highlighting in Bible texts
+
+### 3. Cross-Reference Integration
+- Build efficient lookup from words to definitions
+- Cache Translation Words content for quick access
+- Enable bidirectional navigation
+
+### 4. Performance Optimization
+- Index word links for fast lookup
+- Cache frequently accessed definitions
+- Pre-process rc:// links for better performance
+
+## Differences from Translation Notes
+
+| Aspect | Translation Words Links | Translation Notes |
+|--------|------------------------|-------------------|
+| **Purpose** | Word-to-definition linking | Verse-level guidance |
+| **Content** | Cross-reference data | Explanatory notes |
+| **Target** | Specific word occurrences | Verse or passage context |
+| **Cross-References** | To Translation Words | To Translation Academy |
+| **Usage** | Word lookup and highlighting | Contextual explanation |
+| **Data Type** | Structured links | Narrative guidance |
+| **User Interaction** | Click/hover on words | Read alongside text |
+
+## Common Issues and Solutions
+
+### Issue 1: Original Language Text Handling
+**Problem**: OrigWords contains Hebrew/Greek text that requires proper encoding
+**Solution**: Ensure UTF-8 handling and proper font support for original languages
+
+### Issue 2: rc:// URI Complexity
+**Problem**: TWLink URIs need parsing and resolution to actual TW articles
+**Solution**: Build URI parser and maintain TW repository index
+
+### Issue 3: Word Occurrence Precision
+**Problem**: Multiple occurrences of same word in verse need precise targeting
+**Solution**: Use Occurrence numbers for exact word identification
+
+---
+
+This guide is based on analysis of Door43 Translation Words Links repositories and should be used alongside the main [Door43 API Developer Guide](../door43-api-developer-guide.md).

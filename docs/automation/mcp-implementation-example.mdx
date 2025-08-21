@@ -1,0 +1,356 @@
+# MCP Implementation Example: Door43 Repository Analysis
+
+## Practical MCP Implementation
+
+This document provides a concrete example of how an MCP system would analyze Door43 repositories and generate/update guides using the Door43 API endpoints.
+
+## Example Scenario: Discover and Document New Resource Container Type
+
+### Scenario Setup
+**Situation**: A new gateway language organization (es-419_gl) has created repositories that might represent new patterns or variations not covered in existing guides.
+
+**MCP Task**: Analyze the organization's repositories, identify new patterns, and update guides accordingly.
+
+## Step-by-Step MCP Execution
+
+### Phase 1: Discovery
+
+#### MCP Action 1: Organization Repository Discovery
+```
+HTTP Request:
+GET https://git.door43.org/api/v1/repos?org=es-419_gl
+
+Expected Response:
+[
+  {
+    "name": "es-419_glt",
+    "full_name": "es-419_gl/es-419_glt", 
+    "description": "Spanish Gateway Language Translation",
+    "updated_at": "2024-01-15T10:30:00Z"
+  },
+  {
+    "name": "es-419_tn",
+    "full_name": "es-419_gl/es-419_tn",
+    "description": "Spanish Translation Notes", 
+    "updated_at": "2024-01-10T14:20:00Z"
+  }
+]
+
+MCP Analysis:
+- Identify repository naming patterns
+- Note descriptions and update timestamps
+- Compare against existing guide coverage
+```
+
+#### MCP Action 2: Repository Classification
+```
+For repository "es-419_glt":
+
+HTTP Request:
+GET https://git.door43.org/api/v1/repos/es-419_gl/es-419_glt/contents
+
+Expected Response:
+[
+  {"name": "manifest.yaml", "type": "file", "size": 2048},
+  {"name": "01-GEN.usfm", "type": "file", "size": 45000},
+  {"name": "02-EXO.usfm", "type": "file", "size": 52000},
+  {"name": "LICENSE.md", "type": "file", "size": 1500}
+]
+
+MCP Analysis:
+- Detected: manifest.yaml (Resource Container indicator)
+- Detected: Numbered USFM files (Bible text pattern)
+- Classification: Likely Resource Container Bible text type
+```
+
+#### MCP Action 3: Specification Analysis
+```
+HTTP Request:
+GET https://git.door43.org/api/v1/repos/es-419_gl/es-419_glt/contents/manifest.yaml
+
+Expected Response:
+{
+  "content": "ZHVibGluX2NvcmU6CiAgaWRlbnRpZmllcjogJ2dsdCcKICAuLi4=",
+  "encoding": "base64"
+}
+
+MCP Processing:
+1. Decode base64 content
+2. Parse YAML structure
+3. Extract key fields:
+   - dublin_core.identifier: 'glt'
+   - dublin_core.subject: 'Aligned Bible'
+   - dublin_core.language.identifier: 'es-419'
+   - projects: [66 Bible books]
+
+MCP Analysis:
+- Repository Type: Resource Container
+- Content Type: Gateway Language Bible
+- Pattern: Similar to en_ult but different language
+- Guide Coverage: Covered by existing Bible Text guide
+```
+
+### Phase 2: Content Analysis
+
+#### MCP Action 4: Sample Content Analysis
+```
+HTTP Request:
+GET https://git.door43.org/api/v1/repos/es-419_gl/es-419_glt/contents/01-GEN.usfm
+
+MCP Content Analysis:
+1. Decode and parse USFM content
+2. Check for alignment markers (\zaln-s, \zaln-e, \w)
+3. Count verses and chapters
+4. Analyze USFM marker usage
+5. Assess content complexity
+
+Expected Findings:
+- USFM 3.0 format with alignment markers
+- Spanish text aligned to Hebrew/Greek sources
+- Standard Bible book structure
+- Compatible with existing Bible Text guide patterns
+```
+
+#### MCP Action 5: Cross-Repository Pattern Analysis
+```
+Compare "es-419_glt" with "en_ult":
+
+Similarities:
+- Same manifest structure (dublin_core, projects)
+- Same file naming pattern (01-GEN.usfm, etc.)
+- Same USFM format with alignment
+- Same container type and subject
+
+Differences:
+- Language: es-419 vs en
+- Text content: Spanish vs English
+- Possible versification differences
+
+MCP Conclusion:
+- Repository follows established Resource Container Bible pattern
+- No new guide needed
+- Existing Bible Text guide covers this repository type
+- Consider adding multi-language examples to existing guide
+```
+
+### Phase 3: Guide Assessment and Updates
+
+#### MCP Action 6: Guide Coverage Analysis
+```
+Check Existing Guide Coverage:
+
+Bible Text Repositories Guide:
+- Covers: UHB, UGNT, ULT, UST
+- Language Examples: English (en), Hebrew (hbo), Greek (el-x-koine)
+- Missing: Spanish (es-419) examples
+
+MCP Recommendation:
+- Update Bible Text guide with Spanish examples
+- Add multi-language considerations section
+- Include es-419_glt as additional example
+```
+
+#### MCP Action 7: Guide Update Generation
+```
+Update Bible Text Repositories Guide:
+
+ADD to examples section:
+- Spanish Gateway Language Translation (es-419_glt)
+- Manifest example with Spanish language settings
+- USFM content sample in Spanish
+
+ADD to processing section:
+- Multi-language repository handling
+- Language-specific considerations
+- Cross-language relationship patterns
+
+ENHANCE best practices:
+- Language code handling (BCP 47 compliance)
+- Text direction considerations
+- Multi-language ecosystem navigation
+```
+
+## Example Scenario: New Tool-Generated Repository Discovery
+
+### Scenario Setup
+**Situation**: A new translation tool has created repositories with a different manifest format not covered by existing translationCore or translationStudio guides.
+
+### MCP Execution
+
+#### Discovery Phase
+```
+API_CALL: GET /api/v1/repos/search?q=translation+tool
+
+Filter results for repositories with:
+- manifest.json files
+- Unknown generator patterns
+- Non-standard manifest structures
+
+Example Discovery:
+Repository: user123/hi_ult_new_tool
+Manifest contains: {"tool_version": 2, "generator": {"name": "new-translation-tool"}}
+```
+
+#### Analysis Phase
+```
+Download and analyze manifest.json:
+- New generator pattern detected
+- Different field structure from tC/tS
+- Unique file organization approach
+
+Content analysis:
+- Similar USFM output to other tools
+- Different metadata organization
+- Novel project tracking system
+```
+
+#### Guide Decision
+```
+MCP Assessment:
+- New tool pattern requires documentation
+- Significant differences from existing tool guides
+- Sufficient complexity to warrant separate guide
+
+MCP Action:
+- Create new guide: "New Translation Tool Format Guide"
+- Use existing tool guide template
+- Populate with analyzed repository data
+- Add to tool-generated format section
+```
+
+## Example Scenario: Scripture Burrito Evolution Detection
+
+### Scenario Setup
+**Situation**: Scripture Burrito repositories show new flavor types or ingredient patterns not documented in existing guides.
+
+### MCP Execution
+
+#### Pattern Analysis
+```
+API_CALL: GET /api/v1/repos?org=BurritoTruck
+
+FOR each Scripture Burrito repository:
+  Download metadata.json
+  Extract flavor type and ingredient patterns
+  Compare with documented patterns
+
+Discovery Example:
+New flavor type: "audioBible" 
+New ingredient roles: "audio", "timing", "transcript"
+New scope patterns: verse-level audio segmentation
+```
+
+#### Impact Assessment
+```
+MCP Analysis:
+- New flavor type not covered in Scripture Burrito guide
+- New ingredient patterns require documentation
+- Audio-specific processing needs different handling
+
+MCP Recommendation:
+- Update Scripture Burrito guide with audio flavor section
+- Add audio ingredient processing instructions
+- Include audio-specific best practices
+```
+
+## MCP Output Formats
+
+### Analysis Report Template
+```
+# Repository Analysis Report
+Generated: {timestamp}
+MCP Version: {version}
+
+## Repositories Analyzed
+- Total: {count}
+- New Patterns: {new_count}
+- Updated Patterns: {updated_count}
+
+## Key Findings
+- {finding_1}
+- {finding_2}
+- {finding_3}
+
+## Guide Update Recommendations
+- {recommendation_1}
+- {recommendation_2}
+
+## New Guide Requirements
+- {new_guide_1}: {justification}
+- {new_guide_2}: {justification}
+
+## Implementation Priority
+1. {high_priority_item}
+2. {medium_priority_item}
+3. {low_priority_item}
+```
+
+### Guide Update Template
+```
+# Guide Update: {guide_name}
+Updated: {timestamp}
+Changes: {change_summary}
+
+## Updates Made
+- {update_1}
+- {update_2}
+
+## New Examples Added
+- {example_1}
+- {example_2}
+
+## Validation Results
+- {validation_1}: ✅ Passed
+- {validation_2}: ⚠️ Needs review
+
+## Next Review Date
+{next_review_date}
+```
+
+## Quality Assurance for MCP Operations
+
+### Validation Requirements
+
+**Data Accuracy**:
+- Verify all API responses are current
+- Confirm repository examples are accessible
+- Validate manifest/metadata parsing accuracy
+- Check content analysis correctness
+
+**Guide Quality**:
+- Ensure natural language format is maintained
+- Verify step-by-step instructions are clear
+- Confirm implementation-agnostic approach
+- Check cross-references are accurate
+
+### Error Handling
+
+**API Errors**:
+- Handle rate limiting gracefully
+- Manage repository access errors
+- Process malformed content appropriately
+- Document errors for manual review
+
+**Analysis Errors**:
+- Handle unexpected repository structures
+- Manage parsing errors in specification files
+- Process incomplete or corrupted content
+- Ensure graceful degradation
+
+## MCP Success Metrics
+
+### Analysis Quality Metrics
+- **Coverage**: Percentage of repositories analyzed successfully
+- **Accuracy**: Validation success rate for generated content
+- **Completeness**: Guide coverage of discovered repository types
+- **Timeliness**: Speed of detecting and documenting new patterns
+
+### Guide Quality Metrics
+- **Accuracy**: Guide examples match current repository state
+- **Completeness**: All repository types have appropriate guides
+- **Usability**: Natural language clarity and implementation independence
+- **Maintenance**: Frequency of required updates due to changes
+
+---
+
+These MCP implementation examples provide concrete guidance for building automated Door43 repository analysis and guide generation systems.

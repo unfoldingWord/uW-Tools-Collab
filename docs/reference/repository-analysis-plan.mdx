@@ -1,0 +1,179 @@
+# Repository Analysis Plan
+
+## Individual Repository Analysis Strategy
+
+This document outlines the plan for creating repository-type-specific guides based on thorough analysis of each Door43 repository.
+
+## Analysis Targets
+
+### Resource Container Repositories (12)
+
+#### Original Language Texts
+1. **[hbo_uhb](https://git.door43.org/unfoldingWord/hbo_uhb)** - Hebrew Bible
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Bible (Original)
+   - **Expected Content**: USFM files for all 39 OT books
+   - **Key Features**: Original Hebrew text, tokenized
+
+2. **[el-x-koine_ugnt](https://git.door43.org/unfoldingWord/el-x-koine_ugnt)** - Greek New Testament
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Bible (Original)
+   - **Expected Content**: USFM files for all 27 NT books
+   - **Key Features**: Original Greek text, tokenized
+
+#### Gateway Language Translations
+3. **[en_ult](https://git.door43.org/unfoldingWord/en_ult)** - English Literal Translation
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Aligned Bible
+   - **Expected Content**: USFM files with word alignment data
+   - **Key Features**: Word-aligned to Hebrew/Greek, form-centric
+
+4. **[en_ust](https://git.door43.org/unfoldingWord/en_ust)** - English Simplified Translation
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Aligned Bible
+   - **Expected Content**: USFM files with word alignment data
+   - **Key Features**: Word-aligned to Hebrew/Greek, meaning-based
+
+#### Translation Support Resources
+5. **[en_tn](https://git.door43.org/unfoldingword/en_tn)** - Translation Notes
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Help
+   - **Expected Content**: TSV files with verse-specific guidance
+   - **Key Features**: Reference, Quote, Occurrence, Note columns
+
+6. **[en_ta](https://git.door43.org/unfoldingWord/en_ta)** - Translation Academy
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Manual
+   - **Expected Content**: Nested Markdown files
+   - **Key Features**: Training articles in categorized directories
+
+7. **[en_tw](https://git.door43.org/unfoldingword/en_tw)** - Translation Words
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Dictionary
+   - **Expected Content**: Nested Markdown files
+   - **Key Features**: Term definitions in bible/kt/, bible/names/, bible/other/
+
+8. **[en_twl](https://git.door43.org/unfoldingword/en_twl)** - Translation Words Links
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Help
+   - **Expected Content**: TSV files linking words to definitions
+   - **Key Features**: OrigWords, TWLink columns for cross-referencing
+
+9. **[en_tq](https://git.door43.org/unfoldingword/en_tq)** - Translation Questions
+   - **Expected Spec**: Resource Container (RC)
+   - **Expected Type**: Help
+   - **Expected Content**: TSV files with quality assurance questions
+   - **Key Features**: Question, Response columns for checking
+
+#### Open Bible Stories Resources
+10. **[en_obs](https://git.door43.org/unfoldingword/en_obs)** - Open Bible Stories
+    - **Expected Spec**: Resource Container (RC)
+    - **Expected Type**: Bundle
+    - **Expected Content**: Markdown files for 50 stories
+    - **Key Features**: Story-based Bible overview
+
+11. **[en_obs-tn](https://git.door43.org/unfoldingword/en_obs-tn)** - OBS Translation Notes
+    - **Expected Spec**: Resource Container (RC)
+    - **Expected Type**: Help
+    - **Expected Content**: TSV files with story-specific notes
+    - **Key Features**: Adapted TN format for OBS
+
+12. **[en_obs-twl](https://git.door43.org/unfoldingword/en_obs-twl)** - OBS Translation Words Links
+    - **Expected Spec**: Resource Container (RC)
+    - **Expected Type**: Help
+    - **Expected Content**: TSV files linking OBS words to definitions
+    - **Key Features**: Adapted TWL format for OBS
+
+### Scripture Burrito Repositories (4)
+
+13. **[en_bsb](https://git.door43.org/BurritoTruck/en_bsb)** - Berean Study Bible
+    - **Expected Spec**: Scripture Burrito
+    - **Expected Content**: Bible text in Burrito format
+    - **Key Features**: Study Bible with notes
+
+14. **[es_tsn](https://git.door43.org/BurritoTruck/es_tsn)** - Spanish Bible
+    - **Expected Spec**: Scripture Burrito
+    - **Expected Content**: Spanish Bible text
+    - **Key Features**: Complete Bible in Spanish
+
+15. **[fr_lsga](https://git.door43.org/BurritoTruck/fr_lsga)** - French Bible
+    - **Expected Spec**: Scripture Burrito
+    - **Expected Content**: French Bible text
+    - **Key Features**: Complete Bible in French
+
+16. **[en_xenizo_book-notes](https://git.door43.org/BurritoTruck/en_xenizo_book-notes)** - Book Notes
+    - **Expected Spec**: Scripture Burrito
+    - **Expected Content**: Commentary or notes
+    - **Key Features**: Book-specific notes format
+
+## Analysis Framework
+
+### For Each Repository
+
+**Step 1: Repository Metadata**
+- Size, language, creation/update dates
+- Commit history, branches, tags
+- Description and repository statistics
+
+**Step 2: Specification Detection**
+- Identify manifest/metadata files
+- Parse and classify specification type
+- Extract version and format information
+
+**Step 3: File Structure Analysis**
+- Complete file inventory by type
+- Directory structure mapping
+- File naming pattern recognition
+- Size distribution analysis
+
+**Step 4: Manifest Deep Dive**
+- All manifest fields and their purposes
+- Resource Container: dublin_core analysis
+- Scripture Burrito: meta and ingredients analysis
+- Dependencies and relationships
+
+**Step 5: Content Sampling**
+- Sample files from each major type (.usfm, .tsv, .md)
+- Content structure analysis
+- Format-specific feature detection
+
+**Step 6: Repository Classification**
+- Primary format (RC vs Scripture Burrito)
+- Repository type (Bible, Notes, Academy, etc.)
+- Content scope (Complete Bible, Single Book, etc.)
+- Complexity level and target audience
+
+## Expected Guide Outputs
+
+### Repository-Type-Specific Guides
+
+Based on analysis results, create guides for:
+
+1. **Original Language Bible Guide** (hbo_uhb, el-x-koine_ugnt)
+2. **Gateway Language Bible Guide** (en_ult, en_ust)
+3. **Translation Notes Guide** (en_tn, en_obs-tn)
+4. **Translation Academy Guide** (en_ta)
+5. **Translation Words Guide** (en_tw)
+6. **Translation Words Links Guide** (en_twl, en_obs-twl)
+7. **Translation Questions Guide** (en_tq)
+8. **Open Bible Stories Guide** (en_obs)
+9. **Scripture Burrito Guide** (all BurritoTruck repos)
+
+### Cross-Repository Comparison
+
+- Resource Container vs Scripture Burrito differences
+- Subject-based pattern analysis
+- File organization comparison
+- Processing requirement differences
+
+## Analysis Command
+
+```bash
+npm run analyze:individual
+```
+
+This will generate comprehensive data for creating accurate, repository-type-specific documentation.
+
+---
+
+This analysis plan ensures we understand each repository's unique characteristics and can create precise guides for developers working with specific types of Door43 resources.

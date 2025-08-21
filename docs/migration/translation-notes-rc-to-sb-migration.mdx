@@ -1,0 +1,306 @@
+# Translation Notes Resource Container to Scripture Burrito Migration Guide
+
+## Introduction
+
+This guide provides specific instructions for migrating Translation Notes Resource Containers to Scripture Burrito format. Translation Notes repositories contain verse-specific guidance in TSV format that maps well to Scripture Burrito's parascriptural capabilities.
+
+**Applicable Repository Types:**
+- **Translation Notes**: TN (Bible verse guidance)
+- **OBS Translation Notes**: OBS-TN (Story-specific guidance)
+
+## Migration Overview
+
+### Why Migrate Translation Notes Repositories
+
+**Benefits of Scripture Burrito for Translation Notes**:
+- **Enhanced Cross-Referencing**: Better relationship modeling to source texts
+- **Precise Scope Definitions**: Verse-level precision instead of book-level categories
+- **Explicit Content Typing**: TSV files clearly identified with MIME types
+- **Better Tool Integration**: Parascriptural flavor designed for notes and guidance
+- **Improved Linking**: Enhanced support for cross-references to other resources
+
+### Migration Complexity
+
+**Complexity Level**: ⭐⭐ **Low-Medium**
+**Data Loss**: ❌ **None** (all RC data preservable and enhanced)
+**Time Required**: 2-3 hours for automated conversion
+**Manual Review**: Moderate (verify cross-references and scope)
+
+## Pre-Migration Analysis
+
+### Step 1: Analyze Source Repository
+
+**Check Repository Characteristics**:
+- Verify subject is "Translation Notes" or "OBS Translation Notes"
+- Confirm container type is "help"
+- Count TSV files (should match book count or story count)
+- Examine TSV structure (Reference, Quote, Note columns)
+
+**Expected File Structure**:
+- manifest.yaml with dublin_core section
+- TSV files with "tn_" prefix (tn_GEN.tsv, tn_EXO.tsv, etc.)
+- LICENSE.md file
+
+### Step 2: Analyze TSV Content Structure
+
+**Key TSV Columns**:
+- **Reference**: Verse references (1:1, 1:2-3, etc.)
+- **Quote**: Specific words being explained
+- **Occurrence**: Which occurrence of the word
+- **Note**: Translation guidance content
+- **SupportReference**: Links to Translation Academy articles
+
+## Migration Steps
+
+### Step 1: Create Scripture Burrito Metadata
+
+**Base Metadata for Translation Notes**:
+```json
+{
+  "meta": {
+    "format": "scripture burrito",
+    "version": "0.3.0"
+  },
+  "identification": {
+    "name": "unfoldingWord® Translation Notes",
+    "abbreviation": "TN",
+    "description": "Verse-specific translation guidance"
+  },
+  "languages": [
+    {
+      "tag": "en",
+      "name": "English",
+      "direction": "ltr"
+    }
+  ],
+  "type": {
+    "flavorType": {
+      "name": "parascripturalWordAlignment",
+      "currentScope": {
+        "book": ["GEN", "EXO", "MAT", "ROM"]
+      }
+    }
+  }
+}
+```
+
+### Step 2: Convert TSV Files to Ingredients
+
+**For Each TSV File**:
+
+**Create Ingredient Entry**:
+- **Key**: Use TSV filename (e.g., "tn_GEN.tsv")
+- **mimeType**: "text/tab-separated-values"
+- **role**: "notes"
+- **scope**: Book-specific scope object
+
+**Example Ingredient**:
+```json
+"tn_GEN.tsv": {
+  "mimeType": "text/tab-separated-values",
+  "role": "notes",
+  "scope": {
+    "book": "GEN"
+  },
+  "description": "Translation notes for Genesis"
+}
+```
+
+### Step 3: Handle Cross-References and Dependencies
+
+**Convert RC Relations to SB Relationships**:
+- Source Bible texts become "source" relationships
+- Translation Academy becomes "related" relationship
+- Other support resources become "related" relationships
+
+**Example Relationships**:
+```json
+"relationships": [
+  {
+    "type": "source",
+    "flavor": "textTranslation",
+    "id": "en_ult",
+    "description": "Source Bible text for notes"
+  },
+  {
+    "type": "source", 
+    "flavor": "textTranslation",
+    "id": "hbo_uhb",
+    "version": "2.1.30",
+    "description": "Hebrew Bible source"
+  },
+  {
+    "type": "related",
+    "flavor": "peripheralResource",
+    "id": "en_ta",
+    "description": "Referenced training articles"
+  }
+]
+```
+
+### Step 4: Enhance with Scripture Burrito Features
+
+**Add Precise Scope Information**:
+- Use verse-level scope for specific notes
+- Handle verse ranges appropriately
+- Include versification information
+
+**Enhanced Ingredient with Verse Scope**:
+```json
+"tn_GEN.tsv": {
+  "mimeType": "text/tab-separated-values",
+  "role": "notes",
+  "scope": {
+    "book": "GEN",
+    "versification": "ufw"
+  },
+  "structure": {
+    "format": "tsv",
+    "columns": ["Reference", "ID", "Tags", "SupportReference", "Quote", "Occurrence", "Note"]
+  }
+}
+```
+
+## Migration Examples
+
+### Example 1: Bible Translation Notes (TN)
+
+**Source RC Structure**:
+```
+en_tn/
+├── manifest.yaml
+├── tn_GEN.tsv
+├── tn_EXO.tsv
+└── ...
+```
+
+**Converted SB Structure**:
+```
+en_tn_sb/
+├── metadata.json
+├── tn_GEN.tsv
+├── tn_EXO.tsv
+└── ...
+```
+
+**Key Changes**:
+- manifest.yaml → metadata.json (format conversion)
+- Enhanced metadata with flavor type and relationships
+- Same TSV files with improved ingredient metadata
+
+### Example 2: OBS Translation Notes
+
+**Source RC Structure**:
+```
+en_obs-tn/
+├── manifest.yaml
+├── tn_01.tsv
+├── tn_02.tsv
+└── ...
+```
+
+**Converted SB Metadata**:
+```json
+{
+  "type": {
+    "flavorType": {
+      "name": "parascripturalTextStories",
+      "currentScope": {
+        "story": ["01", "02", "03"]
+      }
+    }
+  },
+  "ingredients": {
+    "tn_01.tsv": {
+      "mimeType": "text/tab-separated-values",
+      "role": "notes",
+      "scope": {
+        "story": "01"
+      }
+    }
+  }
+}
+```
+
+## Migration Validation
+
+### Step 1: Validate TSV Content Preservation
+
+**Check TSV Integrity**:
+- Verify all TSV files are properly referenced
+- Confirm column headers are preserved
+- Check that cross-references (SupportReference) are maintained
+
+### Step 2: Validate Cross-Reference Links
+
+**Link Validation**:
+- Verify rc:// links in SupportReference column are preserved
+- Check that relationships to source texts are correct
+- Confirm Translation Academy links are maintained
+
+### Step 3: Test Scope Accuracy
+
+**Scope Validation**:
+- Verify book codes match TSV content
+- Check verse references align with scope definitions
+- Confirm versification information is preserved
+
+## Best Practices for Translation Notes Migration
+
+### 1. Preserve Cross-Reference Integrity
+- Maintain all rc:// links in TSV content
+- Preserve Quote and Occurrence data for word-level features
+- Keep SupportReference links to Translation Academy
+
+### 2. Enhance with SB Capabilities
+- Use precise scope definitions for better content targeting
+- Add versification information to scope objects
+- Utilize relationship system for better dependency modeling
+
+### 3. Optimize for Parascriptural Workflow
+- Organize ingredients by biblical book order
+- Maintain verse-level precision in scope definitions
+- Enable efficient cross-reference resolution
+
+### 4. Quality Assurance
+- Validate all TSV files parse correctly
+- Verify cross-references resolve properly
+- Test with parascriptural-aware tools
+
+## Migration Benefits
+
+### Enhanced Capabilities in Scripture Burrito
+
+**Better Than RC**:
+- **Precise Scope**: Verse-level precision vs book-level categories
+- **Explicit Relationships**: Clear dependency modeling vs simple relation array
+- **Content Typing**: Explicit TSV MIME type vs file extension inference
+- **Cross-Reference Support**: Better handling of rc:// links and relationships
+- **Tool Ecosystem**: Access to parascriptural-specific tools
+
+### Preserved RC Features
+
+**No Data Loss**:
+- All TSV content preserved exactly
+- Cross-references maintained
+- Verse targeting preserved
+- Translation Academy links maintained
+- Checking information preserved in extensions
+
+## Common Migration Issues
+
+### Issue 1: Complex Verse References
+**Problem**: TSV Reference column has various formats (1:1, 1:2-3, etc.)
+**Solution**: SB scope system handles verse ranges better than RC categories
+
+### Issue 2: Cross-Reference Complexity
+**Problem**: rc:// links need to be preserved and enhanced
+**Solution**: SB relationship system provides better cross-reference modeling
+
+### Issue 3: Multiple Target Texts
+**Problem**: Translation Notes reference both ULT and UST
+**Solution**: SB relationships can specify multiple source relationships
+
+---
+
+This migration guide is based on analysis of Translation Notes Resource Containers and [Scripture Burrito specification](https://docs.burrito.bible/) research, and should be used alongside the main [RC to Scripture Burrito Conversion Guide](../rc-to-scripture-burrito-conversion-guide.md).

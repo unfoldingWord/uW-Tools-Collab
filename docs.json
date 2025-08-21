@@ -1,0 +1,176 @@
+{
+  "$schema": "https://docs.page/schema.json",
+  "name": "Door43 Bible Translation Resources Documentation",
+  "description": "Complete documentation for understanding and building applications with Door43 Bible translation resources",
+  "logo": {
+    "light": "/assets/logo-light.png",
+    "dark": "/assets/logo-dark.png"
+  },
+  "favicon": "/assets/favicon.ico",
+  "theme": {
+    "primary": "#2196F3",
+    "sidebar": {
+      "width": 300
+    }
+  },
+  "editPage": {
+    "text": "Edit this page on GitHub",
+    "pattern": "https://github.com/unfoldingWord-dev/uW-Tools-Collab/edit/main/{path}"
+  },
+  "navigation": [
+    {
+      "title": "Getting Started",
+      "icon": "/assets/icons/getting-started.svg",
+      "children": [
+        {
+          "title": "Quick Start Guide",
+          "href": "/getting-started/quickstart"
+        },
+        {
+          "title": "Why unfoldingWord Translation Resources",
+          "href": "/getting-started/why-unfoldingword-translation-resources"
+        },
+        {
+          "title": "Resource Ecosystem Overview",
+          "href": "/getting-started/project-summary"
+        }
+      ]
+    },
+    {
+      "title": "Developer Guides",
+      "icon": "/assets/icons/developer-guide.svg", 
+      "children": [
+        {
+          "title": "unfoldingWord Developer Guide", 
+          "href": "/guides/unfoldingword-developer-guide"
+        },
+        {
+          "title": "Door43 API Developer Guide",
+          "href": "/guides/door43-api-developer-guide"
+        }
+      ]
+    },
+    {
+      "title": "Repository Formats",
+      "icon": "/assets/icons/repository.svg",
+      "children": [
+        {
+          "title": "Bible Text Repositories",
+          "href": "/repository-formats/bible-text-repositories-guide"
+        },
+        {
+          "title": "Translation Notes Repositories", 
+          "href": "/repository-formats/translation-notes-repositories-guide"
+        },
+        {
+          "title": "Translation Questions Repositories",
+          "href": "/repository-formats/translation-questions-repositories-guide"
+        },
+        {
+          "title": "Translation Words Repositories",
+          "href": "/repository-formats/translation-words-repositories-guide"
+        },
+        {
+          "title": "Translation Words Links Repositories",
+          "href": "/repository-formats/translation-words-links-repositories-guide"
+        },
+        {
+          "title": "Translation Academy Repositories",
+          "href": "/repository-formats/translation-academy-repositories-guide"
+        },
+        {
+          "title": "Open Bible Stories Repositories",
+          "href": "/repository-formats/open-bible-stories-repositories-guide"
+        },
+        {
+          "title": "Scripture Burrito Repositories",
+          "href": "/repository-formats/scripture-burrito-repositories-guide"
+        },
+        {
+          "title": "translationCore Format",
+          "href": "/repository-formats/translationcore-format-guide"
+        },
+        {
+          "title": "translationStudio Format", 
+          "href": "/repository-formats/translationstudio-format-guide"
+        }
+      ]
+    },
+    {
+      "title": "Migration & Conversion",
+      "icon": "/assets/icons/migration.svg",
+      "children": [
+        {
+          "title": "Migration Guide Index",
+          "href": "/migration/migration-guide-index"
+        },
+        {
+          "title": "Bible Text RC to SB Migration",
+          "href": "/migration/bible-text-rc-to-sb-migration"
+        },
+        {
+          "title": "Translation Notes RC to SB Migration",
+          "href": "/migration/translation-notes-rc-to-sb-migration"
+        },
+        {
+          "title": "Translation Words RC to SB Migration",
+          "href": "/migration/translation-words-rc-to-sb-migration"
+        },
+        {
+          "title": "Translation Academy RC to SB Migration",
+          "href": "/migration/translation-academy-rc-to-sb-migration"
+        },
+        {
+          "title": "General RC to SB Conversion",
+          "href": "/migration/rc-to-scripture-burrito-conversion-guide"
+        }
+      ]
+    },
+    {
+      "title": "Automation & MCP", 
+      "icon": "/assets/icons/automation.svg",
+      "children": [
+        {
+          "title": "MCP Repository Analyzer",
+          "href": "/automation/door43-repository-analyzer-mcp"
+        },
+        {
+          "title": "MCP Task Specifications",
+          "href": "/automation/mcp-task-specifications"
+        },
+        {
+          "title": "MCP Implementation Example",
+          "href": "/automation/mcp-implementation-example"
+        },
+        {
+          "title": "Door43 API Reference for MCP",
+          "href": "/automation/door43-api-reference-for-mcp"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "icon": "/assets/icons/reference.svg",
+      "children": [
+        {
+          "title": "Guide Index",
+          "href": "/reference/guide-index"
+        },
+        {
+          "title": "Repository Analysis Plan",
+          "href": "/reference/repository-analysis-plan"
+        },
+        {
+          "title": "Subject Guide Template",
+          "href": "/reference/subject-guide-template"
+        }
+      ]
+    }
+  ],
+  "analytics": {
+    "googleAnalytics": null
+  },
+  "social": {
+    "github": "https://github.com/unfoldingWord-dev/uW-Tools-Collab"
+  }
+}

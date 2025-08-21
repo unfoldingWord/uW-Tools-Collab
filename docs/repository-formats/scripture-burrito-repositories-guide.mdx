@@ -1,0 +1,320 @@
+# Scripture Burrito Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Scripture Burrito repositories in Door43. Scripture Burrito is an alternative specification to Resource Container, designed for flexible Bible resource packaging with different organizational principles.
+
+**Repository Types Covered:**
+- **Scripture Burrito Bible Texts**: Complete Bible translations
+- **Scripture Burrito Commentary**: Notes and commentary resources
+
+## Repository Characteristics
+
+### Scripture Burrito Repositories
+
+**Examples**: `en_bsb`, `es_tsn`, `fr_lsga`, `en_xenizo_book-notes`
+
+**Key Characteristics:**
+- Specification: Scripture Burrito format
+- Manifest file: `metadata.json` (not manifest.yaml)
+- Content organization: Ingredients-based structure
+- Format flexibility: Multiple content types supported
+- Scope: Varies by flavor type
+
+## How to Identify Scripture Burrito Repositories
+
+**Step 1: Look for Metadata File**
+- Look for `metadata.json` file (not manifest.yaml)
+- This is the primary indicator of Scripture Burrito format
+
+**Step 2: Check Metadata Content**
+- Look for `meta.format` field with value "scripture burrito"
+- Check for `meta.version` to identify Scripture Burrito version
+
+**Step 3: Verify Burrito Structure**
+- Look for `ingredients` section in metadata
+- Check for `type.flavorType` information
+- Confirm absence of Resource Container fields (dublin_core)
+
+## Metadata Structure
+
+### Scripture Burrito Metadata Format
+
+```json
+{
+  "meta": {
+    "format": "scripture burrito",
+    "version": "0.3.0",
+    "generator": {
+      "softwareName": "Burrito Creator",
+      "softwareVersion": "1.0.0"
+    }
+  },
+  "identification": {
+    "name": "Berean Study Bible",
+    "abbreviation": "BSB",
+    "description": "A Bible with extensive study notes"
+  },
+  "languages": [
+    {
+      "tag": "en",
+      "name": "English"
+    }
+  ],
+  "type": {
+    "flavorType": {
+      "name": "textTranslation",
+      "currentScope": {
+        "book": ["GEN", "EXO", "MAT", "ROM"]
+      }
+    }
+  },
+  "ingredients": {
+    "01-GEN.usfm": {
+      "mimeType": "text/usfm",
+      "role": "main",
+      "scope": {
+        "book": "GEN"
+      }
+    },
+    "02-EXO.usfm": {
+      "mimeType": "text/usfm", 
+      "role": "main",
+      "scope": {
+        "book": "EXO"
+      }
+    }
+  }
+}
+```
+
+**Key Fields for Scripture Burrito**:
+- `meta.format`: Always "scripture burrito"
+- `identification`: Name, abbreviation, description
+- `languages[]`: Array of language information
+- `type.flavorType`: Defines content type and scope
+- `ingredients{}`: File organization and metadata
+
+## File Structure Patterns
+
+### Scripture Burrito Bible Structure
+
+```
+en_bsb/
+├── 📄 metadata.json                 # Scripture Burrito metadata
+├── 📄 LICENSE.md                    # License file
+├── 📄 01-GEN.usfm                   # Genesis
+├── 📄 02-EXO.usfm                   # Exodus
+├── 📄 03-LEV.usfm                   # Leviticus
+├── ...                              # Additional books
+├── 📄 40-MAT.usfm                   # Matthew
+├── ...                              # New Testament books
+└── 📁 notes/                        # Study notes (if applicable)
+    ├── 📄 gen_notes.md              # Genesis notes
+    └── ...                          # Other note files
+```
+
+### Scripture Burrito Commentary Structure
+
+```
+en_xenizo_book-notes/
+├── 📄 metadata.json                 # Scripture Burrito metadata
+├── 📄 LICENSE.md                    # License file
+├── 📁 commentary/                   # Commentary files
+│   ├── 📄 genesis_commentary.md    # Book commentary
+│   ├── 📄 exodus_commentary.md     # Book commentary
+│   └── ...                         # Additional commentaries
+└── 📁 resources/                    # Additional resources
+    ├── 📄 images/                   # Images for commentary
+    └── 📄 references/               # Reference materials
+```
+
+## How to Process Scripture Burrito Repositories
+
+### Step 1: Verify Scripture Burrito Format
+
+**Check Metadata File**:
+- Confirm `metadata.json` exists (not manifest.yaml)
+- Verify `meta.format` equals "scripture burrito"
+- Note the Scripture Burrito version from `meta.version`
+
+### Step 2: Extract Identification Information
+
+**From Identification Section**:
+- Get resource name from `identification.name`
+- Get abbreviation from `identification.abbreviation`
+- Get description from `identification.description`
+
+### Step 3: Process Language Information
+
+**From Languages Array**:
+- Extract language tags and names
+- Note primary language (usually first in array)
+- Handle multi-language resources if applicable
+
+### Step 4: Understand Content Organization
+
+**From Type and Flavor**:
+- Get flavor type from `type.flavorType.name`
+- Check current scope from `type.flavorType.currentScope`
+- Understand what content is included
+
+### Step 5: Process Ingredients
+
+**From Ingredients Section**:
+- Each key is a file path
+- Each value contains file metadata (mimeType, role, scope)
+- Build complete file inventory with purposes
+
+**Ingredient Processing**:
+- Group files by role (main, auxiliary, etc.)
+- Group files by mimeType (text/usfm, text/markdown, etc.)
+- Map files to their biblical scope (books, chapters)
+
+### Step 6: Build File Access Strategy
+
+**File Access Methods**:
+- Use ingredient keys as file paths
+- Build download URLs for each ingredient
+- Organize by role and content type
+
+## Content Types in Scripture Burrito
+
+### Bible Text Content
+
+**MIME Type**: `text/usfm`
+**Role**: "main"
+**Scope**: Book-specific
+**Content**: USFM Bible text (may or may not have alignment)
+
+### Commentary Content
+
+**MIME Type**: `text/markdown`
+**Role**: "auxiliary" 
+**Scope**: Book-specific or passage-specific
+**Content**: Commentary and explanatory material
+
+### Study Notes
+
+**MIME Type**: `text/markdown` or `application/json`
+**Role**: "auxiliary"
+**Scope**: Verse-specific or passage-specific
+**Content**: Study notes and cross-references
+
+## Application Integration
+
+### How to Display Scripture Burrito Resources in Preview Apps
+
+**Step 1: Present Resource Information**
+- Show the resource name and abbreviation clearly
+- Display the description to explain the resource purpose
+- Indicate the primary language
+
+**Step 2: Organize Content by Ingredients**
+- Group ingredients by role (main content vs auxiliary)
+- Group by MIME type (Bible text vs notes vs other)
+- Show scope information (which books are covered)
+
+**Step 3: Handle Multi-Content Resources**
+- If resource has both Bible text and commentary, organize clearly
+- Show relationships between main content and auxiliary materials
+- Enable navigation between related content
+
+**Step 4: Display Scope Information**
+- Show which books are included in the resource
+- Indicate if it's a complete Bible or partial collection
+- Display any scope limitations clearly
+
+### How to Use Scripture Burrito Resources in Editing Apps
+
+**Step 1: Set Up Ingredient Access**
+- Configure access to all ingredients based on metadata
+- Organize files by role and content type
+- Set up appropriate parsers for different MIME types
+
+**Step 2: Handle Content Relationships**
+- Connect main content (Bible text) with auxiliary content (notes)
+- Enable cross-navigation between related materials
+- Maintain scope relationships between ingredients
+
+**Step 3: Configure Format Processing**
+- Set up USFM parsing for Bible text ingredients
+- Configure markdown rendering for commentary ingredients
+- Handle other MIME types appropriately
+
+**Step 4: Enable Scope Management**
+- Respect the scope definitions for each ingredient
+- Handle partial Bible collections appropriately
+- Enable scope-based filtering and navigation
+
+## Differences from Resource Container
+
+| Aspect | Resource Container | Scripture Burrito |
+|--------|-------------------|-------------------|
+| **Manifest File** | manifest.yaml | metadata.json |
+| **Key Structure** | dublin_core | meta + identification |
+| **File Organization** | projects[] array | ingredients{} object |
+| **Content Definition** | Project-based | Ingredient-based |
+| **Scope Handling** | Book categories | Explicit scope objects |
+| **MIME Types** | Implicit from extension | Explicit mimeType field |
+| **Roles** | Not specified | Explicit role field |
+| **Flexibility** | Standardized structure | Flexible ingredient system |
+
+## Scripture Burrito Advantages
+
+### Flexibility Benefits
+
+**1. Explicit Content Typing**
+- Each file has explicit MIME type
+- Clear role definitions (main, auxiliary, etc.)
+- Precise scope specifications
+
+**2. Multi-Content Support**
+- Single repository can contain Bible text + commentary
+- Different content types organized systematically
+- Clear relationships between content types
+
+**3. Extensibility**
+- Easy to add new content types
+- Flexible ingredient system
+- Support for non-standard content
+
+## Best Practices
+
+### 1. Metadata Processing
+- Always check meta.format to confirm Scripture Burrito
+- Parse identification section for display information
+- Process languages array for multi-language support
+
+### 2. Ingredient Handling
+- Process all ingredients to understand complete content
+- Group by role and MIME type for organization
+- Respect scope definitions for each ingredient
+
+### 3. Content Access
+- Use ingredient keys as file paths for access
+- Handle different MIME types with appropriate parsers
+- Build efficient access patterns for related content
+
+### 4. Scope Management
+- Always check scope definitions before processing
+- Handle partial collections appropriately
+- Respect ingredient-specific scope limitations
+
+## Common Issues and Solutions
+
+### Issue 1: Complex Ingredient Structure
+**Problem**: Ingredients object can be complex with many files
+**Solution**: Group ingredients by role and type for easier processing
+
+### Issue 2: Scope Interpretation
+**Problem**: Scope definitions can be complex (books, chapters, verses)
+**Solution**: Build scope parser to handle different scope formats
+
+### Issue 3: Multi-Content Resources
+**Problem**: Single repository may contain multiple content types
+**Solution**: Process ingredients systematically and maintain clear relationships
+
+---
+
+This guide is based on analysis of Door43 Scripture Burrito repositories and should be used alongside the main [Door43 API Developer Guide](../door43-api-developer-guide.md).

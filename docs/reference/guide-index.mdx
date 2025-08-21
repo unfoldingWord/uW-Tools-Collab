@@ -1,0 +1,152 @@
+# Door43 Repository Format Guides - Complete Index
+
+## Overview
+
+This index provides a complete reference to all available guides for handling different types of Door43 repositories. Each guide uses natural language instructions and is implementation-agnostic.
+
+## Guide Categories
+
+### Main Developer Guide
+- **[Door43 API Developer Guide](../door43-api-developer-guide.md)**
+  - Primary guide with common API patterns and workflows
+  - Authentication, discovery, and CRUD operations
+  - Application use cases and best practices
+
+### Resource Container Format Guides
+
+#### Bible Text Resources
+- **[Bible Text Repositories Guide](bible-text-repositories-guide.md)**
+  - **Covers**: UHB (Hebrew Bible), UGNT (Greek NT), ULT (Literal Translation), UST (Simplified Translation)
+  - **Content**: USFM Bible text with or without word alignment
+  - **Key Features**: Complete Bible scope, word alignment processing, large file handling
+
+#### Translation Support Resources
+- **[Translation Notes Repositories Guide](translation-notes-repositories-guide.md)**
+  - **Covers**: TN (Translation Notes)
+  - **Content**: TSV files with verse-specific translation guidance
+  - **Key Features**: Quote/occurrence linking, Translation Academy references
+
+- **[Translation Questions Repositories Guide](translation-questions-repositories-guide.md)**
+  - **Covers**: TQ (Translation Questions)
+  - **Content**: TSV files with quality assurance questions
+  - **Key Features**: Question-answer pairs, checking workflow support
+
+- **[Translation Words Repositories Guide](translation-words-repositories-guide.md)**
+  - **Covers**: TW (Translation Words)
+  - **Content**: Nested Markdown files with biblical term definitions
+  - **Key Features**: Three-category organization (kt/, names/, other/), term cross-referencing
+
+- **[Translation Words Links Repositories Guide](translation-words-links-repositories-guide.md)**
+  - **Covers**: TWL (Translation Words Links)
+  - **Content**: TSV files linking Bible words to TW definitions
+  - **Key Features**: Word-level highlighting, original language cross-referencing
+
+- **[Translation Academy Repositories Guide](translation-academy-repositories-guide.md)**
+  - **Covers**: TA (Translation Academy)
+  - **Content**: Nested Markdown files with training materials
+  - **Key Features**: Three-file article structure, category-based organization
+
+#### Open Bible Stories Resources
+- **[Open Bible Stories Repositories Guide](open-bible-stories-repositories-guide.md)**
+  - **Covers**: OBS (Open Bible Stories), OBS-TN (OBS Translation Notes), OBS-TWL (OBS Translation Words Links)
+  - **Content**: Markdown stories with images, TSV support files
+  - **Key Features**: 50-story structure, frame-based organization, image integration
+
+### Tool-Generated Format Guides
+
+- **[translationCore Format Guide](translationcore-format-guide.md)**
+  - **Covers**: Repositories created by translationCore desktop application
+  - **Content**: Single-book USFM files with tool data
+  - **Key Features**: Multiple USFM variations, .apps/ directory, tc_version detection
+
+- **[translationStudio Format Guide](translationstudio-format-guide.md)**
+  - **Covers**: Repositories created by translationStudio desktop application
+  - **Content**: Numbered files without extensions, completion tracking
+  - **Key Features**: Chapter/story organization, finished_chunks tracking, package_version detection
+
+### Alternative Specification Guides
+
+- **[Scripture Burrito Repositories Guide](scripture-burrito-repositories-guide.md)**
+  - **Covers**: Scripture Burrito format repositories
+  - **Content**: Ingredients-based organization with flexible content types
+  - **Key Features**: metadata.json format, MIME type specification, role-based organization
+
+### Analysis and Planning Guides
+
+- **[Repository Analysis Plan](repository-analysis-plan.md)**
+  - Framework for analyzing new repository types
+  - Analysis strategies and expected outputs
+  - Guide creation methodology
+
+## Quick Reference by Repository Name
+
+### unfoldingWord Organization
+| Repository | Guide | Type | Content |
+|------------|-------|------|---------|
+| `hbo_uhb` | [Bible Text](bible-text-repositories-guide.md) | Original Language | Hebrew Bible |
+| `el-x-koine_ugnt` | [Bible Text](bible-text-repositories-guide.md) | Original Language | Greek New Testament |
+| `en_ult` | [Bible Text](bible-text-repositories-guide.md) | Gateway Translation | English Literal |
+| `en_ust` | [Bible Text](bible-text-repositories-guide.md) | Gateway Translation | English Simplified |
+| `en_tn` | [Translation Notes](translation-notes-repositories-guide.md) | Support Resource | Verse guidance |
+| `en_tq` | [Translation Questions](translation-questions-repositories-guide.md) | Support Resource | Quality questions |
+| `en_tw` | [Translation Words](translation-words-repositories-guide.md) | Support Resource | Term definitions |
+| `en_twl` | [Translation Words Links](translation-words-links-repositories-guide.md) | Support Resource | Word cross-references |
+| `en_ta` | [Translation Academy](translation-academy-repositories-guide.md) | Support Resource | Training materials |
+| `en_obs` | [Open Bible Stories](open-bible-stories-repositories-guide.md) | Story Resource | Bible overview stories |
+| `en_obs-tn` | [Open Bible Stories](open-bible-stories-repositories-guide.md) | Story Support | OBS translation notes |
+| `en_obs-twl` | [Open Bible Stories](open-bible-stories-repositories-guide.md) | Story Support | OBS word links |
+
+### Tool-Generated Repositories
+| Pattern | Guide | Tool | Content |
+|---------|-------|------|---------|
+| `{lang}_{resource}_{book}_book` | [translationCore](translationcore-format-guide.md) | translationCore | Single book projects |
+| `{lang}_{project}_text_{resource}` | [translationStudio](translationstudio-format-guide.md) | translationStudio | Chapter/story projects |
+
+### Scripture Burrito Repositories
+| Organization | Guide | Format | Content |
+|--------------|-------|--------|---------|
+| `BurritoTruck/*` | [Scripture Burrito](scripture-burrito-repositories-guide.md) | Scripture Burrito | Various Bible resources |
+
+## Guide Selection Workflow
+
+### Step 1: Identify Repository Specification
+- Check for manifest files (manifest.yaml, metadata.json, etc.)
+- Determine if it's Resource Container, Scripture Burrito, or tool-generated
+
+### Step 2: Determine Repository Type
+- For Resource Container: Check `dublin_core.subject` field
+- For tool-generated: Check generator information
+- For Scripture Burrito: Check flavor type and ingredients
+
+### Step 3: Select Appropriate Guide
+- Use the repository name patterns and subject information
+- Refer to the quick reference table above
+- Follow the specific guide for detailed processing instructions
+
+## Guide Characteristics
+
+### Consistent Structure
+All guides follow the same natural language format:
+1. **Introduction** - Purpose and scope
+2. **Repository Characteristics** - Key identifying features
+3. **How to Identify** - Detection steps
+4. **Manifest Structure** - Expected format
+5. **File Structure Patterns** - Organization
+6. **Content Analysis** - Sample content
+7. **How to Process** - Step-by-step instructions
+8. **Application Integration** - Preview and editing guidance
+9. **Best Practices** - Optimization tips
+10. **Common Issues** - Problem solutions
+
+### Natural Language Instructions
+- ✅ Step-by-step "How to..." sections
+- ✅ Conversational explanations
+- ✅ Implementation-agnostic guidance
+- ✅ Clear decision points
+- ❌ No JavaScript code
+- ❌ No pseudocode
+- ❌ No programming language specifics
+
+---
+
+This index helps developers quickly find the right guide for any Door43 repository they encounter.

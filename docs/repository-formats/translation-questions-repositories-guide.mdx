@@ -1,0 +1,267 @@
+# Translation Questions Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Translation Questions repositories in Door43. These repositories contain quality assurance questions in TSV format, designed to help translators and checkers verify translation accuracy and comprehension.
+
+**Repository Type Covered:**
+- **Translation Questions**: Quality assurance questions for Bible books
+
+## Repository Characteristics
+
+### Translation Questions Repositories
+
+**Examples**: `en_tq`
+
+**Key Characteristics:**
+- Subject: "Translation Questions"
+- Container type: "help"
+- Content: TSV files with quality assurance questions
+- Format: Tab-separated values
+- Organization: One TSV file per Bible book
+- Scope: Complete Bible coverage
+
+## How to Identify Translation Questions Repositories
+
+**Step 1: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should be "Translation Questions"
+
+**Step 2: Verify Container Type**
+- Check `dublin_core.type` field
+- Should be "help" for Translation Questions repositories
+
+**Step 3: Confirm File Structure**
+- Look for TSV files with "tq_" prefix (tq_GEN.tsv, tq_EXO.tsv, etc.)
+- Files should cover Bible books
+- All files should be in TSV format
+
+## Manifest Structure
+
+### Translation Questions Manifest
+
+```yaml
+dublin_core:
+  identifier: 'tq'                     # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Translation Questions'     # Resource type
+  type: 'help'                        # Help/guidance resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/ult'                        # Literal translation
+    - 'en/ust'                        # Simplified translation
+
+projects:                             # TSV files for each book
+  - identifier: 'gen'                 # Book identifier
+    title: 'Genesis'                  # Human-readable title
+    path: './tq_GEN.tsv'             # TSV file path
+    sort: 1                          # Display order
+    versification: 'ufw'             # Versification system
+    categories: ['bible-ot']         # Old Testament
+```
+
+## File Structure Patterns
+
+### Translation Questions Structure
+
+```
+en_tq/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 tq_GEN.tsv                    # Genesis questions
+├── 📄 tq_EXO.tsv                    # Exodus questions
+├── 📄 tq_LEV.tsv                    # Leviticus questions
+├── ...                              # All Bible books
+├── 📄 tq_MAT.tsv                    # Matthew questions
+├── ...                              # All NT books
+└── 📄 tq_REV.tsv                    # Revelation questions
+```
+
+## TSV Content Structure
+
+### Translation Questions TSV Format
+
+**Column Headers**:
+| Column | Purpose | Example |
+|--------|---------|---------|
+| **Reference** | Verse or passage reference | "1:1-2" or "1:3" |
+| **ID** | Unique question identifier | "xyz1" |
+| **Tags** | Question categories | "checking", "comprehension" |
+| **Quote** | Text being questioned (optional) | "In the beginning" |
+| **Occurrence** | Which occurrence (optional) | "1" |
+| **Question** | The quality assurance question | "What did God create in the beginning?" |
+| **Response** | Expected answer or guidance | "God created the heavens and the earth" |
+
+**Sample TSV Content**:
+```tsv
+Reference	ID	Tags	Quote	Occurrence	Question	Response
+1:1	xyz1	comprehension		1	What did God create in the beginning?	God created the heavens and the earth.
+1:2	xyz2	checking		1	What was the condition of the earth before God shaped it?	The earth was without form and empty, and darkness was upon the face of the deep.
+1:3	xyz3	comprehension	light	1	What did God create on the first day?	God created light and separated it from darkness.
+```
+
+## How to Process Translation Questions Repositories
+
+### Step 1: Verify Repository Type
+
+**Check Manifest Fields**:
+- Confirm subject is "Translation Questions"
+- Verify container type is "help"
+- Check that projects array contains TSV files with "tq_" prefix
+
+### Step 2: Extract Book Coverage
+
+**From Projects Array**:
+- Get list of all books covered
+- Note the TSV file path for each book
+- Check versification system used
+
+**Expected Coverage**:
+- Complete Bible: 66 books
+- Partial collections: Subset of books
+
+### Step 3: Process TSV File Structure
+
+**For Each TSV File**:
+- Download the file content
+- Parse as tab-separated values
+- Validate expected column headers
+- Process question and response content
+
+### Step 4: Organize Questions by Type
+
+**Question Categories** (from Tags column):
+- **Comprehension**: Basic understanding questions
+- **Checking**: Accuracy verification questions
+- **Application**: Practical application questions
+- **Cultural**: Cultural context questions
+
+### Step 5: Build Question Database
+
+**Index Questions**:
+- Group by Bible book and chapter
+- Categorize by question type
+- Create searchable question database
+- Map questions to specific verses
+
+## Content Characteristics
+
+### Question Analysis
+
+**Typical Question Length**: 50-150 characters
+**Response Length**: 100-300 characters
+**Questions per Book**: 20-100 depending on book length
+**Question Types**: 60% comprehension, 25% checking, 15% other
+
+### Question Patterns
+
+**Comprehension Questions**:
+- "What did..." - asking for facts
+- "Who was..." - asking for identification
+- "Why did..." - asking for reasons
+- "How did..." - asking for methods
+
+**Checking Questions**:
+- "Is this translation accurate?"
+- "Does this convey the original meaning?"
+- "Are there any cultural issues?"
+
+## Application Integration
+
+### How to Display Translation Questions in Preview Apps
+
+**Step 1: Organize by Bible Structure**
+- Present questions organized by Bible book
+- Group questions by chapter or passage
+- Show question categories clearly
+
+**Step 2: Present Question-Answer Pairs**
+- Display questions with their expected responses
+- Show verse references for context
+- Enable filtering by question type
+
+**Step 3: Enable Bible Text Integration**
+- Link questions to specific verses in Bible texts
+- Show verse context when displaying questions
+- Enable navigation between questions and Bible content
+
+**Step 4: Provide Study Features**
+- Enable question-based Bible study
+- Show related questions for passages
+- Support systematic book-by-book review
+
+### How to Use Translation Questions in Editing Apps
+
+**Step 1: Set Up Question Access**
+- Configure access to TSV files for target books
+- Set up parsing for TSV format
+- Index questions by reference and type
+
+**Step 2: Enable Quality Checking Workflow**
+- Present questions systematically for translation checking
+- Allow checkers to work through questions in order
+- Enable marking questions as reviewed or resolved
+
+**Step 3: Integrate with Translation Process**
+- Show relevant questions when translators work on specific verses
+- Enable contextual quality checking
+- Provide guidance through question responses
+
+**Step 4: Support Community Checking**
+- Enable multiple checkers to review translations using questions
+- Track checking progress and completion
+- Support collaborative quality assurance processes
+
+## Best Practices
+
+### 1. TSV Processing
+- Validate column headers before processing
+- Handle optional Quote and Occurrence columns
+- Parse question and response content appropriately
+
+### 2. Question Organization
+- Group questions by book and chapter for systematic review
+- Categorize by question type for focused checking
+- Enable filtering and search functionality
+
+### 3. Integration with Bible Texts
+- Link questions to specific verses in Bible translations
+- Show verse context when presenting questions
+- Enable seamless navigation between questions and text
+
+### 4. Quality Assurance Workflow
+- Present questions in logical checking order
+- Track completion and review status
+- Support multiple checker workflows
+
+## Differences from Translation Notes
+
+| Aspect | Translation Questions | Translation Notes |
+|--------|----------------------|-------------------|
+| **Purpose** | Quality assurance checking | Translation guidance |
+| **Content** | Question-answer pairs | Explanatory notes |
+| **Usage** | Post-translation checking | During translation |
+| **Target Users** | Checkers and reviewers | Translators |
+| **Quote Usage** | Optional, for context | Essential for word linking |
+| **Cross-References** | Minimal | Extensive (to TA articles) |
+| **Workflow** | Systematic checking | Contextual guidance |
+
+## Common Issues and Solutions
+
+### Issue 1: Question Relevance
+**Problem**: Some questions may not apply to all translation approaches
+**Solution**: Use question tags to filter relevant questions for specific translation types
+
+### Issue 2: Response Interpretation
+**Problem**: Expected responses may be too specific or rigid
+**Solution**: Treat responses as guidance rather than exact requirements
+
+### Issue 3: Large Question Sets
+**Problem**: Some books have many questions, making review overwhelming
+**Solution**: Implement pagination and progress tracking for systematic review
+
+---
+
+This guide is based on analysis of Door43 Translation Questions repositories and should be used alongside the main [Door43 API Developer Guide](../door43-api-developer-guide.md).

@@ -1,0 +1,1059 @@
+---
+title: Door43 API Developer Guide
+description: Step-by-step instructions for developers building applications that access Bible translation resources
+---
+
+# Door43 API Developer Guide
+
+## Introduction
+
+This guide provides step-by-step instructions for developers building applications that access Bible translation resources through the Door43 Content Service API. It focuses on **common usage patterns and workflows** rather than comprehensive API documentation.
+
+**Important Note:**
+This guide is **not a substitute** for the official [Door43 API Documentation](https://git.door43.org/api/swagger). Instead, it highlights the most commonly used API endpoints and combination patterns that applications typically need for handling Bible translation resources.
+
+**For Complete API Reference:** Visit [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)
+
+**Target Audience:**
+- Developers building Bible translation applications
+- Technical teams integrating Door43 resources  
+- App creators working with multilingual Bible content
+
+## Table of Contents
+
+- [API Overview](#api-overview)
+- [Authentication & Setup](#authentication--setup)
+- [Core Workflows](#core-workflows)
+  - [Getting a Repository](#getting-a-repository)
+  - [Identifying Resource Specifications](#identifying-resource-specifications)
+  - [Processing Resource Manifests](#processing-resource-manifests)
+  - [Fetching Resource Files](#fetching-resource-files)
+  - [CRUD Operations](#crud-operations)
+- [Catalog API Usage](#catalog-api-usage)
+  - [Getting Subjects](#getting-subjects)
+  - [Finding Released Resources](#finding-released-resources)
+  - [Language-Based Discovery](#language-based-discovery)
+  - [Organization Discovery](#organization-discovery)
+- [Application Use Cases](#application-use-cases)
+  - [Preview Application](#preview-application)
+  - [Translation Editing Application](#translation-editing-application)
+- [Complete Application Example](#complete-application-example)
+- [Best Practices](#best-practices)
+- [Error Handling](#error-handling)
+- [Repository-Specific Guides](#repository-specific-guides)
+
+## API Overview
+
+Door43 provides two complementary API categories. This section covers the **most commonly used endpoints** for Bible translation applications:
+
+> **📖 Complete API Reference**: For all available endpoints, parameters, and response formats, see the [official Door43 API documentation](https://git.door43.org/api/swagger).
+
+### Catalog API (Read-Only Resource Discovery)
+- **Base URL**: `https://git.door43.org/api/v1/catalog/`
+- **Purpose**: Discover published and released resources
+- **Authentication**: Optional (higher rate limits with token)
+- **Use Cases**: Preview apps, resource browsing, published content access
+
+### Gitea API (Full Repository Management)
+- **Base URL**: `https://git.door43.org/api/v1/`
+- **Purpose**: Complete repository and file management
+- **Authentication**: Required for write operations
+- **Use Cases**: Content creation, editing apps, repository management
+
+## Authentication & Setup
+
+### Getting an API Token
+
+**Manual Method** (for testing):
+1. **Create Account**: Register at https://git.door43.org/
+2. **Generate Token**: Go to Settings > Applications > Generate New Token
+3. **Store Securely**: Keep token confidential and secure
+
+**Programmatic Method** (for applications):
+```http
+POST /api/v1/users/{username}/tokens
+Authorization: Basic {base64(username:password)}
+Content-Type: application/json
+
+{
+  "name": "MyApp Token",
+  "scopes": ["read:repository", "write:repository"]
+}
+```
+
+**Token Management**:
+```http
+GET /api/v1/users/{username}/tokens
+Authorization: Basic {base64(username:password)}
+```
+
+**Delete Token**:
+```http
+DELETE /api/v1/users/{username}/tokens/{token}
+Authorization: Basic {base64(username:password)}
+```
+
+### Authentication Headers
+
+Door43 uses **two different authorization methods** depending on the operation:
+
+**Basic Authorization** (for token generation only):
+```http
+Authorization: Basic {base64(username:password)}
+Content-Type: application/json
+```
+
+**Token Authorization** (for all API operations):
+```http
+Authorization: token YOUR_API_TOKEN
+Content-Type: application/json
+User-Agent: YourApp/1.0.0
+```
+
+> **Note**: As specified in the [Door43 API documentation](https://git.door43.org/api/swagger), API tokens must be prepended with "token" followed by a space.
+
+### Rate Limits
+
+| Access Type | Requests/Hour | Use Case |
+|-------------|---------------|----------|
+| **Anonymous** | 60 | Basic browsing, testing |
+| **Authenticated** | 1000+ | Production applications |
+
+### When Authorization is Required
+
+**No Authorization Needed** (Public Access):
+- GET public repositories and their content
+- Catalog API endpoints (resource discovery)
+- Public repository file access
+- Organization and user listings
+
+**Authorization Required**:
+- **Private Repositories**: GET private repository content
+- **Repository Management**: CREATE, UPDATE, DELETE repositories
+- **File Operations**: CREATE, UPDATE, DELETE files
+- **Token Management**: Generate, list, delete API tokens
+- **Organization Operations**: Manage organization settings
+
+**Authorization Examples**:
+
+*Public Resource Access (No Auth)*:
+```http
+GET /api/v1/catalog/search?lang=en
+GET /api/v1/repos/unfoldingWord/en_ult
+GET /unfoldingWord/en_ult/raw/branch/master/01-GEN.usfm
+```
+
+*Private/Write Operations (Auth Required)*:
+```http
+GET /api/v1/repos/private-org/private-repo
+Authorization: token YOUR_API_TOKEN
+
+POST /api/v1/user/repos
+Authorization: token YOUR_API_TOKEN
+
+PUT /api/v1/repos/owner/repo/contents/file.txt
+Authorization: token YOUR_API_TOKEN
+```
+
+## Core Workflows
+
+> **💡 Tip**: This section covers the most common API usage patterns. For complete endpoint specifications, query parameters, and response schemas, refer to the [official API documentation](https://git.door43.org/api/swagger).
+
+### Getting a Repository
+
+**Step 1: Repository Information**
+```http
+GET /api/v1/repos/{owner}/{repo}
+```
+
+**Purpose**: Get basic repository metadata and verify access.
+
+**Key Information Extracted**:
+- Repository name and description
+- Default branch (usually 'master')
+- Last updated timestamp
+- Repository size and language
+
+**Example Response Fields**:
+```json
+{
+  "full_name": "unfoldingWord/en_ult",
+  "description": "English Literal Translation",
+  "default_branch": "master",
+  "size": 2048,
+  "updated_at": "2024-01-15T10:30:00Z"
+}
+```
+
+### Identifying Resource Specifications
+
+**Step 2: List Repository Contents**
+```http
+GET /api/v1/repos/{owner}/{repo}/contents?ref={branch}
+```
+
+**Purpose**: Identify specification files to determine resource type.
+
+**Specification Files to Look For**:
+- `manifest.yaml`, `manifest.yml`, or `manifest.json` → **Content inspection required**
+- `metadata.json` → **Content inspection required** 
+- Any manifest file → **Format determined by content structure, not file extension**
+
+> **⚠️ Important**: File extensions don't determine the format. A `manifest.json` could contain Resource Container format, and a `manifest.yaml` could contain translationCore format. Always inspect content structure.
+
+**Step 3: Read Specification File**
+```http
+GET /api/v1/repos/{owner}/{repo}/contents/{spec-file}?ref={branch}
+```
+
+**Processing Steps**:
+1. Decode base64 content if `encoding: "base64"`
+2. **Parse content based on file extension**: YAML parser for `.yaml`/`.yml`, JSON parser for `.json`
+3. **Inspect content structure** to determine actual format type (regardless of file extension)
+4. Extract resource type and version information
+
+> **🔍 Content-Based Detection**: The same content structure can appear in different file formats. Always check the parsed content structure, not the file extension.
+
+### Identifying Manifest Format Types
+
+**All manifest files require content inspection to determine the actual format**:
+
+> **📝 Note**: These content structures can appear in `.yaml`, `.yml`, or `.json` files. The format is determined by the content structure, not the file extension.
+
+**Resource Container (RC) Format**:
+```json
+{
+  "dublin_core": {
+    "conformsto": "rc0.2",
+    "identifier": "ult",
+    "language": {"identifier": "en"}
+  },
+  "projects": [...]
+}
+```
+*Key identifier: `dublin_core` field present*
+
+**TCore Resource Container**:
+```json
+{
+  "resource_container": {
+    "identifier": "ult",
+    "version": "1.0"
+  }
+}
+```
+*Key identifier: `resource_container` field present*
+
+**translationCore Format**:
+```json
+{
+  "project": {"id": "est", "name": "Esther"},
+  "resource": {"id": "TPS", "name": "Texto Puente Simple"},
+  "target_language": {"id": "es-419"},
+  "generator": {"name": "tc-desktop"},
+  "tc_version": 8
+}
+```
+*Key identifiers: `project`, `resource`, `target_language`, `tc_version` fields*
+
+**translationStudio Format**:
+```json
+{
+  "package_version": 7,
+  "format": "usfm",
+  "generator": {"name": "ts-desktop"},
+  "target_language": {"id": "es-419"},
+  "project": {"id": "est"},
+  "type": {"id": "text"}
+}
+```
+*Key identifiers: `package_version`, `generator.name` contains "ts-", `format` field*
+
+### How to Detect Manifest Format Types
+
+**Universal Detection Process** (works for any file extension):
+
+**Step 1: Find Manifest Files**
+- Get the repository file listing
+- Look for files named: `manifest.json`, `manifest.yaml`, `manifest.yml`, `metadata.json`, `metadata.yaml`, or `metadata.yml`
+- Remember: file extension doesn't determine format - content structure does
+
+**Step 2: Try Each Manifest File**
+- For each manifest file found:
+  - Download the file content
+  - If content is base64 encoded, decode it first
+  - Parse using appropriate parser (JSON for .json files, YAML for .yaml/.yml files)
+
+**Step 3: Check Content Structure**
+- Apply format detection based on content structure:
+  - **Resource Container**: Look for `dublin_core` field with `conformsto` value
+  - **Scripture Burrito**: Look for `meta` field with `format: "scripture burrito"`
+  - **TCore Resource Container**: Look for `resource_container` field
+  - **translationCore**: Look for `tc_version` or `generator.name: "tc-desktop"`
+  - **translationStudio**: Look for `package_version` and `generator.name` containing "ts-"
+
+**Step 4: Handle Results**
+- If recognized format found, use that specification information
+- If no recognized format, treat as unknown repository type
+- If multiple manifest files exist, use the first recognized format
+
+**Key Principles**:
+1. **Search for any manifest file** regardless of extension
+2. **Parse using appropriate parser** based on file extension
+3. **Detect format from content structure** not filename
+4. **Handle multiple manifest files** if present
+5. **Provide fallback logic** for unrecognized formats
+
+### Processing Resource Manifests
+
+**Resource Container Structure** (most common):
+```yaml
+dublin_core:
+  identifier: 'ult'           # Resource type identifier
+  language: 
+    identifier: 'en'          # BCP 47 language code
+    direction: 'ltr'          # Text direction
+  subject: 'Aligned Bible'    # Resource category
+  type: 'bundle'              # Container type
+  version: '86'               # Version number
+  relation:                   # Dependencies
+    - 'en/tw'                 # Translation Words
+    - 'hbo/uhb?v=2.1.30'      # Hebrew Bible source
+
+projects:                     # File mappings
+  - identifier: 'gen'         # Book identifier
+    title: 'Genesis'          # Human-readable title
+    path: './01-GEN.usfm'     # File path
+    sort: 1                   # Display order
+    versification: 'ufw'      # Verse numbering
+    categories: ['bible-ot']  # Categorization
+```
+
+**Key Fields for Applications**:
+- `dublin_core.identifier`: Resource type (ult, ust, tn, tw, etc.)
+- `dublin_core.language.identifier`: Language code
+- `dublin_core.subject`: Resource category
+- `projects[]`: Array of files with paths and metadata
+
+### translationCore Format Processing
+
+Based on examples like [this translationCore manifest](https://git.door43.org/abelper8/es-419_tps_est_book/raw/branch/master/manifest.json):
+
+```json
+{
+  "project": {"id": "est", "name": "Esther"},
+  "resource": {"id": "TPS", "name": "Texto Puente Simple"},
+  "target_language": {"id": "es-419", "name": "Español Latin America"},
+  "generator": {"name": "tc-desktop"},
+  "tc_version": 8,
+  "tsv_relation": ["en/ult", "en/ust", "en/ta", "en/tq", "en/tw"]
+}
+```
+
+**Key Fields for translationCore**:
+- `project.id`: Book identifier (est, gen, mat, etc.)
+- `resource.id`: Resource type (TPS, UDB, etc.)
+- `target_language.id`: Target language code
+- `tsv_relation[]`: Related resources (dependencies)
+- `tc_version`: translationCore version
+- `source_translations[]`: Source material information
+
+**File Structure**: translationCore projects typically contain:
+- Single book focus (e.g., Esther only)
+- Multiple USFM file variations for the same book
+- Tool-specific configuration files (settings.json)
+- Optional .apps/ directory with translationCore data
+
+> **📖 Detailed Guide**: For comprehensive translationCore format documentation, see [translationCore Format Guide](docs/translationcore-format-guide.md)
+
+### translationStudio Format Processing
+
+Based on examples like [this translationStudio manifest](https://git.door43.org/abelper8/es-419_est_text_udb/raw/branch/master/manifest.json):
+
+```json
+{
+  "package_version": 7,
+  "format": "usfm",
+  "generator": {"name": "ts-desktop", "build": "148"},
+  "target_language": {"id": "es-419", "name": "Español Latin America"},
+  "project": {"id": "est", "name": "Esther"},
+  "type": {"id": "text", "name": "Text"},
+  "resource": {"id": "udb", "name": "Unlocked Dynamic Bible"},
+  "source_translations": [...]
+}
+```
+
+**Key Fields for translationStudio**:
+- `package_version`: Format version
+- `format`: Content format (usfm, markdown, etc.)
+- `project.id`: Book identifier
+- `resource.id`: Resource type (udb, ulb, etc.)
+- `target_language.id`: Target language code
+- `source_translations[]`: Source material references
+- `finished_chunks[]`: Completion status
+
+**File Structure**: translationStudio projects typically contain:
+- Single book or story collection focus
+- Numbered files without extensions (01, 02, 03...)
+- Chunk-based completion tracking via `finished_chunks[]`
+- Support for both Bible books and Open Bible Stories
+
+> **📖 Detailed Guide**: For comprehensive translationStudio format documentation, see [translationStudio Format Guide](docs/translationstudio-format-guide.md)
+
+### Fetching Resource Files
+
+**Method 1: API Access (with metadata)**
+```http
+GET /api/v1/repos/{owner}/{repo}/contents/{file-path}?ref={branch}
+```
+
+**Method 2: Raw Access (direct content)**
+```http
+GET /{owner}/{repo}/raw/branch/{branch}/{file-path}
+```
+
+**Method 3: Bulk Download**
+```http
+GET /api/v1/repos/{owner}/{repo}/archive/{branch}.zip
+```
+
+**Recommendations**:
+- Use **API access** for file metadata and small files
+- Use **raw access** for large content files (USFM, etc.)
+- Use **bulk download** for complete resource sets
+
+### Handling Different Resource Formats
+
+**Resource Container (RC)**:
+- Complete Bible with all books in single repository
+- Files: `01-GEN.usfm`, `02-EXO.usfm`, etc.
+- Use `projects[]` array to enumerate all books
+
+**translationCore Projects**:
+- Single book per repository
+- Files: `01.usfm`, `02.usfm` (chapters)
+- Use `project.id` to identify book
+- Check repository contents for actual chapter files
+
+**translationStudio Projects**:
+- Single book per repository
+- Files: Various naming patterns depending on version
+- Use `project.id` for book identification
+- Check `finished_chunks[]` for completion status
+
+**How to Find Resource Files**:
+
+**For Resource Container Repositories**:
+- Use the `projects[]` array in the manifest to get complete file list
+- Each project entry has a `path` field pointing to the actual file
+- Files are typically organized as numbered books (01-GEN.usfm, 02-EXO.usfm, etc.)
+
+**For translationCore Repositories**:
+- Look through repository contents for numbered USFM files (01.usfm, 02.usfm, etc.)
+- Sort files by number to get proper chapter order
+- Single book focus - fewer files than complete Bible
+
+**For translationStudio Repositories**:
+- Check the `format` field in manifest to understand content type
+- If format is "usfm", look for USFM files in repository
+- Files may be numbered without extensions (01, 02, 03...)
+
+**For Unknown Repository Types**:
+- Look for common file types: .usfm (Bible text), .tsv (data), .md (documentation)
+- Examine file naming patterns for organization clues
+- Use file extensions to determine content types
+
+### CRUD Operations
+
+**Create Repository**
+```http
+POST /api/v1/user/repos
+Content-Type: application/json
+Authorization: token YOUR_TOKEN
+
+{
+  "name": "my_translation",
+  "description": "My Bible translation",
+  "private": false,
+  "auto_init": true
+}
+```
+
+**Create/Update File**
+
+*Method 1: Full File Replacement (small files)*
+```http
+PUT /api/v1/repos/{owner}/{repo}/contents/{file-path}
+Authorization: token YOUR_TOKEN
+
+{
+  "message": "Add/update file",
+  "content": "BASE64_ENCODED_CONTENT",
+  "sha": "EXISTING_FILE_SHA_IF_UPDATING"
+}
+```
+
+*Method 2: Diff Patch Application (large files, recommended)*
+```http
+POST /api/v1/repos/{owner}/{repo}/diffpatch
+Authorization: token YOUR_TOKEN
+Content-Type: application/json
+
+{
+  "message": "Update file with changes",
+  "patch": "UNIFIED_DIFF_PATCH"
+}
+```
+
+**Diff Patch Benefits**:
+- More efficient for large files (USFM, TSV)
+- Preserves file history and shows exact changes
+- Reduces bandwidth usage
+- Better for collaborative editing
+
+**Delete File**
+```http
+DELETE /api/v1/repos/{owner}/{repo}/contents/{file-path}
+Authorization: token YOUR_TOKEN
+
+{
+  "message": "Delete file",
+  "sha": "FILE_SHA"
+}
+```
+
+## Catalog API Usage
+
+### Getting Subjects
+
+**List Available Subjects**
+```http
+GET /api/v1/catalog/list/subjects
+```
+
+**Response Format**:
+```json
+[
+  {
+    "subject": "Bible",
+    "count": 45
+  },
+  {
+    "subject": "Aligned Bible", 
+    "count": 123
+  }
+]
+```
+
+**Common Subjects**:
+- `Bible` - Original language texts (Hebrew, Greek)
+- `Aligned Bible` - Gateway language translations with word alignment
+- `Translation Notes` - Verse-specific translation guidance
+- `Translation Words` - Biblical term definitions and explanations
+- `Translation Questions` - Quality assurance questions
+- `Translation Academy` - Translation training materials
+- `Translation Words Links` - Cross-references between texts and definitions
+
+### Finding Released Resources
+
+**Search by Subject**
+```http
+GET /api/v1/catalog/search?subject={subject}&stage=prod
+```
+
+**Search by Language**
+```http
+GET /api/v1/catalog/search?lang={language}&stage=prod
+```
+
+**Search by Owner**
+```http
+GET /api/v1/catalog/search?owner={owner}&stage=prod
+```
+
+**Combined Search**
+```http
+GET /api/v1/catalog/search?subject={subject}&lang={language}&owner={owner}&stage=prod
+```
+
+### Language-Based Discovery
+
+**Get Languages with Released Resources**
+```http
+GET /api/v1/catalog/list/languages
+```
+
+**Get Languages for Specific Subject**
+```http
+GET /api/v1/catalog/search?subject={subject}&stage=prod
+```
+*Then extract unique languages from results*
+
+### Organization Discovery
+
+**Get Organizations with Released Resources**
+```http
+GET /api/v1/catalog/list/owners
+```
+
+**Get Organizations for Language + Subject**
+```http
+GET /api/v1/catalog/search?lang={language}&subject={subject}&stage=prod
+```
+*Then extract unique owners from results*
+
+## Application Login Workflow
+
+### Secure Authentication Implementation
+
+**Step 1: User Credentials**
+- Collect username and password securely
+- Use HTTPS for all authentication requests
+- Never store passwords in plain text
+
+**Step 2: Token Generation**
+```http
+POST /api/v1/users/{username}/tokens
+Authorization: Basic {base64(username:password)}
+Content-Type: application/json
+
+{
+  "name": "MyApp-{timestamp}",
+  "scopes": ["read:repository", "write:repository", "read:organization"]
+}
+```
+
+**Response:**
+```json
+{
+  "id": 123,
+  "name": "MyApp-1640995200",
+  "token": "abc123def456...",
+  "scopes": ["read:repository", "write:repository", "read:organization"]
+}
+```
+
+**Step 3: Token Storage**
+- Store token securely (encrypted storage, keychain)
+- Clear credentials from memory
+- Set token expiration handling
+
+**Step 4: Session Validation**
+```http
+GET /api/v1/user
+Authorization: token {stored_token}
+```
+
+**Step 5: Token Cleanup** (on logout)
+```http
+DELETE /api/v1/users/{username}/tokens/{token_id}
+Authorization: token {stored_token}
+```
+
+### Authentication Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| **401** | Invalid credentials | Re-prompt for login |
+| **403** | Token expired/invalid | Generate new token |
+| **422** | Invalid token request | Check request format |
+
+## Application Use Cases
+
+### Preview Application
+
+**Purpose**: Allow users to browse and preview published Bible translation resources.
+
+**Key Features**:
+- Search resources by language, subject, or organization
+- Display resource metadata and content
+- Show relationships between resources
+- Read-only access to published content
+
+**Implementation Steps**:
+
+1. **Resource Discovery Interface**
+   ```http
+   GET /api/v1/catalog/list/subjects
+   GET /api/v1/catalog/list/languages
+   GET /api/v1/catalog/search?subject={subject}&lang={language}
+   ```
+
+2. **Resource Selection**
+   - Present filtered list of available resources
+   - Show resource metadata (title, description, version)
+   - Allow user to select resource pack (ULT + UST + TN + TW + etc.)
+
+3. **Content Display**
+   ```http
+   GET /api/v1/repos/{owner}/{repo}/contents/manifest.yaml
+   GET /{owner}/{repo}/raw/branch/master/{file-path}
+   ```
+
+4. **Navigation Features**
+   - Book/chapter navigation
+   - Cross-reference following
+   - Search within resources
+
+### Translation Editing Application
+
+**Purpose**: Enable users to create and edit their own Bible translation resources using published resources as sources.
+
+**Key Features**:
+- User authentication and organization management
+- Source resource selection from catalog
+- Target resource creation/editing
+- Side-by-side editing interface
+- Efficient diff-based saving for large files
+- Version control and collaboration support
+
+**Implementation Steps**:
+
+1. **User Authentication**
+   ```http
+   GET /api/v1/user
+   GET /api/v1/user/orgs
+   ```
+
+2. **Target Setup**
+   - Select target organization or personal account
+   - Choose target language
+   - Define resource type to create/edit
+
+3. **Source Selection**
+   ```http
+   GET /api/v1/catalog/list/subjects
+   GET /api/v1/catalog/search?subject={subject}
+   GET /api/v1/catalog/search?subject={subject}&lang={source_language}
+   ```
+
+4. **Resource Processing**
+   ```http
+   GET /api/v1/repos/{source_owner}/{source_repo}/contents/manifest.yaml
+   GET /api/v1/repos/{target_owner}/{target_repo}  # Check if exists
+   ```
+
+5. **Content Management**
+   ```http
+   POST /api/v1/user/repos  # Create if needed
+   PUT /api/v1/repos/{owner}/{repo}/contents/{file}  # Update content
+   ```
+
+## Complete Application Example
+
+### Translation Resource Editor
+
+**Scenario**: User wants to create Spanish translation notes based on English source.
+
+**Step-by-Step Workflow**:
+
+#### 1. User Authentication
+
+**1.1. Login Process**
+```http
+POST /api/v1/users/{username}/tokens
+Authorization: Basic {base64(username:password)}
+Content-Type: application/json
+
+{
+  "name": "Translation Editor Session",
+  "scopes": ["read:repository", "write:repository", "read:organization"]
+}
+```
+
+**1.2. Verify Authentication**
+```http
+GET /api/v1/user
+Authorization: token {generated_token}
+```
+*Store token securely and verify user identity*
+
+**1.3. Token Management** (optional)
+```http
+GET /api/v1/users/{username}/tokens
+Authorization: token {generated_token}
+```
+*List existing tokens for management*
+
+#### 2. Organization Selection
+```http
+GET /api/v1/user/orgs
+```
+*Present list of organizations user belongs to*
+
+#### 3. Target Language Selection
+*User selects Spanish (es-419) as target language*
+
+#### 4. Source Resource Selection
+
+**4.1. Subject Selection**
+```http
+GET /api/v1/catalog/list/subjects
+```
+*User selects "Translation Notes"*
+
+**4.2. Source Language Selection**
+```http
+GET /api/v1/catalog/search?subject=Translation Notes&stage=prod
+```
+*Extract available languages, user selects English (en)*
+
+**4.3. Owner Selection**
+```http
+GET /api/v1/catalog/search?subject=Translation Notes&lang=en&stage=prod
+```
+*Extract available owners, user selects "unfoldingWord"*
+
+**4.4. Resource Selection**
+```http
+GET /api/v1/catalog/search?subject=Translation Notes&lang=en&owner=unfoldingWord&stage=prod
+```
+*User selects "en_tn" resource*
+
+#### 5. Target Resource Setup
+
+**5.1. Check Existing Target**
+```http
+GET /api/v1/repos/{user_org}/es-419_tn
+```
+*Check if Spanish TN already exists*
+
+**5.2. Create or Select Target**
+```http
+POST /api/v1/user/repos
+{
+  "name": "es-419_tn",
+  "description": "Spanish Translation Notes",
+  "private": false
+}
+```
+*Create new repository if doesn't exist*
+
+#### 6. Source Processing
+
+**6.1. Get Source Manifest**
+```http
+GET /api/v1/repos/unfoldingWord/en_tn/contents/manifest.yaml
+```
+
+**6.2. Process File Structure**
+*Parse manifest to identify TSV files for each book*
+
+#### 7. Editing Interface
+
+**7.1. Load Source Content**
+```http
+GET /unfoldingWord/en_tn/raw/branch/master/tn_GEN.tsv
+```
+
+**7.2. Load Target Content (if exists)**
+```http
+GET /{user_org}/es-419_tn/raw/branch/master/tn_GEN.tsv
+```
+
+**7.3. Present Side-by-Side Editor**
+- Left panel: English source notes
+- Right panel: Spanish translation (editable)
+- Navigation: Book/chapter selection
+
+#### 8. Content Saving
+
+**8.1. For Small Changes (Recommended - Diff Patch)**
+```http
+POST /api/v1/repos/{user_org}/es-419_tn/diffpatch
+Authorization: token USER_TOKEN
+
+{
+  "message": "Translate Genesis 1:1 notes to Spanish",
+  "patch": "--- tn_GEN.tsv\toriginal\n+++ tn_GEN.tsv\tmodified\n@@ -2,2 +2,2 @@\n-1:1\tabc1\tgrammar\trc://*/ta/man/translate/figs-metaphor\tIn the beginning\t1\tThis phrase introduces the entire Bible.\n+1:1\tabc1\tgrammar\trc://*/ta/man/translate/figs-metaphor\tEn el principio\t1\tEsta frase introduce toda la Biblia."
+}
+```
+
+**8.2. For Complete File Replacement (Large Changes)**
+```http
+PUT /api/v1/repos/{user_org}/es-419_tn/contents/tn_GEN.tsv
+Authorization: token USER_TOKEN
+
+{
+  "message": "Complete Spanish translation of Genesis notes",
+  "content": "BASE64_ENCODED_TSV_CONTENT",
+  "sha": "EXISTING_FILE_SHA"
+}
+```
+
+**Choosing the Right Method**:
+- **Diff Patch**: Single verse/note changes, collaborative editing, preserving history
+- **Full Replacement**: Initial file creation, major restructuring, complete translations
+
+## Best Practices
+
+### Performance Optimization
+
+1. **Cache Catalog Responses**: Catalog data changes infrequently
+2. **Use Raw URLs for Content**: Bypass API overhead for file content
+3. **Implement Pagination**: Handle large resource lists efficiently
+4. **Batch Operations**: Group related API calls
+5. **Parallel Processing**: Load multiple resources concurrently
+6. **Use Diff Patches for Large Files**: Apply incremental changes instead of full file replacement
+
+### Efficient File Updates with Diff Patches
+
+**When to Use Diff Patches**:
+- Large USFM files (Bible books with alignment data)
+- TSV files with many rows (Translation Notes, Questions)
+- Files with collaborative editing
+- When preserving detailed change history
+
+**How to Create Unified Diff Format**:
+- Compare original content with modified content
+- Generate unified diff patch showing changes
+- Use appropriate diff tools or libraries for your programming language
+- Format should show additions (+) and deletions (-) with context lines
+
+**Diff Patch Format Example**:
+```diff
+--- 01-GEN.usfm	original
++++ 01-GEN.usfm	modified
+@@ -1,4 +1,4 @@
+ \id GEN unfoldingWord® Literal Text
+-\h Genesis
++\h Génesis
+ \toc1 The Book of Genesis
+ \toc2 Genesis
+```
+
+**Applying Diff Patch**:
+```http
+POST /api/v1/repos/{owner}/{repo}/diffpatch
+Authorization: token YOUR_TOKEN
+
+{
+  "message": "Translate Genesis header to Spanish",
+  "patch": "--- 01-GEN.usfm\toriginal\n+++ 01-GEN.usfm\tmodified\n@@ -1,4 +1,4 @@\n \\id GEN unfoldingWord® Literal Text\n-\\h Genesis\n+\\h Génesis\n \\toc1 The Book of Genesis\n \\toc2 Genesis"
+}
+```
+
+### Resource Management
+
+1. **Version Tracking**: Always specify branch/tag references
+2. **Dependency Management**: Follow manifest relations
+3. **File Organization**: Maintain consistent directory structures
+4. **Metadata Preservation**: Keep manifest files updated
+
+### User Experience
+
+1. **Progressive Loading**: Load essential content first
+2. **Offline Support**: Cache frequently accessed resources
+3. **Error Recovery**: Provide fallback options
+4. **Search Functionality**: Implement efficient resource discovery
+5. **Auto-Save with Diff Patches**: Save incremental changes automatically
+
+### Editing Application Implementation Tips
+
+**Real-time Diff Generation**:
+- Track original content when file is loaded
+- Generate diffs on each save operation
+- Use debouncing to avoid excessive API calls
+- Show diff preview before applying changes
+
+**Collaborative Editing Support**:
+- Use diff patches to merge concurrent changes
+- Implement conflict resolution for overlapping edits
+- Show change attribution in file history
+- Support branching for experimental changes
+
+**Large File Handling**:
+- Load files in sections for very large resources
+- Use diff patches for partial file updates
+- Implement pagination for TSV files with many rows
+- Cache frequently accessed sections locally
+
+## Error Handling
+
+### Common HTTP Status Codes
+
+| Code | Meaning | Action |
+|------|---------|--------|
+| **200** | Success | Process response |
+| **404** | Not Found | Resource doesn't exist |
+| **403** | Forbidden | Authentication required |
+| **429** | Rate Limited | Implement backoff |
+| **500** | Server Error | Retry with exponential backoff |
+
+### Error Response Format
+
+```json
+{
+  "message": "Error description",
+  "url": "https://docs.example.com/error-info"
+}
+```
+
+### Recommended Error Handling
+
+1. **Implement Retry Logic**: Exponential backoff for transient errors
+2. **Graceful Degradation**: Continue with partial functionality
+3. **User Feedback**: Provide clear error messages
+4. **Logging**: Track errors for debugging
+5. **Fallback Options**: Provide alternative workflows
+
+---
+
+## Summary
+
+This guide covers the **most common workflows and patterns** for Door43 API integration, including:
+
+✅ **Essential Endpoints**: Repository access, content retrieval, and CRUD operations  
+✅ **Resource Discovery**: Catalog API usage for finding published resources  
+✅ **Format Handling**: Resource Container, translationCore, and translationStudio support  
+✅ **Authentication**: Token-based authentication for applications  
+✅ **Performance**: Diff patches, caching, and optimization strategies  
+✅ **Real-World Examples**: Complete application workflows
+
+### What This Guide Doesn't Cover
+
+This guide focuses on practical application patterns and **does not provide**:
+- Complete endpoint documentation (see [official API docs](https://git.door43.org/api/swagger))
+- All available API parameters and response formats
+- Administrative and advanced endpoints
+- Detailed error code specifications
+
+### For Complete API Reference
+
+**Official Documentation**: [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)  
+**JSON Specification**: [https://git.door43.org/swagger.v1.json](https://git.door43.org/swagger.v1.json)
+
+This guide serves as a **practical companion** to the official documentation, helping developers quickly implement common Bible translation application patterns.
+
+## Repository-Specific Guides
+
+For detailed handling of specific repository types, see these specialized guides:
+
+### Resource Container Formats
+- **[Bible Text Repositories Guide](docs/bible-text-repositories-guide.md)** - Original language texts (UHB, UGNT) and gateway translations (ULT, UST)
+- **[Translation Notes Repositories Guide](docs/translation-notes-repositories-guide.md)** - Verse-specific guidance (TN)
+- **[Translation Questions Repositories Guide](docs/translation-questions-repositories-guide.md)** - Quality assurance questions (TQ)
+- **[Translation Words Repositories Guide](docs/translation-words-repositories-guide.md)** - Biblical term definitions (TW)
+- **[Translation Words Links Repositories Guide](docs/translation-words-links-repositories-guide.md)** - Word-to-definition cross-references (TWL)
+- **[Translation Academy Repositories Guide](docs/translation-academy-repositories-guide.md)** - Training materials (TA)
+- **[Open Bible Stories Repositories Guide](docs/open-bible-stories-repositories-guide.md)** - Bible overview stories (OBS, OBS-TN, OBS-TWL)
+
+### Tool-Generated Formats
+- **[translationCore Format Guide](docs/translationcore-format-guide.md)** - Single-book projects from translationCore
+- **[translationStudio Format Guide](docs/translationstudio-format-guide.md)** - Chapter/story projects from translationStudio
+
+### Alternative Specifications
+- **[Scripture Burrito Repositories Guide](docs/scripture-burrito-repositories-guide.md)** - Scripture Burrito format resources
+
+### Migration and Conversion Guides
+- **[RC to Scripture Burrito Conversion Guide](docs/rc-to-scripture-burrito-conversion-guide.md)** - General conversion overview and principles
+- **[Migration Guide Index](docs/migration-guides/migration-guide-index.md)** - Complete index of repository-specific migration guides
+
+#### Repository-Specific Migration Guides
+- **[Bible Text RC to SB Migration](docs/migration-guides/bible-text-rc-to-sb-migration.md)** - UHB, UGNT, ULT, UST
+- **[Translation Notes RC to SB Migration](docs/migration-guides/translation-notes-rc-to-sb-migration.md)** - TN, OBS-TN
+- **[Translation Words RC to SB Migration](docs/migration-guides/translation-words-rc-to-sb-migration.md)** - TW
+- **[Translation Academy RC to SB Migration](docs/migration-guides/translation-academy-rc-to-sb-migration.md)** - TA
+
+### Analysis Tools
+- **[Repository Analysis Plan](docs/repository-analysis-plan.md)** - Framework for analyzing new repository types

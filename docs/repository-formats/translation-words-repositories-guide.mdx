@@ -1,0 +1,328 @@
+# Translation Words Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Translation Words repositories in Door43. These repositories contain biblical term definitions and explanations organized in nested Markdown files, providing translators with comprehensive term references.
+
+**Repository Type Covered:**
+- **Translation Words**: Biblical term definitions and explanations
+
+## Repository Characteristics
+
+### Translation Words Repositories
+
+**Examples**: `en_tw`
+
+**Key Characteristics:**
+- Subject: "Translation Words"
+- Container type: "dict" (dictionary)
+- Content: Nested Markdown files with term definitions
+- Format: Markdown articles
+- Organization: Hierarchical directory structure
+- Scope: Comprehensive biblical terminology
+
+## How to Identify Translation Words Repositories
+
+**Step 1: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should be "Translation Words"
+
+**Step 2: Verify Container Type**
+- Check `dublin_core.type` field
+- Should be "dict" for Translation Words repositories
+
+**Step 3: Confirm File Structure**
+- Look for nested directory structure with Markdown files
+- Should have `bible/` directory with subdirectories
+- Files should be individual term definitions in `.md` format
+
+## Manifest Structure
+
+### Translation Words Manifest
+
+```yaml
+dublin_core:
+  identifier: 'tw'                     # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Translation Words'         # Resource type
+  type: 'dict'                        # Dictionary resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/ult'                        # Literal translation
+    - 'en/ust'                        # Simplified translation
+    - 'en/twl'                        # Translation Words Links
+
+projects:                             # No projects array for dict type
+  # Translation Words use directory structure instead
+```
+
+**Key Differences from Other RC Types**:
+- Container type is "dict" not "bundle" or "help"
+- No `projects[]` array - uses directory structure
+- Files organized in nested directories, not flat structure
+
+## File Structure Patterns
+
+### Translation Words Directory Structure
+
+```
+en_tw/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 README.md                     # Repository documentation
+└── 📁 bible/                        # Main content directory
+    ├── 📁 kt/                       # Key Terms (theological concepts)
+    │   ├── 📄 god.md                # Term definition
+    │   ├── 📄 jesus.md              # Term definition
+    │   ├── 📄 salvation.md          # Term definition
+    │   └── ...                      # More key terms
+    ├── 📁 names/                    # Proper Names (people, places)
+    │   ├── 📄 abraham.md            # Person name
+    │   ├── 📄 jerusalem.md          # Place name
+    │   ├── 📄 moses.md              # Person name
+    │   └── ...                      # More names
+    └── 📁 other/                    # Other Terms (general vocabulary)
+        ├── 📄 bread.md              # General term
+        ├── 📄 shepherd.md           # General term
+        ├── 📄 temple.md             # General term
+        └── ...                      # More general terms
+```
+
+### Directory Categories
+
+| Directory | Purpose | Content Type | Examples |
+|-----------|---------|--------------|----------|
+| **bible/kt/** | Key Terms | Theological concepts | god, jesus, salvation, covenant |
+| **bible/names/** | Proper Names | People and places | abraham, moses, jerusalem, egypt |
+| **bible/other/** | Other Terms | General vocabulary | bread, shepherd, temple, priest |
+
+## Content Analysis
+
+### Translation Words Article Structure
+
+**Standard Article Format**:
+```markdown
+# {term}
+
+## Definition
+
+{Term definition and explanation}
+
+## Translation Suggestions
+
+{Suggestions for translating this term}
+
+## Examples from the Bible stories
+
+{Examples showing how the term is used}
+
+## Bible References
+
+{List of Bible passages where term appears}
+
+## Word Data
+
+{Additional linguistic or cultural information}
+```
+
+**Sample Article** (god.md):
+```markdown
+# God
+
+## Definition
+
+The term "God" refers to the eternal being who created and rules over the universe. God exists as Father, Son, and Holy Spirit.
+
+## Translation Suggestions
+
+* In many languages, the term for "God" is similar to the general term for "god" or "spirit."
+* Some languages may have a more specific term that refers to the one true God.
+
+## Examples from the Bible stories
+
+* God created the heavens and the earth. (01-01)
+* God called the light "day" and the darkness "night." (01-05)
+
+## Bible References
+
+{{topic>god&nocomments}}
+
+## Word Data
+
+* Strong's: H430, G2316
+* Transliteration: elohim (Hebrew), theos (Greek)
+```
+
+## How to Process Translation Words Repositories
+
+### Step 1: Verify Repository Type
+
+**Check Manifest Fields**:
+- Confirm subject is "Translation Words"
+- Verify container type is "dict"
+- Note that there's no projects array (uses directory structure)
+
+### Step 2: Discover File Structure
+
+**Map Directory Organization**:
+- Start with the `bible/` directory
+- Identify the three main categories: kt/, names/, other/
+- Get complete file listing for each category
+
+**Expected File Counts**:
+- Key Terms (kt/): ~100-200 files
+- Names: ~200-400 files  
+- Other Terms: ~100-300 files
+
+### Step 3: Process Individual Articles
+
+**For Each Markdown File**:
+- Download the file content
+- Parse markdown structure
+- Extract definition, translation suggestions, examples
+- Process Bible references and word data
+
+### Step 4: Build Term Index
+
+**Create Searchable Index**:
+- List all terms by category
+- Extract definitions for quick reference
+- Build cross-reference mappings
+- Index by Strong's numbers if available
+
+### Step 5: Handle Cross-References
+
+**Bible References**:
+- Parse Bible reference lists
+- Connect to Bible text repositories
+- Enable navigation to specific verses
+
+**Translation Words Links**:
+- Connect to TWL repository for occurrence data
+- Enable word-level highlighting in Bible texts
+
+## Application Integration
+
+### How to Display Translation Words in Preview Apps
+
+**Step 1: Organize by Categories**
+- Present three main categories clearly: Key Terms, Names, Other Terms
+- Show term counts for each category
+- Enable browsing within categories
+
+**Step 2: Provide Search Functionality**
+- Enable search across all terms
+- Allow filtering by category
+- Support partial term matching
+
+**Step 3: Display Article Content**
+- Render markdown content appropriately
+- Show definition prominently
+- Display translation suggestions clearly
+- Include Bible examples and references
+
+**Step 4: Enable Cross-Navigation**
+- Link to Bible passages mentioned in articles
+- Connect to related terms when referenced
+- Show Strong's number information if available
+
+### How to Use Translation Words in Editing Apps
+
+**Step 1: Set Up Term Database**
+- Index all terms by category and name
+- Create searchable term database
+- Build cross-reference mappings
+
+**Step 2: Enable Contextual Access**
+- Show relevant terms when users select words in Bible texts
+- Use Translation Words Links data for precise targeting
+- Provide quick term lookup functionality
+
+**Step 3: Configure Definition Display**
+- Set up markdown rendering for article content
+- Enable quick definition popups or panels
+- Show translation suggestions prominently
+
+**Step 4: Handle Term Relationships**
+- Connect related terms within articles
+- Show term usage across Bible passages
+- Enable navigation between related concepts
+
+## Content Characteristics
+
+### Term Distribution Analysis
+
+**Key Terms (kt/)**: ~150 articles
+- Theological concepts (god, salvation, covenant)
+- Religious practices (sacrifice, worship, prayer)
+- Spiritual concepts (sin, righteousness, faith)
+
+**Names**: ~300 articles
+- People (abraham, moses, david, jesus)
+- Places (jerusalem, egypt, babylon)
+- Groups (israelites, pharisees, disciples)
+
+**Other Terms**: ~200 articles
+- General vocabulary (bread, shepherd, temple)
+- Cultural concepts (sabbath, passover)
+- Common objects (altar, scroll, tent)
+
+### Article Structure Analysis
+
+**Average Article Length**: 200-800 words
+**Standard Sections**: Definition, Translation Suggestions, Examples, References
+**Cross-References**: Extensive linking to Bible passages
+**Word Data**: Strong's numbers and transliteration when available
+
+## Best Practices
+
+### 1. Directory Navigation
+- Handle nested directory structure efficiently
+- Cache directory listings for better performance
+- Implement hierarchical navigation for users
+
+### 2. Term Indexing
+- Build comprehensive term index for search
+- Index by Strong's numbers for cross-referencing
+- Create category-based organization
+
+### 3. Content Processing
+- Parse markdown content appropriately
+- Handle Bible reference formats correctly
+- Process Strong's numbers and transliteration data
+
+### 4. Cross-Reference Integration
+- Connect to Translation Words Links for occurrence data
+- Link to Bible texts for reference verification
+- Enable seamless navigation between related terms
+
+## Differences from Other Repository Types
+
+| Aspect | Translation Words | Translation Notes | Translation Academy |
+|--------|------------------|-------------------|-------------------|
+| **Container Type** | "dict" | "help" | "man" |
+| **File Format** | Markdown | TSV | Markdown |
+| **Organization** | Nested directories | Flat TSV files | Nested directories |
+| **Content Unit** | Individual terms | Verse-specific notes | Training topics |
+| **Cross-References** | Bible passages | TA articles | Related topics |
+| **Target Use** | Term lookup | Verse guidance | Training material |
+
+## Common Issues and Solutions
+
+### Issue 1: Nested Directory Structure
+**Problem**: Complex directory navigation compared to flat file structures
+**Solution**: Build directory index and implement efficient navigation
+
+### Issue 2: Term Relationships
+**Problem**: Terms reference each other and Bible passages extensively
+**Solution**: Build comprehensive cross-reference index
+
+### Issue 3: Strong's Number Integration
+**Problem**: Strong's numbers need to connect to original language texts
+**Solution**: Implement Strong's number lookup and cross-referencing
+
+---
+
+This guide is based on analysis of Door43 Translation Words repositories and should be used alongside the main [Door43 API Developer Guide](../door43-api-developer-guide.md).

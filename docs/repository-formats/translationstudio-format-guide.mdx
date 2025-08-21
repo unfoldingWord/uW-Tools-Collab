@@ -1,0 +1,541 @@
+# translationStudio Format Handling Guide
+
+## Introduction
+
+This guide provides detailed documentation for handling repositories created by translationStudio desktop application. These repositories show significant variation in structure depending on the resource type (Bible books vs Open Bible Stories) and require specialized processing.
+
+**Key Characteristics:**
+- Single book or story collection focus
+- JSON manifest format with translationStudio-specific fields
+- Numbered content files (chapters or stories)
+- Chunk-based completion tracking
+- Multiple resource type support
+
+## Repository Examples Analysis
+
+Based on analysis of multiple translationStudio repositories:
+
+| Repository | Resource Type | Content | Structure |
+|------------|---------------|---------|-----------|
+| [es-419_obs_text_obs](https://git.door43.org/abelper8/es-419_obs_text_obs) | Open Bible Stories | 50 stories | Numbered stories (01-50) |
+| [es-419_rut_text_ulb](https://git.door43.org/abelper8/es-419_rut_text_ulb) | Bible Book (Ruth) | USFM chapters | Numbered chapters (01-04) |
+| [es-419_eph_text_reg](https://git.door43.org/abelper8/es-419_eph_text_reg) | Bible Book (Ephesians) | USFM chapters | Numbered chapters (01-06) |
+
+## Identification
+
+### Manifest Detection
+
+**File**: `manifest.json` (could also be `.yaml` format with same content structure)
+
+> **⚠️ Important**: Format is determined by **content structure**, not file extension. Always inspect the parsed content.
+
+**Key Identifiers**:
+```json
+{
+  "package_version": 7,
+  "generator": {"name": "ts-desktop", "build": "148"},
+  "format": "usfm",
+  "project": {"id": "obs", "name": "Open Bible Stories"},
+  "type": {"id": "text", "name": "Text"},
+  "resource": {"id": "obs", "name": "Open Bible Stories"}
+}
+```
+
+**How to Detect translationStudio Format**:
+
+**Step 1: Look for Strong Indicators**
+- Check if the manifest has a `package_version` field
+- Check if there's a `generator` field with a name that contains "ts-" (like "ts-desktop")
+- If both are present, it's definitely translationStudio
+
+**Step 2: Look for Structural Pattern** (if step 1 didn't find anything)
+- The manifest should have these fields: `format`, `project`, `type`, and `target_language`
+- The manifest should NOT have these fields: `dublin_core`, `tc_version`, or `meta`
+- If this pattern matches, it's likely translationStudio
+
+**Step 3: Make Decision**
+- If either step 1 or step 2 indicates translationStudio, treat it as translationStudio format
+- Otherwise, it's not a translationStudio repository
+
+## Manifest Structure Variations
+
+### Common Fields (All translationStudio repos)
+
+```json
+{
+  "package_version": 7,              // Format version
+  "generator": {
+    "name": "ts-desktop",             // Tool identifier
+    "build": "148"                    // Tool version
+  },
+  "target_language": {
+    "id": "es-419",                   // BCP 47 language code
+    "name": "Español Latin America",  // Language name
+    "direction": "ltr"                // Text direction
+  },
+  "project": {
+    "id": "obs",                      // Project identifier
+    "name": "Open Bible Stories"      // Human-readable name
+  },
+  "type": {
+    "id": "text",                     // Content type
+    "name": "Text"                    // Content type name
+  },
+  "resource": {
+    "id": "obs",                      // Resource identifier
+    "name": "Open Bible Stories"      // Resource name
+  },
+  "format": "usfm",                   // Content format
+  "finished_chunks": [],              // Completion tracking
+  "source_translations": []           // Source references
+}
+```
+
+### Open Bible Stories Variation
+
+```json
+{
+  "project": {"id": "obs", "name": "Open Bible Stories"},
+  "resource": {"id": "obs", "name": "Open Bible Stories"},
+  "format": "usfm",
+  "finished_chunks": [
+    "01-01", "01-02", "01-03",        // Story-frame completion
+    "02-01", "02-02"
+  ]
+}
+```
+
+### Bible Book Variation
+
+```json
+{
+  "project": {"id": "rut", "name": "Ruth"},
+  "resource": {"id": "ulb", "name": "Unlocked Literal Bible"},
+  "format": "usfm",
+  "finished_chunks": [
+    "01-01", "01-02",                 // Chapter-chunk completion
+    "02-01", "03-01", "04-01"
+  ]
+}
+```
+
+## File Structure Patterns
+
+### Open Bible Stories Structure
+
+```
+es-419_obs_text_obs/
+├── 📄 manifest.json                 # translationStudio manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 front                         # Front matter (title page)
+├── 📄 01                            # Story 1
+├── 📄 02                            # Story 2
+├── 📄 03                            # Story 3
+├── ...                              # Stories 4-49
+└── 📄 50                            # Story 50
+```
+
+**Characteristics**:
+- **50 numbered files** (01-50) for stories
+- **No file extensions** on content files
+- **Story-based content** with narrative structure
+- **Front matter** for introduction/title page
+
+### Bible Book Structure
+
+```
+es-419_rut_text_ulb/
+├── 📄 manifest.json                 # translationStudio manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 front                         # Front matter
+├── 📄 01                            # Chapter 1
+├── 📄 02                            # Chapter 2
+├── 📄 03                            # Chapter 3
+└── 📄 04                            # Chapter 4
+```
+
+**Characteristics**:
+- **Chapter-based numbering** (01-04 for Ruth)
+- **USFM content** in numbered files
+- **Single book focus** (like translationCore)
+- **Front matter** for book introduction
+
+### Content Format Analysis
+
+**Open Bible Stories Content** (file `01`):
+```
+====== La Creación ======
+
+{{https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg?direct&}}
+
+En el principio, Dios creó los cielos y la tierra...
+
+====== Siguiente Historia ======
+```
+
+**Bible Book Content** (file `01`):
+```usfm
+\id RUT unfoldingWord® Literal Text
+\ide UTF-8
+\h Ruth
+\toc1 The Book of Ruth
+\toc2 Ruth
+\toc3 Rut
+\mt Ruth
+
+\c 1
+\p
+\v 1 En los días cuando gobernaban los jueces...
+```
+
+## Processing Guidelines
+
+### 1. Repository Identification
+
+**How to Process a translationStudio Repository**:
+
+**Step 1: Get the Repository File List**
+- Get the complete list of files and directories in the repository
+- This shows you what content is available
+
+**Step 2: Find the Manifest File**
+- Look for files named "manifest.json", "manifest.yaml", or "manifest.yml"
+- Remember that any of these could contain translationStudio format
+
+**Step 3: Read and Parse the Manifest**
+- Download the manifest file content
+- If it's base64 encoded, decode it first
+- Parse as JSON (for .json files) or YAML (for .yaml/.yml files)
+
+**Step 4: Verify It's translationStudio Format**
+- Apply the translationStudio detection steps from the identification section
+- If it doesn't match, handle it as a different repository type
+
+**Step 5: Process the Repository Structure**
+- Now you can extract all the information you need from the manifest and file structure
+
+### 2. Content File Discovery
+
+**How to Find and Organize translationStudio Files**:
+
+**Step 1: Get Key Information from Manifest**
+- Extract the project ID from `manifest.project.id`
+- Extract the resource ID from `manifest.resource.id`
+- Note the format from `manifest.format`
+
+**Step 2: Find the Main Content Files**
+- Look through all repository files for files that are just numbers (like "01", "02", "03")
+- These files have no extensions - they're just numbers
+- Sort them in numerical order so they're organized correctly
+
+**Step 3: Find Special Files**
+- Look for a file named "front" - this is the introduction or title page
+- Look for files with "LICENSE" in the name - this is the license information
+
+**Step 4: Determine Content Type**
+- If the project ID is "obs", these are story files (Open Bible Stories)
+- If the format is "usfm", these are chapter files (Bible chapters)
+- Otherwise, determine the type based on the actual content
+
+**Step 5: Organize File Information**
+- For each content file, note its number, name, and size
+- Prepare both API and raw URLs for accessing the content
+- Note the total number of content files and the number range (like "01-04" or "01-50")
+- Include information about front matter and license files if they exist
+
+### 3. How to Track Completion Status
+
+**Step 1: Get the Completion Data**
+- Look at the `manifest.finished_chunks` array
+- If it doesn't exist, assume nothing has been completed yet
+
+**Step 2: Understand the Completion Format**
+- Each entry looks like "01-01", "01-02", "02-01"
+- The first number is the file number (01, 02, etc.)
+- The second number is the chunk within that file
+
+**Step 3: Group Chunks by File**
+- Go through each finished chunk entry
+- Split it at the "-" to separate file number from chunk number
+- Group all chunks that belong to the same file
+
+**Step 4: Calculate Progress Statistics**
+- Count the total number of finished chunks
+- Count how many files have at least one finished chunk
+- Calculate completion percentage: (files with progress ÷ total files) × 100
+
+**Step 5: Create Progress Summary**
+- You now have detailed completion information
+- You can show users exactly what's been completed
+- You can identify which files need more work
+
+## Differences from Other Formats
+
+| Aspect | Resource Container | translationCore | translationStudio |
+|--------|-------------------|-----------------|-------------------|
+| **Scope** | Complete Bible (66 books) | Single book | Single book/story collection |
+| **Manifest** | `dublin_core` structure | `tc_version` + `project` | `package_version` + `generator` |
+| **Files** | `01-GEN.usfm`, `02-EXO.usfm` | `jon.usfm`, multiple variations | `01`, `02`, `03` (no extensions) |
+| **Content** | Complete USFM with alignment | USFM with alignment | USFM or story format |
+| **Completion** | Not tracked | Not tracked | `finished_chunks[]` array |
+| **Tool Data** | Not present | `.apps/` directory | Embedded in manifest |
+
+## Application Integration
+
+### How to Display translationStudio Resources in Preview Apps
+
+**Step 1: Determine What Type of Content This Is**
+- If the project ID is "obs", this is Open Bible Stories (a collection of 50 stories)
+- If it's anything else (like "rut", "eph"), this is a single Bible book with chapters
+
+**Step 2: Create a Clear Display Title**
+- Combine the project name and resource name for clarity
+- Example: "Open Bible Stories (Open Bible Stories)" or "Ruth (Unlocked Literal Bible)"
+- Include the target language name so users know what language they're viewing
+
+**Step 3: Organize the Content Files for Display**
+- Show all the numbered content files in order
+- Include the file numbers, names, and sizes
+- Provide direct access URLs for each file
+
+**Step 4: Show Completion Status**
+- If completion data exists, show how much has been translated
+- Display the percentage complete and which specific parts are finished
+- This helps users understand the translation progress
+
+**Step 5: Include Additional Information**
+- If there's a front matter file, include it in the navigation
+- Show the content type clearly (stories vs Bible chapters)
+- Make it obvious this is a single book/collection, not a complete Bible
+
+### How to Set Up translationStudio Resources in Editing Apps
+
+**Step 1: Configure the Editor Basics**
+- Set the project ID, resource type, and target language in your editor
+- Configure the content format (usually "usfm" for Bible text, or story format for OBS)
+- Determine if this is stories or chapters based on the project ID
+
+**Step 2: Set Up File Navigation**
+- Configure your editor to handle numbered files without extensions
+- Set up navigation for the file range (like 01-04 for Ruth, or 01-50 for OBS)
+- Include the front matter file in your navigation if it exists
+
+**Step 3: Enable Completion Tracking**
+- Load the completion data from `finished_chunks`
+- Show users which parts have been completed
+- Calculate and display the overall completion percentage
+- Allow users to mark additional chunks as complete
+
+**Step 4: Configure Tool Compatibility**
+- Note which version of translationStudio created this repository
+- Ensure your editing features are compatible with that version
+- Set any version-specific behaviors or limitations
+
+**Step 5: Prepare the Editing Interface**
+- Your editor now knows how to handle the content structure
+- Users can navigate between numbered files easily
+- Progress tracking works correctly
+- The interface matches the translationStudio workflow
+
+## Content Type Handling
+
+### Open Bible Stories (OBS)
+
+**Project Structure**:
+- **Project ID**: `obs`
+- **Resource ID**: `obs`
+- **Content**: 50 numbered story files
+- **Format**: Story format with section markers
+
+**File Content Pattern**:
+```
+====== Story Title ======
+
+{{image_url}}
+
+Story content in narrative format...
+
+====== Next Section ======
+```
+
+**Processing Notes**:
+- Stories are numbered 01-50
+- Each file contains one complete story
+- Images referenced via URL
+- Section markers use `======` delimiters
+
+### Bible Books
+
+**Project Structure**:
+- **Project ID**: Book identifier (`rut`, `eph`, etc.)
+- **Resource ID**: Resource type (`ulb`, `udb`, `reg`, etc.)
+- **Content**: Numbered chapter files
+- **Format**: USFM Bible markup
+
+**File Content Pattern**:
+```usfm
+\id RUT unfoldingWord® Literal Text
+\ide UTF-8
+\h Ruth
+\c 1
+\p
+\v 1 Verse content...
+```
+
+**Processing Notes**:
+- Chapters numbered by actual chapter count
+- Standard USFM 3.0 markup
+- No file extensions on numbered files
+- Each file contains one chapter
+
+## How to Discover translationStudio File Structure
+
+**Step 1: Get the Repository File List**
+- Get the complete list of files and directories in the repository root
+- This shows you what content is available to work with
+
+**Step 2: Determine What Type of Content This Is**
+- Check the `manifest.project.id` field:
+  - If it's "obs", this is Open Bible Stories (50 story files)
+  - If it's anything else (like "rut", "eph"), this is a Bible book (chapter files)
+
+**Step 3: Find the Main Content Files**
+- Look for files that are just numbers with no extension (like "01", "02", "03")
+- These are the main content files - either stories or chapters
+- Sort them by number so they're in the right order
+
+**Step 4: Find Special Files**
+- Look for a file named "front" - this is the introduction or title page
+- Look for files with "LICENSE" in the name - this is the license information
+
+**Step 5: Understand the Completion Status**
+- Check the `manifest.finished_chunks` array to see what's been completed
+- Each entry looks like "01-01", "01-02" meaning file 01, chunk 01 or 02
+- Calculate how much of the translation is finished
+
+**Step 6: Organize Everything You Found**
+- You now know the content type (stories vs chapters)
+- You have the list of content files in order
+- You know which parts are completed
+- You have access to any front matter or license information
+
+**How to Process Completion Status**:
+
+**Step 1: Get the Completion Data**
+- Look at the `manifest.finished_chunks` array
+- If it doesn't exist, assume nothing is completed yet
+
+**Step 2: Understand the Chunk Format**
+- Each entry in `finished_chunks` looks like "01-01", "01-02", "02-01"
+- The first number is the file number (01, 02, etc.)
+- The second number is the chunk within that file
+
+**Step 3: Group by File**
+- Go through each finished chunk
+- Split it at the "-" to get file number and chunk number
+- Group all the chunks by their file number
+
+**Step 4: Calculate Progress**
+- Count how many total chunks are finished
+- Count how many files have at least one finished chunk
+- Calculate the percentage: (files with progress / total files) × 100
+
+**Step 5: Create a Progress Summary**
+- You now know exactly what's been completed
+- You can show progress to users
+- You can identify which files need more work
+
+## Best Practices
+
+### 1. Content Type Detection
+- Check `project.id` for 'obs' (Open Bible Stories)
+- Use `format` field to understand content structure
+- Examine numbered files to determine chapters vs stories
+
+### 2. File Access Patterns
+- **Numbered files have no extensions** (different from other formats)
+- **Sequential numbering** starting from 01
+- **Front matter** often present as separate file
+
+### 3. Completion Tracking
+- Use `finished_chunks` array for progress tracking
+- Parse chunk identifiers as `{file}-{chunk}` format
+- Calculate completion percentage for user feedback
+
+### 4. Content Processing
+- **OBS content**: Handle story format with section markers
+- **Bible content**: Process USFM markup in chapters
+- **Front matter**: Include in navigation and display
+
+## Differences from translationCore
+
+| Aspect | translationCore | translationStudio |
+|--------|-----------------|-------------------|
+| **File Extensions** | `.usfm` files | No extensions on content files |
+| **File Naming** | Multiple USFM variations | Simple numbered files |
+| **Completion** | Not tracked | `finished_chunks[]` array |
+| **Content Types** | Bible books only | Bible books + Open Bible Stories |
+| **Tool Data** | `.apps/` directory | Embedded in manifest |
+| **Generator** | `tc-desktop` | `ts-desktop` |
+
+## Integration Examples
+
+### How to Handle a translationStudio Repository Completely
+
+**Step 1: Get Repository Information**
+- Use the Door43 API to get basic repository metadata
+- This gives you the repository name, description, size, and update information
+
+**Step 2: Get the File Structure**
+- Get a complete listing of all files and directories in the repository
+- This shows you what content and resources are available
+
+**Step 3: Read and Parse the Manifest**
+- Find the manifest file (usually manifest.json)
+- Download and decode the content if needed
+- Parse it as JSON or YAML depending on the file extension
+
+**Step 4: Verify It's translationStudio Format**
+- Apply the translationStudio detection steps from the identification section
+- If it doesn't match, handle it as a different repository type
+
+**Step 5: Understand the Repository Structure**
+- Use the file discovery steps to understand the content organization
+- Identify whether this is Open Bible Stories or a Bible book
+- Find all the numbered content files and special files
+
+**Step 6: Plan Your Content Access Strategy**
+- Remember that content files have no extensions (just numbers like "01", "02")
+- Plan to use raw URLs rather than API URLs for these files
+- Understand the total number of files you'll be working with
+
+**Step 7: Organize Everything for Your Application**
+- You now know the repository type, content structure, and access methods
+- You can determine if this is a story collection or single book
+- You have all the information needed to build your application interface
+
+**How to Access translationStudio Content Files**:
+
+**For Files Without Extensions (numbered files like "01", "02")**:
+- Use raw URLs instead of API URLs
+- The API might not handle files without extensions correctly
+- Raw URLs give you direct access to the content
+
+**For Open Bible Stories Content**:
+- Expect story format with section markers (`======`)
+- Content will be narrative text with image references
+- Parse using story section delimiters
+
+**For Bible Chapter Content**:
+- Expect USFM markup format
+- Content will have standard Bible markers (`\c`, `\v`, etc.)
+- Parse using a USFM parser appropriate for your programming language
+
+**General Access Strategy**:
+- Always use raw URLs for numbered content files
+- Use API URLs only for files with proper extensions (like manifest.json)
+- Handle the different content formats appropriately in your parser
+
+---
+
+This documentation is based on analysis of real translationStudio repositories including [es-419_obs_text_obs](https://git.door43.org/abelper8/es-419_obs_text_obs), [es-419_rut_text_ulb](https://git.door43.org/abelper8/es-419_rut_text_ulb), and [es-419_eph_text_reg](https://git.door43.org/abelper8/es-419_eph_text_reg), and should be used alongside the main [Door43 API Developer Guide](../door43-api-developer-guide.md).

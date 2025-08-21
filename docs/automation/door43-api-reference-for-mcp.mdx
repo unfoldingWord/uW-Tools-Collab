@@ -1,0 +1,435 @@
+# Door43 API Reference for MCP Systems
+
+## Introduction
+
+This reference provides MCP systems with specific Door43 API endpoint information, response formats, and usage patterns optimized for automated repository analysis and guide generation.
+
+## Core API Endpoints for MCP Analysis
+
+### Repository Discovery Endpoints
+
+#### Catalog API (Published Resources Only)
+
+**Get All Published Resources**:
+```
+GET /api/v1/catalog/search?stage=prod
+Purpose: Discover all published resources across all languages and subjects
+Rate Limit: 60/hour (anonymous), 1000+/hour (authenticated)
+Response: Array of catalog entries with metadata
+```
+
+**Filter by Language**:
+```
+GET /api/v1/catalog/search?lang={language}&stage=prod
+Purpose: Find all published resources for specific language
+Example: lang=en, lang=es-419, lang=fr
+Response: Filtered catalog entries for language
+```
+
+**Filter by Subject**:
+```
+GET /api/v1/catalog/search?subject={subject}&stage=prod
+Purpose: Find all published resources of specific type
+Common Subjects: "Bible", "Aligned Bible", "Translation Notes", "Translation Words"
+Response: Filtered catalog entries for subject type
+```
+
+**Get Language Statistics**:
+```
+GET /api/v1/catalog/list/languages
+Purpose: Get list of all languages with published resources
+Response: Array of language objects with resource counts
+```
+
+**Get Subject Statistics**:
+```
+GET /api/v1/catalog/list/subjects
+Purpose: Get list of all subject types with resource counts
+Response: Array of subject objects with resource counts
+```
+
+#### Gitea API (All Repositories)
+
+**Organization Repository Listing**:
+```
+GET /api/v1/repos?org={organization}
+Purpose: Get all repositories in organization (published, draft, private)
+Key Organizations: unfoldingWord, BurritoTruck, es-419_gl, fr_gl
+Response: Array of repository objects with metadata
+```
+
+**User Repository Listing**:
+```
+GET /api/v1/users/{username}/repos
+Purpose: Get all repositories for specific user
+Response: Array of repository objects
+```
+
+**Repository Search**:
+```
+GET /api/v1/repos/search?q={query}
+Purpose: Search repositories by name, description, or content
+Response: Search results with repository objects
+```
+
+### Repository Analysis Endpoints
+
+#### Repository Metadata
+
+**Get Repository Information**:
+```
+GET /api/v1/repos/{owner}/{repo}
+Purpose: Get complete repository metadata
+Key Fields: name, description, size, language, default_branch, created_at, updated_at
+Response: Repository object with complete metadata
+```
+
+**Get Repository Contents**:
+```
+GET /api/v1/repos/{owner}/{repo}/contents/{path}?ref={branch}
+Purpose: List files and directories in repository path
+Parameters: path (optional, defaults to root), ref (optional, defaults to default branch)
+Response: Array of file/directory objects with names, types, sizes
+```
+
+#### File Content Access
+
+**Get File Content (API)**:
+```
+GET /api/v1/repos/{owner}/{repo}/contents/{file_path}?ref={branch}
+Purpose: Get file content with metadata
+Response: File object with content (base64 encoded), size, sha
+Note: Decode base64 content for text files
+```
+
+**Get File Content (Raw)**:
+```
+GET /{owner}/{repo}/raw/branch/{branch}/{file_path}
+Purpose: Get direct file content without encoding
+Response: Raw file content
+Note: More efficient for large files, no metadata included
+```
+
+## MCP-Optimized Request Patterns
+
+### Efficient Discovery Pattern
+
+**Step 1: Broad Discovery**
+```
+# Get overview of all published resources
+GET /api/v1/catalog/search?stage=prod
+
+# Get all unfoldingWord repositories
+GET /api/v1/repos?org=unfoldingWord
+
+# Get all BurritoTruck repositories  
+GET /api/v1/repos?org=BurritoTruck
+```
+
+**Step 2: Targeted Analysis**
+```
+# For each repository of interest:
+GET /api/v1/repos/{owner}/{repo}              # Repository metadata
+GET /api/v1/repos/{owner}/{repo}/contents     # File listing
+```
+
+**Step 3: Specification Detection**
+```
+# Download specification files
+GET /api/v1/repos/{owner}/{repo}/contents/manifest.yaml    # RC format
+GET /api/v1/repos/{owner}/{repo}/contents/metadata.json    # SB format
+GET /api/v1/repos/{owner}/{repo}/contents/manifest.json    # Tool format
+```
+
+### Content Sampling Pattern
+
+**Efficient Sampling Strategy**:
+```
+# Sample representative files of each type
+GET /{owner}/{repo}/raw/branch/master/01-GEN.usfm     # First USFM file
+GET /{owner}/{repo}/raw/branch/master/tn_GEN.tsv      # First TSV file
+GET /{owner}/{repo}/raw/branch/master/bible/kt/god.md # Sample Markdown file
+
+# Use raw URLs for better performance on content files
+# Use API URLs only when metadata is needed
+```
+
+## Response Format Analysis
+
+### Resource Container Manifest Analysis
+
+**Expected YAML Structure**:
+```yaml
+dublin_core:
+  conformsto: 'rc0.2'
+  identifier: '{resource_type}'
+  language:
+    identifier: '{language_code}'
+    direction: '{ltr|rtl}'
+  subject: '{subject_type}'
+  type: '{container_type}'
+  version: '{version_number}'
+  relation: ['{dependency_list}']
+
+projects:
+  - identifier: '{book_code}'
+    title: '{book_title}'
+    path: '{file_path}'
+    sort: {number}
+    versification: '{versification_system}'
+    categories: ['{category_list}']
+```
+
+**MCP Extraction Tasks**:
+- Extract repository classification data
+- Build file structure mapping
+- Identify dependency relationships
+- Analyze content organization patterns
+
+### Scripture Burrito Metadata Analysis
+
+**Expected JSON Structure**:
+```json
+{
+  "meta": {
+    "format": "scripture burrito",
+    "version": "{sb_version}"
+  },
+  "identification": {
+    "name": "{resource_name}",
+    "abbreviation": "{abbreviation}"
+  },
+  "languages": [
+    {
+      "tag": "{language_code}",
+      "direction": "{ltr|rtl}"
+    }
+  ],
+  "type": {
+    "flavorType": {
+      "name": "{flavor_name}"
+    }
+  },
+  "ingredients": {
+    "{file_path}": {
+      "mimeType": "{mime_type}",
+      "role": "{content_role}",
+      "scope": {
+        "book": "{book_code}"
+      }
+    }
+  }
+}
+```
+
+**MCP Extraction Tasks**:
+- Extract flavor type and capabilities
+- Analyze ingredient organization
+- Map scope definitions
+- Identify relationship patterns
+
+### Tool-Generated Manifest Analysis
+
+**translationCore Format**:
+```json
+{
+  "tc_version": 8,
+  "generator": {"name": "tc-desktop"},
+  "project": {"id": "{book}", "name": "{book_name}"},
+  "resource": {"id": "{resource_type}"},
+  "target_language": {"id": "{language}"},
+  "tsv_relation": ["{dependency_list}"]
+}
+```
+
+**translationStudio Format**:
+```json
+{
+  "package_version": 7,
+  "generator": {"name": "ts-desktop"},
+  "project": {"id": "{book}"},
+  "format": "usfm",
+  "finished_chunks": ["{completion_data}"]
+}
+```
+
+## MCP Analysis Algorithms
+
+### Repository Classification Algorithm
+
+```
+INPUT: Repository owner, name, and basic metadata
+OUTPUT: Repository classification and guide assignment
+
+1. GET repository file listing
+2. IDENTIFY specification files present
+3. DOWNLOAD and PARSE specification files
+4. APPLY classification logic:
+   
+   IF manifest.yaml with dublin_core:
+     RETURN "Resource Container"
+     SUBTYPE = dublin_core.subject
+   
+   ELSE IF metadata.json with meta.format="scripture burrito":
+     RETURN "Scripture Burrito"
+     SUBTYPE = type.flavorType.name
+   
+   ELSE IF manifest.json with tc_version:
+     RETURN "translationCore"
+     SUBTYPE = project.id + resource.id
+   
+   ELSE IF manifest.json with package_version:
+     RETURN "translationStudio" 
+     SUBTYPE = project.id + format
+   
+   ELSE:
+     RETURN "Unknown"
+
+5. MAP to existing guide or flag for new guide creation
+```
+
+### Content Pattern Analysis Algorithm
+
+```
+INPUT: Repository classification and file listing
+OUTPUT: Content structure analysis and processing recommendations
+
+1. CATEGORIZE files by extension:
+   - .usfm files: Bible text content
+   - .tsv files: Structured data content  
+   - .md files: Documentation content
+   - .json files: Configuration/data content
+
+2. SAMPLE representative files of each type
+
+3. ANALYZE content structure:
+   - USFM: Extract markers, count verses/chapters, check alignment
+   - TSV: Analyze headers, detect content type, count rows
+   - Markdown: Examine structure, headers, organization
+   - JSON: Parse structure, identify purpose
+
+4. IDENTIFY processing requirements:
+   - Alignment processing needed (for ULT/UST)
+   - Cross-reference handling (for TN/TWL)
+   - Multi-file article assembly (for TA)
+   - Completion tracking (for tS)
+
+5. GENERATE processing recommendations for guides
+```
+
+## Rate Limiting and Performance for MCP
+
+### Rate Limit Management
+
+**Anonymous Access (60/hour)**:
+- Use for initial discovery and testing
+- Suitable for small-scale analysis
+- Implement request queuing for systematic analysis
+
+**Authenticated Access (1000+/hour)**:
+- Required for comprehensive analysis
+- Use for production guide generation
+- Enable analysis of private repositories
+
+### Optimization Strategies
+
+**Caching Strategy**:
+```
+Cache Levels:
+1. Repository Metadata: Cache for 1 hour (changes infrequently)
+2. File Listings: Cache for 30 minutes
+3. Specification Files: Cache for 6 hours (stable between versions)
+4. Content Samples: Cache for 1 hour (for pattern analysis)
+
+Cache Keys:
+- repo-{owner}-{repo}: Repository metadata
+- contents-{owner}-{repo}-{path}: File listings
+- spec-{owner}-{repo}-{file}: Specification files
+- content-{owner}-{repo}-{file}: Content samples
+```
+
+**Request Batching**:
+```
+Batch Strategy:
+1. Collect all repository discovery requests
+2. Execute discovery requests with rate limiting
+3. Batch specification file downloads
+4. Sample content files efficiently
+5. Process analysis in parallel where possible
+```
+
+## Error Handling for MCP Systems
+
+### API Error Responses
+
+**Common Error Codes**:
+- **404**: Repository or file not found
+- **403**: Access denied (private repository or rate limited)
+- **429**: Rate limit exceeded
+- **500**: Server error
+
+**MCP Error Handling Strategy**:
+```
+FOR each API request:
+  TRY:
+    Execute request with rate limiting
+  CATCH 404:
+    Log missing repository/file
+    Continue with analysis
+  CATCH 403:
+    Check if authentication needed
+    Skip private repositories if no access
+  CATCH 429:
+    Implement exponential backoff
+    Retry after rate limit reset
+  CATCH 500:
+    Log server error
+    Retry after delay
+```
+
+### Content Processing Errors
+
+**Malformed Content Handling**:
+```
+FOR each content file:
+  TRY:
+    Parse content according to expected format
+  CATCH parsing error:
+    Log parsing failure
+    Attempt alternative parsing methods
+    Continue analysis with available data
+  CATCH encoding error:
+    Try different encoding methods
+    Log encoding issues
+    Skip file if unrecoverable
+```
+
+## MCP Implementation Checklist
+
+### Setup Requirements
+- [ ] HTTP client with rate limiting support
+- [ ] YAML parser for Resource Container manifests
+- [ ] JSON parser for Scripture Burrito and tool manifests
+- [ ] Text analysis capabilities for content sampling
+- [ ] Markdown generation for guide creation
+- [ ] Caching system for API responses
+- [ ] Error logging and reporting system
+
+### Analysis Capabilities
+- [ ] Repository discovery and classification
+- [ ] Specification file parsing and analysis
+- [ ] Content structure analysis and pattern recognition
+- [ ] Cross-repository comparison and pattern identification
+- [ ] Guide template population and generation
+- [ ] Validation and quality assurance
+
+### Output Generation
+- [ ] Natural language guide generation
+- [ ] Example code and structure generation
+- [ ] Cross-reference and link generation
+- [ ] Migration guide creation
+- [ ] Analysis report generation
+
+---
+
+This API reference enables MCP systems to effectively analyze Door43 repositories and maintain comprehensive, accurate documentation through automated analysis and guide generation.
