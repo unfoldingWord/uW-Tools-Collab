@@ -2,10 +2,7 @@
   "$schema": "https://docs.page/schema.json",
   "name": "Door43 Developer Documentation",
   "description": "Build applications with Door43 Bible translation resources - APIs, formats, and implementation guides",
-  "logo": {
-    "light": "/assets/logo-light.png",
-    "dark": "/assets/logo-dark.png"
-  },
+  "logo": "/assets/icons/logo.svg",
   "favicon": "/assets/favicon.ico",
   "theme": {
     "primary": "#2196F3"

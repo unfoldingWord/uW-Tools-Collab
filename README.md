@@ -163,9 +163,11 @@ docs/
 
 This documentation is licensed under the [MIT License](LICENSE).
 
-## 🌍 **About unfoldingWord**
+## 🌍 **About unfoldingWord & Open Components**
 
 This documentation supports the [unfoldingWord](https://unfoldingword.org/) mission to provide unrestricted biblical content in every language. The Door43 platform hosts comprehensive Bible translation resources that help Mother Tongue Translators create Scripture translations in their heart languages.
+
+These resources are designed for the [Open Components Ecosystem](https://opencomponents.io/) community, enabling developers to build interoperable Bible translation applications with shared, reusable components.
 
 ---
 
