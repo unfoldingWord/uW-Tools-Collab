@@ -1,13 +1,50 @@
 ---
 title: "Door43 Developer Documentation"
-description: "Build applications with Door43 Bible translation resources - APIs, formats, and implementation guides"
+description: "Build applications with Door43's comprehensive Bible translation resources. This documentation provides everything you need to integrate unfoldingWord's ecosystem of aligned Bible texts, translation helps, and quality assurance tools."
 ---
 
-# Door43 Developer Documentation
 
-Build applications with Door43's comprehensive Bible translation resources. This documentation provides everything you need to integrate unfoldingWord's ecosystem of aligned Bible texts, translation helps, and quality assurance tools.
 
 **Built for the [Open Components Ecosystem](https://opencomponents.io/) community** - enabling interoperable Bible translation applications with shared, reusable components.
+
+## 🎯 **New Here? Start with Getting Started**
+
+**[Getting Started](./0-getting-started)** - Essential foundation for understanding the Door43 ecosystem
+
+Before diving into technical implementation, understand why these resources exist and how they help Bible translators worldwide. This foundation will make all the technical guides much more meaningful and help you build better applications.
+
+**⭐ Recommended first read**: [Why unfoldingWord Translation Resources](./1-why-unfoldingword-translation-resources) - Learn the mission and see real-world translation scenarios.
+
+---
+
+## 🎯 **Find What You Need**
+
+### **By Resource Type**
+| Resource | What It Contains | Format Guide |
+|----------|------------------|--------------|
+| **Bible Texts** | USFM Scripture (UHB, UGNT, ULT, UST) | [Bible Text Guide](./4-repository-formats/resource-container/bible-text-repositories-guide) |
+| **Translation Notes** | Verse-level translation guidance | [Translation Notes Guide](./4-repository-formats/resource-container/translation-notes-repositories-guide) |
+| **Translation Words** | Biblical term definitions | [Translation Words Guide](./4-repository-formats/resource-container/translation-words-repositories-guide) |
+| **Translation Questions** | Quality assurance questions | [Translation Questions Guide](./4-repository-formats/resource-container/translation-questions-repositories-guide) |
+| **Translation Academy** | Translation methodology training | [Translation Academy Guide](./4-repository-formats/resource-container/translation-academy-repositories-guide) |
+| **Open Bible Stories** | 50 key Bible stories | [Open Bible Stories Guide](./4-repository-formats/resource-container/open-bible-stories-repositories-guide) |
+
+### **By Technical Task**
+| Task | Primary Guide | Supporting Guides |
+|------|---------------|-------------------|
+| **API Authentication** | [Door43 API Guide](./3-door43-api-developer-guide) | - |
+| **Repository Discovery** | [Door43 API Guide](./3-door43-api-developer-guide) | [Repository Formats](./4-repository-formats/) |
+| **Content Processing** | [Repository Format Guides](./4-repository-formats/) | [unfoldingWord Guide](./2-unfoldingword-developer-guide) |
+| **Format Conversion** | [Migration Guides](./5-migration/) | [Repository Formats](./4-repository-formats/) |
+| **Word-Level Alignment** | [unfoldingWord Guide](./2-unfoldingword-developer-guide) | [Bible Text Guide](./4-repository-formats/resource-container/bible-text-repositories-guide) |
+| **Cross-Reference Linking** | [Translation Words Links Guide](./4-repository-formats/resource-container/translation-words-links-repositories-guide) | [Translation Words Guide](./4-repository-formats/resource-container/translation-words-repositories-guide) |
+
+### **By Experience Level**
+- **🟢 New to Door43**: Start with [Getting Started](./0-getting-started) → [Door43 API Guide](./3-door43-api-developer-guide)
+- **🟡 Familiar with APIs**: Jump to [Repository Formats](./4-repository-formats/) for specific resource handling
+- **🔴 Building Complex Apps**: Begin with [unfoldingWord Developer Guide](./2-unfoldingword-developer-guide) for complete architecture
+
+---
 
 ## 🚀 **Quick Start by Use Case**
 
@@ -52,7 +89,7 @@ Build applications with Door43's comprehensive Bible translation resources. This
 
 ### **[Getting Started](./0-getting-started)**
 **Understand the ecosystem and mission**
-- Why these resources exist and how they help translators
+- [Why unfoldingWord Resources](./1-why-unfoldingword-translation-resources) - Learn the foundational concepts and mission
 - Foundation concepts before diving into technical details
 
 ## 🛠️ **Developer Guides**
@@ -80,43 +117,14 @@ Build applications with Door43's comprehensive Bible translation resources. This
 - Resource Container → Scripture Burrito conversion guides
 - Format-specific migration instructions
 
-### **[Automation & MCP](automation/)**
+### **[Automation & MCP](./automation/)**
 **Automated processing and analysis**
 - MCP instructions for AI systems
 - Batch processing and repository analysis
 
 ---
 
-## 🎯 **Find What You Need**
-
-### **By Resource Type**
-| Resource | What It Contains | Format Guide |
-|----------|------------------|--------------|
-| **Bible Texts** | USFM Scripture (UHB, UGNT, ULT, UST) | [Bible Text Guide](./4-repository-formats/resource-container/bible-text-repositories-guide) |
-| **Translation Notes** | Verse-level translation guidance | [Translation Notes Guide](./4-repository-formats/resource-container/translation-notes-repositories-guide) |
-| **Translation Words** | Biblical term definitions | [Translation Words Guide](./4-repository-formats/resource-container/translation-words-repositories-guide) |
-| **Translation Questions** | Quality assurance questions | [Translation Questions Guide](./4-repository-formats/resource-container/translation-questions-repositories-guide) |
-| **Translation Academy** | Translation methodology training | [Translation Academy Guide](./4-repository-formats/resource-container/translation-academy-repositories-guide) |
-| **Open Bible Stories** | 50 key Bible stories | [Open Bible Stories Guide](./4-repository-formats/resource-container/open-bible-stories-repositories-guide) |
-
-### **By Technical Task**
-| Task | Primary Guide | Supporting Guides |
-|------|---------------|-------------------|
-| **API Authentication** | [Door43 API Guide](./3-door43-api-developer-guide) | - |
-| **Repository Discovery** | [Door43 API Guide](./3-door43-api-developer-guide) | [Repository Formats](./4-repository-formats/) |
-| **Content Processing** | [Repository Format Guides](./4-repository-formats/) | [unfoldingWord Guide](./2-unfoldingword-developer-guide) |
-| **Format Conversion** | [Migration Guides](./5-migration/) | [Repository Formats](./4-repository-formats/) |
-| **Word-Level Alignment** | [unfoldingWord Guide](./2-unfoldingword-developer-guide) | [Bible Text Guide](./4-repository-formats/resource-container/bible-text-repositories-guide) |
-| **Cross-Reference Linking** | [Translation Words Links Guide](./4-repository-formats/resource-container/translation-words-links-repositories-guide) | [Translation Words Guide](./4-repository-formats/resource-container/translation-words-repositories-guide) |
-
-### **By Experience Level**
-- **🟢 New to Door43**: Start with [Getting Started](./0-getting-started) → [Door43 API Guide](./3-door43-api-developer-guide)
-- **🟡 Familiar with APIs**: Jump to [Repository Formats](./4-repository-formats/) for specific resource handling
-- **🔴 Building Complex Apps**: Begin with [unfoldingWord Developer Guide](./2-unfoldingword-developer-guide) for complete architecture
-
----
-
-## ⚡ **Common Patterns**
+## ⚡ **Common Implementation Patterns**
 
 ### **Basic Resource Access**
 ```
@@ -144,20 +152,24 @@ Build applications with Door43's comprehensive Bible translation resources. This
 
 ---
 
-## 🔗 **External Resources**
-
-- **[Door43 Content Service](https://git.door43.org/)** - Live repository browser
-- **[Door43 API Swagger](https://git.door43.org/api/swagger)** - Complete API reference
-- **[unfoldingWord.org](https://unfoldingword.org/)** - Organization and mission
-- **[Resource Container Spec](https://resource-container.readthedocs.io/)** - Official RC specification
-
----
-
 ## 🆘 **Need Help?**
 
+### **Common Questions**
+- **New to Bible translation resources?** → Start with [Getting Started](./0-getting-started)
 - **Can't find a specific resource type?** → Browse [Repository Formats](./4-repository-formats/)
 - **API not working as expected?** → Check [Door43 API Guide](./3-door43-api-developer-guide)
 - **Need to convert formats?** → See [Migration Guides](./5-migration/)
-- **Building automation?** → Explore [MCP Instructions](automation/)
+- **Building automation?** → Explore [MCP Instructions](./automation/)
 
-**Most developers start here**: [Door43 API Developer Guide](./3-door43-api-developer-guide) - practical implementation patterns for common use cases.
+### **Recommended Learning Path**
+**Most developers start here**: [Getting Started](./0-getting-started) → [Door43 API Developer Guide](./3-door43-api-developer-guide) - understand the mission, then learn practical implementation patterns.
+
+---
+
+## 🔗 **External Resources**
+
+- **[Door43 Content Service](https://git.door43.org/)** - Live repository browser and content platform
+- **[Door43 API Swagger](https://git.door43.org/api/swagger)** - Complete API reference documentation
+- **[unfoldingWord.org](https://unfoldingword.org/)** - Organization mission and background
+- **[Resource Container Spec](https://resource-container.readthedocs.io/)** - Official RC specification
+- **[Open Components Ecosystem](https://opencomponents.io/)** - Interoperable Bible translation components

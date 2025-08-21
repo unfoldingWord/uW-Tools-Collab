@@ -2,14 +2,16 @@
   "$schema": "https://docs.page/schema.json",
   "name": "Door43 Developer Documentation",
   "description": "Build applications with Door43 Bible translation resources - APIs, formats, and implementation guides",
-  "logo": "/assets/icons/logo.svg",
-  "favicon": "/assets/favicon.ico",
+  "logo": {
+    "light":"/assets/icons/logo.svg",
+    "dark": "/assets/icons/logo.svg"
+  },
+  "favicon": {
+    "light":"/assets/icons/logo.svg",
+    "dark": "/assets/icons/logo.svg"
+  },
   "theme": {
     "primary": "#2196F3"
-  },
-  "editPage": {
-    "text": "Edit this page on GitHub",
-    "pattern": "https://github.com/unfoldingWord-dev/uW-Tools-Collab/edit/main/{path}"
   },
   "sidebar": [
     {
@@ -18,11 +20,11 @@
       "pages": [
         {
           "title": "Overview",
-          "href": "/0-getting-started"
+          "href": "0-getting-started"
         },
         {
           "title": "Why unfoldingWord Translation Resources",
-          "href": "/1-why-unfoldingword-translation-resources"
+          "href": "1-why-unfoldingword-translation-resources"
         }
       ]
     },
@@ -32,11 +34,11 @@
       "pages": [
         {
           "title": "unfoldingWord Developer Guide", 
-          "href": "/2-unfoldingword-developer-guide"
+          "href": "2-unfoldingword-developer-guide"
         },
         {
           "title": "Door43 API Developer Guide",
-          "href": "/3-door43-api-developer-guide"
+          "href": "3-door43-api-developer-guide"
         }
       ]
     },
@@ -46,38 +48,38 @@
       "pages": [
         {
           "title": "Overview",
-          "href": "/4-repository-formats/"
+          "href": "4-repository-formats/"
         },
         {
           "group": "Resource Container (RC)",
           "pages": [
             {
               "title": "Bible Text Repositories",
-              "href": "/4-repository-formats/resource-container/bible-text-repositories-guide"
+              "href": "4-repository-formats/resource-container/bible-text-repositories-guide"
             },
             {
               "title": "Translation Notes Repositories", 
-              "href": "/4-repository-formats/resource-container/translation-notes-repositories-guide"
+              "href": "4-repository-formats/resource-container/translation-notes-repositories-guide"
             },
             {
               "title": "Translation Questions Repositories",
-              "href": "/4-repository-formats/resource-container/translation-questions-repositories-guide"
+              "href": "4-repository-formats/resource-container/translation-questions-repositories-guide"
             },
             {
               "title": "Translation Words Repositories",
-              "href": "/4-repository-formats/resource-container/translation-words-repositories-guide"
+              "href": "4-repository-formats/resource-container/translation-words-repositories-guide"
             },
             {
               "title": "Translation Words Links Repositories",
-              "href": "/4-repository-formats/resource-container/translation-words-links-repositories-guide"
+              "href": "4-repository-formats/resource-container/translation-words-links-repositories-guide"
             },
             {
               "title": "Translation Academy Repositories",
-              "href": "/4-repository-formats/resource-container/translation-academy-repositories-guide"
+              "href": "4-repository-formats/resource-container/translation-academy-repositories-guide"
             },
             {
               "title": "Open Bible Stories Repositories",
-              "href": "/4-repository-formats/resource-container/open-bible-stories-repositories-guide"
+              "href": "4-repository-formats/resource-container/open-bible-stories-repositories-guide"
             }
           ]
         },
@@ -86,7 +88,7 @@
           "pages": [
             {
               "title": "Scripture Burrito Repositories",
-              "href": "/4-repository-formats/scripture-burrito/scripture-burrito-repositories-guide"
+              "href": "4-repository-formats/scripture-burrito/scripture-burrito-repositories-guide"
             }
           ]
         },
@@ -95,11 +97,11 @@
           "pages": [
             {
               "title": "translationCore Format",
-              "href": "/4-repository-formats/tool-generated/translationcore-format-guide"
+              "href": "4-repository-formats/tool-generated/translationcore-format-guide"
             },
             {
               "title": "translationStudio Format", 
-              "href": "/4-repository-formats/tool-generated/translationstudio-format-guide"
+              "href": "4-repository-formats/tool-generated/translationstudio-format-guide"
             }
           ]
         }
@@ -111,25 +113,25 @@
       "pages": [
         {
           "title": "Overview",
-          "href": "/5-migration/"
+          "href": "5-migration/"
         },
         {
           "title": "Migration Guide Index",
-          "href": "/5-migration/migration-guide-index"
+          "href": "5-migration/migration-guide-index"
         },
         {
           "group": "RC → SB Migration",
           "pages": [
             {
               "title": "General Conversion Guide",
-              "href": "/5-migration/rc-to-sb/general-conversion-guide"
+              "href": "5-migration/rc-to-sb/general-conversion-guide"
             },
             {
               "group": "Bible Text",
               "pages": [
                 {
                   "title": "Original Languages (UHB, UGNT)",
-                  "href": "/5-migration/rc-to-sb/bible-text/original-languages"
+                  "href": "5-migration/rc-to-sb/bible-text/original-languages"
                 }
               ]
             },
@@ -138,15 +140,15 @@
               "pages": [
                 {
                   "title": "Translation Notes",
-                  "href": "/5-migration/rc-to-sb/translation-support/translation-notes"
+                  "href": "5-migration/rc-to-sb/translation-support/translation-notes"
                 },
                 {
                   "title": "Translation Words",
-                  "href": "/5-migration/rc-to-sb/translation-support/translation-words"
+                  "href": "5-migration/rc-to-sb/translation-support/translation-words"
                 },
                 {
                   "title": "Translation Academy",
-                  "href": "/5-migration/rc-to-sb/translation-support/translation-academy"
+                  "href": "5-migration/rc-to-sb/translation-support/translation-academy"
                 }
               ]
             }
@@ -157,15 +159,15 @@
           "pages": [
             {
               "title": "Overview",
-              "href": "/5-migration/tc-to-rc/"
+              "href": "5-migration/tc-to-rc/"
             },
             {
               "title": "Book Integration",
-              "href": "/5-migration/tc-to-rc/book-integration"
+              "href": "5-migration/tc-to-rc/book-integration"
             },
             {
               "title": "New RC Creation",
-              "href": "/5-migration/tc-to-rc/new-rc-creation"
+              "href": "5-migration/tc-to-rc/new-rc-creation"
             }
           ]
         },
@@ -174,7 +176,7 @@
           "pages": [
             {
               "title": "Overview",
-              "href": "/5-migration/ts-to-rc/"
+              "href": "5-migration/ts-to-rc/"
             }
           ]
         }
@@ -186,31 +188,26 @@
       "pages": [
         {
           "title": "Overview",
-          "href": "/automation/"
+          "href": "automation/"
         },
         {
           "title": "MCP Repository Analyzer",
-          "href": "/automation/door43-repository-analyzer-mcp"
+          "href": "automation/door43-repository-analyzer-mcp"
         },
         {
           "title": "MCP Task Specifications",
-          "href": "/automation/mcp-task-specifications"
+          "href": "automation/mcp-task-specifications"
         },
         {
           "title": "MCP Implementation Example",
-          "href": "/automation/mcp-implementation-example"
+          "href": "automation/mcp-implementation-example"
         },
         {
           "title": "Door43 API Reference for MCP",
-          "href": "/automation/door43-api-reference-for-mcp"
+          "href": "automation/door43-api-reference-for-mcp"
         }
       ]
     }
-  ],
-  "analytics": {
-    "googleAnalytics": null
-  },
-  "social": {
-    "github": "https://github.com/unfoldingWord-dev/uW-Tools-Collab"
-  }
+  ]
+
 }
