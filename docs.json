@@ -8,20 +8,17 @@
   },
   "favicon": "/assets/favicon.ico",
   "theme": {
-    "primary": "#2196F3",
-    "sidebar": {
-      "width": 300
-    }
+    "primary": "#2196F3"
   },
   "editPage": {
     "text": "Edit this page on GitHub",
     "pattern": "https://github.com/unfoldingWord-dev/uW-Tools-Collab/edit/main/{path}"
   },
-  "navigation": [
+  "sidebar": [
     {
-      "title": "Getting Started",
+      "group": "Getting Started",
       "icon": "/assets/icons/getting-started.svg",
-      "children": [
+      "pages": [
         {
           "title": "Quick Start Guide",
           "href": "/getting-started/quickstart"
@@ -37,9 +34,9 @@
       ]
     },
     {
-      "title": "Developer Guides",
+      "group": "Developer Guides",
       "icon": "/assets/icons/developer-guide.svg", 
-      "children": [
+      "pages": [
         {
           "title": "unfoldingWord Developer Guide", 
           "href": "/guides/unfoldingword-developer-guide"
@@ -51,9 +48,9 @@
       ]
     },
     {
-      "title": "Repository Formats",
+      "group": "Repository Formats",
       "icon": "/assets/icons/repository.svg",
-      "children": [
+      "pages": [
         {
           "title": "Bible Text Repositories",
           "href": "/repository-formats/bible-text-repositories-guide"
@@ -97,9 +94,9 @@
       ]
     },
     {
-      "title": "Migration & Conversion",
+      "group": "Migration & Conversion",
       "icon": "/assets/icons/migration.svg",
-      "children": [
+      "pages": [
         {
           "title": "Migration Guide Index",
           "href": "/migration/migration-guide-index"
@@ -127,9 +124,9 @@
       ]
     },
     {
-      "title": "Automation & MCP", 
+      "group": "Automation & MCP", 
       "icon": "/assets/icons/automation.svg",
-      "children": [
+      "pages": [
         {
           "title": "MCP Repository Analyzer",
           "href": "/automation/door43-repository-analyzer-mcp"
@@ -149,9 +146,9 @@
       ]
     },
     {
-      "title": "Reference",
+      "group": "Reference",
       "icon": "/assets/icons/reference.svg",
-      "children": [
+      "pages": [
         {
           "title": "Guide Index",
           "href": "/reference/guide-index"
