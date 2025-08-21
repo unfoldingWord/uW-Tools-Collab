@@ -1,313 +1,172 @@
-# Door43 Bible Translation Resources Documentation
+# Door43 Developer Documentation
 
-Comprehensive documentation for understanding and building applications with Door43 Bible translation resources. This documentation covers the unfoldingWord ecosystem, Door43 API integration, and all major repository formats and specifications.
+> **Build applications with Door43 Bible translation resources**  
+> Comprehensive guides for APIs, formats, and implementation patterns
 
-## Documentation Features
+[![Documentation](https://img.shields.io/badge/docs-docs.page-blue)](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/unfoldingWord-dev/uW-Tools-Collab)](https://github.com/unfoldingWord-dev/uW-Tools-Collab/issues)
 
-- **Complete Ecosystem Coverage**: From mission understanding to practical implementation
-- **Three-Level Learning Path**: Conceptual → Architectural → Practical
-- **Natural Language Instructions**: Implementation-agnostic, step-by-step guidance
-- **Comprehensive Repository Coverage**: All major Door43 repository types documented
-- **Migration Guidance**: Complete RC to Scripture Burrito conversion instructions
-- **MCP Integration**: Automated analysis and guide generation instructions
-- **Professional Documentation Site**: Organized with docs.page for beautiful presentation
+## 🚀 **Quick Start**
 
-## Quick Start
-
-### For New Users
-
-**Step 1: Understand the Ecosystem**
+### **Building a Bible Reading App?**
 ```
-Start with: Why unfoldingWord Translation Resources
-Learn about: Translation challenges and ecosystem benefits
-Understand: How resources work together to help translators
+1. Read: Why unfoldingWord Resources → Understand the ecosystem
+2. Implement: Door43 API Guide → Get data from repositories  
+3. Handle: Bible Text Format Guide → Display USFM content
+4. Add: Translation Notes Guide → Show verse-level helps
 ```
+**Time: ~4 hours** | **Difficulty: ⭐⭐ Intermediate**
 
-**Step 2: Learn the Architecture**
+### **Creating a Translation Editor?**
 ```
-Read: unfoldingWord Developer Guide
-Understand: Resource types, alignment system, quality assurance
-Learn: Technical specifications and interconnections
+1. Study: unfoldingWord Developer Guide → Learn resource architecture
+2. Implement: Door43 API Guide → CRUD operations for content
+3. Handle: All Repository Formats → Support multiple resource types
+4. Add: Migration Guides → Convert between formats
 ```
+**Time: ~2-3 days** | **Difficulty: ⭐⭐⭐ Advanced**
 
-**Step 3: Build Applications**
+## 📚 **What's Inside**
+
+This repository contains comprehensive developer documentation for the Door43 ecosystem:
+
+### **[Getting Started](docs/getting-started/)**
+- **Why unfoldingWord Translation Resources** - Mission and ecosystem overview
+- Foundation concepts for Bible translation technology
+
+### **[Developer Guides](docs/guides/)**
+- **unfoldingWord Developer Guide** - Complete resource architecture
+- **Door43 API Developer Guide** - Practical API implementation patterns
+
+### **[Repository Formats](docs/repository-formats/)**
+- **Resource Container** - Standard unfoldingWord formats (Bible texts, translation helps)
+- **Scripture Burrito** - Alternative Bible resource format  
+- **Tool-Generated** - translationCore and translationStudio formats
+
+### **[Migration & Conversion](docs/migration/)**
+- Resource Container → Scripture Burrito conversion guides
+- Format-specific migration instructions
+
+### **[Automation & MCP](docs/automation/)**
+- MCP instructions for AI systems
+- Batch processing and repository analysis tools
+
+## 🎯 **Find What You Need**
+
+| Resource Type | What It Contains | Format Guide |
+|---------------|------------------|--------------|
+| **Bible Texts** | USFM Scripture (UHB, UGNT, ULT, UST) | [Bible Text Guide](docs/repository-formats/resource-container/bible-text-repositories-guide.mdx) |
+| **Translation Notes** | Verse-level translation guidance | [Translation Notes Guide](docs/repository-formats/resource-container/translation-notes-repositories-guide.mdx) |
+| **Translation Words** | Biblical term definitions | [Translation Words Guide](docs/repository-formats/resource-container/translation-words-repositories-guide.mdx) |
+| **Translation Questions** | Quality assurance questions | [Translation Questions Guide](docs/repository-formats/resource-container/translation-questions-repositories-guide.mdx) |
+| **Translation Academy** | Translation methodology training | [Translation Academy Guide](docs/repository-formats/resource-container/translation-academy-repositories-guide.mdx) |
+| **Open Bible Stories** | 50 key Bible stories | [Open Bible Stories Guide](docs/repository-formats/resource-container/open-bible-stories-repositories-guide.mdx) |
+
+## 🛠️ **For Developers**
+
+### **Common Implementation Patterns**
+
+**Basic Resource Access:**
 ```
-Follow: Door43 API Developer Guide
-Implement: API patterns and workflows
-Build: Preview apps, editing tools, or custom applications
-```
-
-### For Experienced Developers
-
-**Jump to Implementation**:
-- **[Door43 API Developer Guide](door43-api-developer-guide.md)** - API patterns and workflows
-- **[Repository Format Guides](#repository-format-guides)** - Specific repository handling
-- **[Migration Guides](#migration-guides)** - RC to Scripture Burrito conversion
-
-## Documentation
-
-### Main Guides
-- **[Complete Developer Guide](door43-api-developer-guide.md)** - Step-by-step guide for Door43 API integration
-- **[API Reference](#api-reference)** - Detailed method documentation
-- **[Examples](#examples)** - Practical usage examples
-
-### Repository Format Guides
-- **[Bible Text Repositories](docs/bible-text-repositories-guide.md)** - UHB, UGNT, ULT, UST handling
-- **[Translation Notes Repositories](docs/translation-notes-repositories-guide.md)** - TN handling
-- **[Translation Questions Repositories](docs/translation-questions-repositories-guide.md)** - TQ handling
-- **[Translation Words Repositories](docs/translation-words-repositories-guide.md)** - TW handling
-- **[Translation Words Links Repositories](docs/translation-words-links-repositories-guide.md)** - TWL handling
-- **[Translation Academy Repositories](docs/translation-academy-repositories-guide.md)** - TA handling
-- **[Open Bible Stories Repositories](docs/open-bible-stories-repositories-guide.md)** - OBS, OBS-TN, OBS-TWL handling
-- **[Scripture Burrito Repositories](docs/scripture-burrito-repositories-guide.md)** - Scripture Burrito format
-- **[translationCore Format](docs/translationcore-format-guide.md)** - translationCore projects
-- **[translationStudio Format](docs/translationstudio-format-guide.md)** - translationStudio projects
-
-### Migration Guides
-- **[Migration Guide Index](docs/migration-guides/migration-guide-index.md)** - Complete migration reference
-- **[Bible Text RC to SB Migration](docs/migration-guides/bible-text-rc-to-sb-migration.md)** - Bible text conversion
-- **[Translation Notes RC to SB Migration](docs/migration-guides/translation-notes-rc-to-sb-migration.md)** - Notes conversion
-- **[Translation Words RC to SB Migration](docs/migration-guides/translation-words-rc-to-sb-migration.md)** - Words conversion
-- **[Translation Academy RC to SB Migration](docs/migration-guides/translation-academy-rc-to-sb-migration.md)** - Academy conversion
-
-## Documentation Organization
-
-### Three-Level Understanding
-This documentation provides **three levels of understanding**:
-
-1. **Conceptual Level**: [Why unfoldingWord Translation Resources](docs/why-unfoldingword-translation-resources.md)
-   - Mission and purpose of Bible translation resources
-   - Real-world translation challenges and solutions
-   - How resources work together to help Mother Tongue Translators
-
-2. **Architectural Level**: [unfoldingWord Developer Guide](unfoldingword-developer-guide.md)
-   - Complete technical specification of the resource ecosystem
-   - Resource types, alignment system, quality assurance
-   - Interconnections and extensibility
-
-3. **Practical Level**: [Door43 API Developer Guide](door43-api-developer-guide.md)
-   - API patterns, workflows, and application examples
-   - Authentication, CRUD operations, best practices
-   - Real-world application use cases
-
-### Professional Documentation Site
-
-**Publish with docs.page**:
-```bash
-# Configure docs.page to point to this repository
-# Documentation automatically deploys from main branch
-# Available at: https://your-domain.docs.page
+1. Authenticate with Door43 API
+2. Discover repositories by language/organization
+3. Detect resource specification (RC/SB/Tool)
+4. Process content according to format guide
 ```
 
-**Features**:
-- Beautiful, responsive design
-- Full-text search across all guides
-- Hierarchical navigation
-- Cross-reference linking
-- Mobile-friendly interface
-
-## API Categories
-
-Door43 provides two distinct categories of API endpoints:
-
-### Catalog API (Read-Only)
-- **Purpose**: Discovery of published and pre-released resources
-- **HTTP Methods**: GET only
-- **Use Cases**: Preview apps, resource discovery, language statistics
-- **Target Resources**: Published resources following supported specifications
-- **Authentication**: Optional (higher rate limits with token)
-
-### Gitea API (Full CRUD)
-- **Purpose**: Complete repository and content management
-- **HTTP Methods**: GET, POST, PUT, PATCH, DELETE
-- **Use Cases**: Content management, authoring tools, repository administration
-- **Target Resources**: All repositories (published, draft, private)
-- **Authentication**: Required for write operations
-
-## API Reference
-
-### Door43Client
-
-Main client class for interacting with Door43 API.
-
-#### Constructor
-
-```javascript
-const client = new Door43Client(options);
+**Multi-Resource Applications:**
+```
+1. Load Bible text as primary content
+2. Overlay translation notes for verse guidance
+3. Link translation words for term definitions
+4. Add translation questions for quality checks
 ```
 
-**Options:**
-- `baseUrl` - Base URL for Door43 (default: 'https://git.door43.org')
-- `token` - API token for authentication (optional)
-- `cacheTTL` - Cache time-to-live in milliseconds (default: 3600000)
-- `requestsPerHour` - Rate limit (default: 60)
+### **API Resources**
+- **[Door43 Content Service](https://git.door43.org/)** - Live repository browser
+- **[Door43 API Swagger](https://git.door43.org/api/swagger)** - Complete API reference
+- **[Resource Container Spec](https://resource-container.readthedocs.io/)** - Official RC specification
 
-#### Discovery Methods
+## 📖 **Documentation Site**
 
-**Catalog API (Published Resources Only):**
-```javascript
-// Discover published resources by language
-const resources = await client.discoverByLanguage('en', 'prod');
+This repository powers a beautiful documentation site built with [docs.page](https://docs.page/):
 
-// Discover published resources by subject
-const bibles = await client.discoverBySubject('Bible', 'prod');
+**🌐 [View Live Documentation](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)**
 
-// Get language statistics
-const languageStats = await client.getLanguageStatistics();
+### **Features:**
+- 🔍 **Full-text search** across all guides
+- 📱 **Mobile-responsive** design
+- 🌙 **Dark/light theme** support
+- 🔗 **Cross-referenced** content
+- ⚡ **Fast loading** with optimized delivery
+
+## 🤝 **Contributing**
+
+We welcome contributions to improve the documentation!
+
+### **How to Contribute:**
+
+1. **Fork** this repository
+2. **Create** a feature branch (`git checkout -b improve-docs`)
+3. **Make** your changes following our [style guidelines](docs/assets/frontmatter-schema.md)
+4. **Test** your changes locally with docs.page preview
+5. **Submit** a pull request
+
+### **Documentation Standards:**
+- Use **natural language** instructions (implementation-agnostic)
+- Include **real examples** from actual Door43 repositories
+- Follow the **frontmatter schema** for metadata
+- Add **cross-references** to related guides
+- Test all **internal links**
+
+### **Content Guidelines:**
+- ✅ Step-by-step instructions that work with any programming language
+- ✅ Clear explanations with real-world examples
+- ✅ Proper frontmatter with categories and tags
+- ❌ Programming language-specific code examples
+- ❌ Pseudocode or algorithms
+
+## 🏗️ **Repository Structure**
+
+```
+docs/
+├── index.mdx                    # Main documentation index
+├── getting-started/             # Introduction and concepts
+├── guides/                      # Core technical guides
+├── repository-formats/          # Format-specific documentation
+│   ├── resource-container/      # RC specification guides
+│   ├── scripture-burrito/       # SB specification guides
+│   └── tool-generated/          # Tool-specific formats
+├── migration/                   # Format conversion guides
+├── automation/                  # MCP and automation tools
+├── reference/                   # Templates and reference materials
+└── assets/                      # Icons, schemas, and resources
 ```
 
-**Gitea API (All Repositories):**
-```javascript
-// Discover all repositories by organization
-const repos = await client.discoverByOrganization('unfoldingWord');
+## 📊 **Documentation Stats**
 
-// Search repositories
-const searchResults = await client.searchRepositories('ult');
+- **📄 29 guides** covering all major Door43 repository types
+- **🔧 3 specifications** (Resource Container, Scripture Burrito, Tool-Generated)
+- **🔄 6 migration guides** for format conversion
+- **🤖 4 automation tools** for MCP systems
+- **📋 Comprehensive cross-references** between all guides
 
-// Get user repositories
-const userRepos = await client.getUserRepositories('username');
+## 🆘 **Getting Help**
 
-// Get repository information
-const repoInfo = await client.getRepositoryInfo('unfoldingWord', 'en_ult');
-```
+- **📖 Browse the docs**: [docs.page/unfoldingWord-dev/uW-Tools-Collab](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)
+- **🐛 Report issues**: [GitHub Issues](https://github.com/unfoldingWord-dev/uW-Tools-Collab/issues)
+- **💬 Ask questions**: [GitHub Discussions](https://github.com/unfoldingWord-dev/uW-Tools-Collab/discussions)
+- **🔗 Official API docs**: [git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 
-#### Specification Detection
+## 📄 **License**
 
-```javascript
-// Detect resource specification type
-const spec = await client.detectSpecification('unfoldingWord', 'en_ult');
-console.log(spec.type); // 'Resource Container', 'Scripture Burrito', or 'TCore Resource Container'
-```
+This documentation is licensed under the [MIT License](LICENSE).
 
-#### Processing Methods
+## 🌍 **About unfoldingWord**
 
-```javascript
-// Complete repository processing
-const result = await client.discoverAndProcessRepository('unfoldingWord', 'en_ult');
+This documentation supports the [unfoldingWord](https://unfoldingword.org/) mission to provide unrestricted biblical content in every language. The Door43 platform hosts comprehensive Bible translation resources that help Mother Tongue Translators create Scripture translations in their heart languages.
 
-// Process organization resources
-const results = await client.processOrganizationResources('unfoldingWord', {
-    language: 'en',
-    resourceType: 'ult'
-});
-```
+---
 
-#### CRUD Methods (Requires Authentication)
-
-```javascript
-// Create repository
-const repo = await client.createRepository({
-    name: 'my-resource',
-    description: 'My Bible resource',
-    private: false
-});
-
-// Update repository
-await client.updateRepository('owner', 'repo', {
-    description: 'Updated description'
-});
-
-// Create or update file
-await client.createOrUpdateFile('owner', 'repo', 'manifest.yaml', content, 'Add manifest');
-
-// Delete file
-await client.deleteFile('owner', 'repo', 'file.txt', 'Remove file', sha);
-
-// Delete repository
-await client.deleteRepository('owner', 'repo');
-```
-
-#### Download Methods
-
-```javascript
-// Download single file
-await client.downloadResource('unfoldingWord', 'en_ult', 'manifest.yaml', './manifest.yaml');
-
-// Download selected resources
-const downloads = await client.downloadSelectedResources(
-    'unfoldingWord', 
-    'en_ult', 
-    resourceList, 
-    './downloads'
-);
-
-// Download repository archive
-const archiveBuffer = await client.downloadRepositoryArchive('unfoldingWord', 'en_ult');
-```
-
-## Supported Specifications
-
-### Resource Container (RC)
-
-- **Detection**: `manifest.yaml` with `dublin_core.conformsto` field
-- **Structure**: Flat USFM files, TSV data files, nested Markdown articles
-- **Examples**: unfoldingWord English resources (`en_ult`, `en_ust`, `en_tn`, etc.)
-
-### Scripture Burrito (SB)
-
-- **Detection**: `metadata.json` with `meta.format: 'scripture burrito'`
-- **Structure**: Ingredients-based file organization
-- **Examples**: Various Scripture Burrito compliant repositories
-
-### TCore Resource Container
-
-- **Detection**: `manifest.json` with `resource_container` section
-- **Structure**: Content-based organization
-- **Examples**: TCore-specific implementations
-
-## Rate Limiting
-
-The client includes built-in rate limiting:
-
-- **Anonymous**: 60 requests/hour
-- **Authenticated**: 1000+ requests/hour (requires API token)
-
-```javascript
-const client = new Door43Client({
-    token: 'your-api-token',
-    requestsPerHour: 1000
-});
-```
-
-## Caching
-
-Intelligent caching reduces API calls:
-
-- **Catalog responses**: Cached for 1 hour by default
-- **Repository metadata**: Cached with TTL
-- **File content**: Not cached (downloaded fresh each time)
-
-```javascript
-const client = new Door43Client({
-    cacheTTL: 1800000 // 30 minutes
-});
-```
-
-## Error Handling
-
-The client includes robust error handling:
-
-- **Automatic retries** with exponential backoff
-- **Rate limit handling** with automatic waiting
-- **Network error recovery**
-- **Graceful degradation** for missing resources
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests: `npm test`
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details.
-
-## Related Resources
-
-- **[Door43 Content Service](https://git.door43.org/)** - Main platform
-- **[unfoldingWord](https://unfoldingword.org/)** - Organization behind the resources
-- **[Resource Container Specification](https://resource-container.readthedocs.io/)** - RC format documentation
-- **[USFM Specification](https://docs.usfm.bible/)** - Bible markup format
-- **[Scripture Burrito](https://docs.burrito.bible/)** - Alternative resource format
+**Ready to build?** Start with the [Door43 API Developer Guide](docs/guides/door43-api-developer-guide.mdx) for practical implementation patterns.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.page/schema.json",
-  "name": "Door43 Bible Translation Resources Documentation",
-  "description": "Complete documentation for understanding and building applications with Door43 Bible translation resources",
+  "name": "Door43 Developer Documentation",
+  "description": "Build applications with Door43 Bible translation resources - APIs, formats, and implementation guides",
   "logo": {
     "light": "/assets/logo-light.png",
     "dark": "/assets/logo-dark.png"
@@ -20,16 +20,12 @@
       "icon": "/assets/icons/getting-started.svg",
       "pages": [
         {
-          "title": "Quick Start Guide",
-          "href": "/getting-started/quickstart"
+          "title": "Overview",
+          "href": "/getting-started/"
         },
         {
           "title": "Why unfoldingWord Translation Resources",
           "href": "/getting-started/why-unfoldingword-translation-resources"
-        },
-        {
-          "title": "Resource Ecosystem Overview",
-          "href": "/getting-started/project-summary"
         }
       ]
     },
@@ -37,6 +33,10 @@
       "group": "Developer Guides",
       "icon": "/assets/icons/developer-guide.svg", 
       "pages": [
+        {
+          "title": "Overview",
+          "href": "/guides/"
+        },
         {
           "title": "unfoldingWord Developer Guide", 
           "href": "/guides/unfoldingword-developer-guide"
@@ -52,44 +52,63 @@
       "icon": "/assets/icons/repository.svg",
       "pages": [
         {
-          "title": "Bible Text Repositories",
-          "href": "/repository-formats/bible-text-repositories-guide"
+          "title": "Overview",
+          "href": "/repository-formats/"
         },
         {
-          "title": "Translation Notes Repositories", 
-          "href": "/repository-formats/translation-notes-repositories-guide"
+          "group": "Resource Container (RC)",
+          "pages": [
+            {
+              "title": "Bible Text Repositories",
+              "href": "/repository-formats/resource-container/bible-text-repositories-guide"
+            },
+            {
+              "title": "Translation Notes Repositories", 
+              "href": "/repository-formats/resource-container/translation-notes-repositories-guide"
+            },
+            {
+              "title": "Translation Questions Repositories",
+              "href": "/repository-formats/resource-container/translation-questions-repositories-guide"
+            },
+            {
+              "title": "Translation Words Repositories",
+              "href": "/repository-formats/resource-container/translation-words-repositories-guide"
+            },
+            {
+              "title": "Translation Words Links Repositories",
+              "href": "/repository-formats/resource-container/translation-words-links-repositories-guide"
+            },
+            {
+              "title": "Translation Academy Repositories",
+              "href": "/repository-formats/resource-container/translation-academy-repositories-guide"
+            },
+            {
+              "title": "Open Bible Stories Repositories",
+              "href": "/repository-formats/resource-container/open-bible-stories-repositories-guide"
+            }
+          ]
         },
         {
-          "title": "Translation Questions Repositories",
-          "href": "/repository-formats/translation-questions-repositories-guide"
+          "group": "Scripture Burrito (SB)",
+          "pages": [
+            {
+              "title": "Scripture Burrito Repositories",
+              "href": "/repository-formats/scripture-burrito/scripture-burrito-repositories-guide"
+            }
+          ]
         },
         {
-          "title": "Translation Words Repositories",
-          "href": "/repository-formats/translation-words-repositories-guide"
-        },
-        {
-          "title": "Translation Words Links Repositories",
-          "href": "/repository-formats/translation-words-links-repositories-guide"
-        },
-        {
-          "title": "Translation Academy Repositories",
-          "href": "/repository-formats/translation-academy-repositories-guide"
-        },
-        {
-          "title": "Open Bible Stories Repositories",
-          "href": "/repository-formats/open-bible-stories-repositories-guide"
-        },
-        {
-          "title": "Scripture Burrito Repositories",
-          "href": "/repository-formats/scripture-burrito-repositories-guide"
-        },
-        {
-          "title": "translationCore Format",
-          "href": "/repository-formats/translationcore-format-guide"
-        },
-        {
-          "title": "translationStudio Format", 
-          "href": "/repository-formats/translationstudio-format-guide"
+          "group": "Tool-Generated Formats",
+          "pages": [
+            {
+              "title": "translationCore Format",
+              "href": "/repository-formats/tool-generated/translationcore-format-guide"
+            },
+            {
+              "title": "translationStudio Format", 
+              "href": "/repository-formats/tool-generated/translationstudio-format-guide"
+            }
+          ]
         }
       ]
     },
@@ -97,6 +116,10 @@
       "group": "Migration & Conversion",
       "icon": "/assets/icons/migration.svg",
       "pages": [
+        {
+          "title": "Overview",
+          "href": "/migration/"
+        },
         {
           "title": "Migration Guide Index",
           "href": "/migration/migration-guide-index"
@@ -128,6 +151,10 @@
       "icon": "/assets/icons/automation.svg",
       "pages": [
         {
+          "title": "Overview",
+          "href": "/automation/"
+        },
+        {
           "title": "MCP Repository Analyzer",
           "href": "/automation/door43-repository-analyzer-mcp"
         },
@@ -149,6 +176,10 @@
       "group": "Reference",
       "icon": "/assets/icons/reference.svg",
       "pages": [
+        {
+          "title": "Overview",
+          "href": "/reference/"
+        },
         {
           "title": "Guide Index",
           "href": "/reference/guide-index"

@@ -1,0 +1,89 @@
+---
+title: Repository Formats Overview
+description: Complete guide to all repository formats and specifications supported by Door43
+---
+
+# Repository Formats Overview
+
+This section provides comprehensive documentation for all repository formats and specifications used in the Door43 ecosystem. The guides are organized by specification type for better clarity and navigation.
+
+## 📋 **Specifications Covered**
+
+### 🗂️ **Resource Container (RC)**
+The primary unfoldingWord specification for Bible translation resources.
+
+- **[Bible Text Repositories](resource-container/bible-text-repositories-guide)** - UHB, UGNT, ULT, UST
+- **[Translation Notes Repositories](resource-container/translation-notes-repositories-guide)** - TN, OBS-TN  
+- **[Translation Questions Repositories](resource-container/translation-questions-repositories-guide)** - TQ
+- **[Translation Words Repositories](resource-container/translation-words-repositories-guide)** - TW
+- **[Translation Words Links Repositories](resource-container/translation-words-links-repositories-guide)** - TWL
+- **[Translation Academy Repositories](resource-container/translation-academy-repositories-guide)** - TA
+- **[Open Bible Stories Repositories](resource-container/open-bible-stories-repositories-guide)** - OBS, OBS-TN, OBS-TWL
+
+### 🌯 **Scripture Burrito (SB)**
+Alternative Bible resource specification with flexible organization.
+
+- **[Scripture Burrito Repositories](scripture-burrito/scripture-burrito-repositories-guide)** - SB format handling
+
+### 🛠️ **Tool-Generated Formats**
+Special formats created by translation tools with unique structures.
+
+- **[translationCore Format](tool-generated/translationcore-format-guide)** - Single-book projects from translationCore
+- **[translationStudio Format](tool-generated/translationstudio-format-guide)** - Chapter/story projects from translationStudio
+
+## 🎯 **How to Use These Guides**
+
+### **By Specification Type**
+- **Resource Container**: Most common format, used by unfoldingWord for all major resources
+- **Scripture Burrito**: Alternative format, more flexible but less common
+- **Tool-Generated**: Special handling for tool-specific formats
+
+### **By Resource Type**
+- **Bible Texts**: UHB, UGNT, ULT, UST → Resource Container guides
+- **Translation Helps**: TN, TQ, TW, TWL, TA → Resource Container guides  
+- **Stories**: OBS → Resource Container guides
+- **Tool Projects**: → Tool-Generated guides
+- **Alternative Formats**: → Scripture Burrito guides
+
+### **By Use Case**
+- **Building Preview Apps**: Focus on Resource Container guides (most content)
+- **Creating Editing Tools**: All specifications for comprehensive support
+- **Format Conversion**: Migration guides for RC ↔ SB conversion
+- **Tool Integration**: Tool-Generated guides for specific tool support
+
+## 📊 **Specification Comparison**
+
+| Aspect | Resource Container | Scripture Burrito | Tool-Generated |
+|--------|-------------------|-------------------|----------------|
+| **Primary Use** | Standard unfoldingWord resources | Alternative Bible resources | Tool-specific projects |
+| **File Organization** | Flat structure with manifest.yaml | Ingredients-based organization | Tool-specific patterns |
+| **Metadata Format** | YAML manifest | JSON metadata | Tool-specific formats |
+| **Content Types** | USFM, TSV, Markdown | Flexible MIME types | Tool-dependent |
+| **Complexity** | Medium | High | Variable |
+| **Adoption** | Very High | Low | Tool-specific |
+
+## 🚀 **Getting Started**
+
+### **New to Door43 Resources?**
+1. Start with [Resource Container Bible Text guide](resource-container/bible-text-repositories-guide)
+2. Learn the basic patterns and file structures
+3. Explore other Resource Container guides as needed
+
+### **Need Alternative Formats?**
+1. Check [Scripture Burrito guide](scripture-burrito/scripture-burrito-repositories-guide) 
+2. Use [Migration guides](../migration/) for format conversion
+
+### **Working with Tool Projects?**
+1. Identify the tool that created the project
+2. Use the appropriate [Tool-Generated guide](tool-generated/)
+
+## 🔗 **Related Documentation**
+
+- **[Getting Started](../getting-started/)** - Introduction to the ecosystem
+- **[Developer Guides](../guides/)** - Technical implementation guides
+- **[Migration & Conversion](../migration/)** - Format conversion guides
+- **[API Reference](../guides/door43-api-developer-guide)** - Complete API documentation
+
+---
+
+**Need help choosing the right guide?** Most Door43 resources use the Resource Container specification, so start there unless you know you're working with Scripture Burrito or tool-generated content.
