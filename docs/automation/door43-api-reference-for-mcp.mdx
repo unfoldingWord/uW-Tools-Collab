@@ -52,7 +52,7 @@ Response: Array of subject objects with resource counts
 
 **Organization Repository Listing**:
 ```
-GET /api/v1/repos?org={organization}
+GET /api/v1/orgs/{org}/repos
 Purpose: Get all repositories in organization (published, draft, private)
 Key Organizations: unfoldingWord, BurritoTruck, es-419_gl, fr_gl
 Response: Array of repository objects with metadata
@@ -86,9 +86,14 @@ Response: Repository object with complete metadata
 
 **Get Repository Contents**:
 ```
-GET /api/v1/repos/{owner}/{repo}/contents/{path}?ref={branch}
-Purpose: List files and directories in repository path
-Parameters: path (optional, defaults to root), ref (optional, defaults to default branch)
+GET /api/v1/repos/{owner}/{repo}/contents/{filepath}?ref={branch}
+Purpose: Get metadata and contents of a file, or list files and directories in repository path
+Parameters: filepath (path to file/directory), ref (optional, defaults to default branch)
+Response: File object with content (if file) or array of file/directory objects (if directory)
+
+GET /api/v1/repos/{owner}/{repo}/contents?ref={branch}
+Purpose: List files and directories in repository root
+Parameters: ref (optional, defaults to default branch)
 Response: Array of file/directory objects with names, types, sizes
 ```
 
@@ -96,7 +101,7 @@ Response: Array of file/directory objects with names, types, sizes
 
 **Get File Content (API)**:
 ```
-GET /api/v1/repos/{owner}/{repo}/contents/{file_path}?ref={branch}
+GET /api/v1/repos/{owner}/{repo}/contents/{filepath}?ref={branch}
 Purpose: Get file content with metadata
 Response: File object with content (base64 encoded), size, sha
 Note: Decode base64 content for text files
@@ -104,7 +109,7 @@ Note: Decode base64 content for text files
 
 **Get File Content (Raw)**:
 ```
-GET /{owner}/{repo}/raw/branch/{branch}/{file_path}
+GET /{owner}/{repo}/raw/branch/{branch}/{filepath}
 Purpose: Get direct file content without encoding
 Response: Raw file content
 Note: More efficient for large files, no metadata included
@@ -120,10 +125,10 @@ Note: More efficient for large files, no metadata included
 GET /api/v1/catalog/search?stage=prod
 
 # Get all unfoldingWord repositories
-GET /api/v1/repos?org=unfoldingWord
+GET /api/v1/orgs/unfoldingWord/repos
 
 # Get all BurritoTruck repositories  
-GET /api/v1/repos?org=BurritoTruck
+GET /api/v1/orgs/BurritoTruck/repos
 ```
 
 **Step 2: Targeted Analysis**

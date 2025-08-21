@@ -1,0 +1,340 @@
+# Translation Academy Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Translation Academy repositories in Door43. These repositories contain translation training materials organized as nested Markdown articles, providing comprehensive methodology and cultural guidance for translators.
+
+**Repository Type Covered:**
+- **Translation Academy**: Translation methodology and training materials
+
+## Repository Characteristics
+
+### Translation Academy Repositories
+
+**Examples**: `en_ta`
+
+**Key Characteristics:**
+- Subject: "Translation Academy"
+- Container type: "man" (manual)
+- Content: Nested Markdown files with training articles
+- Format: Markdown articles in categorized directories
+- Organization: Hierarchical topic structure
+- Scope: Comprehensive translation training
+
+## How to Identify Translation Academy Repositories
+
+**Step 1: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should be "Translation Academy"
+
+**Step 2: Verify Container Type**
+- Check `dublin_core.type` field
+- Should be "man" for Translation Academy repositories
+
+**Step 3: Confirm File Structure**
+- Look for nested directory structure with Markdown files
+- Should have multiple category directories (translate/, checking/, etc.)
+- Articles split into multiple files (title.md, subtitle.md, 01.md)
+
+## Manifest Structure
+
+### Translation Academy Manifest
+
+```yaml
+dublin_core:
+  identifier: 'ta'                     # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Translation Academy'       # Resource type
+  type: 'man'                         # Manual resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/tn'                         # Translation Notes (references TA)
+    - 'en/ult'                        # Literal translation
+    - 'en/ust'                        # Simplified translation
+
+projects:                             # No projects array for manual type
+  # Translation Academy uses directory structure instead
+```
+
+**Key Differences from Other RC Types**:
+- Container type is "man" not "bundle" or "help"
+- No `projects[]` array - uses nested directory structure
+- Articles split across multiple files per topic
+
+## File Structure Patterns
+
+### Translation Academy Directory Structure
+
+```
+en_ta/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 README.md                     # Repository documentation
+├── 📁 checking/                     # Quality assurance topics
+│   ├── 📁 acceptable/               # Acceptable translation
+│   │   ├── 📄 title.md              # Article title
+│   │   ├── 📄 sub-title.md          # Article subtitle
+│   │   └── 📄 01.md                 # Main article content
+│   ├── 📁 good/                     # Good translation
+│   └── ...                          # More checking topics
+├── 📁 translate/                    # Translation methodology
+│   ├── 📁 figs-metaphor/            # Figures of speech - metaphor
+│   │   ├── 📄 title.md              # "Metaphor"
+│   │   ├── 📄 sub-title.md          # "What is metaphor and how do I translate it?"
+│   │   └── 📄 01.md                 # Complete article content
+│   ├── 📁 translate-names/          # How to translate names
+│   ├── 📁 grammar-connect/          # Grammar connections
+│   └── ...                          # More translation topics
+└── 📁 intro/                        # Introduction materials
+    ├── 📁 translation-guidelines/   # General guidelines
+    └── ...                          # More intro topics
+```
+
+### Article File Structure
+
+**Each Topic Has Three Files**:
+- **title.md**: Short article title
+- **sub-title.md**: Descriptive subtitle or question
+- **01.md**: Complete article content
+
+## Content Analysis
+
+### Translation Academy Article Structure
+
+**Standard Article Format** (from 01.md):
+```markdown
+# {Title}
+## {Subtitle}
+
+### Description
+
+{Explanation of the translation concept or issue}
+
+### Reason This Is a Translation Issue
+
+{Why translators need to understand this topic}
+
+### Examples From the Bible
+
+{Biblical examples demonstrating the concept}
+
+### Translation Strategies
+
+{Specific strategies for handling this issue}
+
+### Examples of Translation Strategies Applied
+
+{Practical examples showing strategies in use}
+```
+
+**Sample Article** (translate/figs-metaphor/01.md):
+```markdown
+# Metaphor
+## What is metaphor and how do I translate it?
+
+### Description
+
+A metaphor is a figure of speech in which someone speaks of one thing as if it were a different thing because he wants people to think about how those two things are alike.
+
+### Reason This Is a Translation Issue
+
+The Bible that you translate from may use metaphors to express certain ideas. Your language might not use metaphors for some of those ideas.
+
+### Examples From the Bible
+
+> Listen to this word, you cows of Bashan (Amos 4:1a ULT)
+
+The prophet Amos called the women of Samaria "cows of Bashan." He was not saying that they were literally cows, but that they were like cows in certain ways.
+
+### Translation Strategies
+
+If a metaphor would be natural and give the right meaning in your language, consider using it. If not, here are other options:
+
+1. Use a simile that would be understood in your culture
+2. State the meaning plainly without using a figure of speech
+
+### Examples of Translation Strategies Applied
+
+1. Use a simile that would be understood in your culture
+
+> Listen to this word, you who are like cows of Bashan
+```
+
+## How to Process Translation Academy Repositories
+
+### Step 1: Verify Repository Type
+
+**Check Manifest Fields**:
+- Confirm subject is "Translation Academy"
+- Verify container type is "man"
+- Note absence of projects array (uses directory structure)
+
+### Step 2: Map Directory Structure
+
+**Discover Categories**:
+- Identify main category directories (translate/, checking/, intro/)
+- Get complete topic list within each category
+- Map the three-file structure for each topic
+
+**Expected Categories**:
+- **translate/**: Translation methodology topics (~50-100 topics)
+- **checking/**: Quality assurance topics (~10-20 topics)
+- **intro/**: Introduction and overview topics (~5-10 topics)
+
+### Step 3: Process Individual Articles
+
+**For Each Topic Directory**:
+- Read title.md for the article title
+- Read sub-title.md for the descriptive subtitle
+- Read 01.md for the complete article content
+
+**Build Article Structure**:
+- Combine title, subtitle, and content
+- Parse markdown structure within content
+- Extract sections (Description, Examples, Strategies, etc.)
+
+### Step 4: Build Topic Index
+
+**Create Navigation Structure**:
+- Index all topics by category
+- Build cross-reference mappings
+- Create searchable topic database
+
+### Step 5: Handle Cross-References
+
+**Internal References**:
+- Articles reference other TA topics
+- Build internal linking system
+- Enable navigation between related topics
+
+**External References**:
+- Translation Notes reference TA articles via rc:// links
+- Enable reverse lookup from TN to TA
+
+## Application Integration
+
+### How to Display Translation Academy in Preview Apps
+
+**Step 1: Organize by Categories**
+- Present main categories clearly (Translation, Checking, Introduction)
+- Show topic counts for each category
+- Enable browsing within categories
+
+**Step 2: Display Topic Structure**
+- Show article titles and subtitles clearly
+- Present topics in logical learning order
+- Enable search across all topics
+
+**Step 3: Render Article Content**
+- Combine title, subtitle, and main content
+- Render markdown appropriately
+- Handle internal cross-references
+
+**Step 4: Enable Cross-Navigation**
+- Link to related Translation Academy topics
+- Show which Translation Notes reference each article
+- Enable topic-based navigation
+
+### How to Use Translation Academy in Editing Apps
+
+**Step 1: Set Up Article Database**
+- Index all articles by category and topic
+- Build searchable article database
+- Create cross-reference mappings
+
+**Step 2: Enable Contextual Access**
+- Show relevant TA articles when users encounter translation issues
+- Use Translation Notes support references to suggest TA articles
+- Provide quick article lookup functionality
+
+**Step 3: Configure Article Display**
+- Set up markdown rendering for article content
+- Enable article navigation and browsing
+- Show article structure clearly (sections)
+
+**Step 4: Handle Training Workflows**
+- Organize articles for systematic training
+- Track user progress through training topics
+- Enable bookmarking and note-taking on articles
+
+## Content Characteristics
+
+### Topic Distribution Analysis
+
+**Translation Topics** (~80 articles):
+- Figures of speech (metaphor, simile, hyperbole, etc.)
+- Grammar issues (abstract nouns, passive voice, etc.)
+- Cultural concepts (biblical imagery, customs, etc.)
+- Translation techniques (literal vs dynamic, etc.)
+
+**Checking Topics** (~15 articles):
+- Translation quality levels
+- Checking procedures
+- Accuracy standards
+- Community review processes
+
+**Introduction Topics** (~10 articles):
+- Translation principles
+- Project setup
+- Team organization
+- Quality standards
+
+### Article Structure Analysis
+
+**Average Article Length**: 500-1500 words
+**Standard Sections**: Description, Translation Issue, Examples, Strategies, Applied Examples
+**Cross-References**: Extensive linking between topics
+**Biblical Examples**: Real Bible passages demonstrating concepts
+
+## Best Practices
+
+### 1. Directory Navigation
+- Handle three-level directory structure efficiently
+- Cache directory listings for better performance
+- Implement hierarchical navigation for users
+
+### 2. Article Assembly
+- Combine title, subtitle, and content files correctly
+- Handle markdown parsing and rendering
+- Maintain article structure and formatting
+
+### 3. Cross-Reference Processing
+- Build comprehensive topic cross-reference index
+- Handle rc:// links from Translation Notes
+- Enable bidirectional navigation
+
+### 4. Training Workflow Support
+- Organize articles for systematic learning
+- Provide topic progression recommendations
+- Enable tracking of training progress
+
+## Differences from Other Repository Types
+
+| Aspect | Translation Academy | Translation Words | Translation Notes |
+|--------|-------------------|-------------------|-------------------|
+| **Container Type** | "man" | "dict" | "help" |
+| **File Structure** | 3 files per topic | 1 file per term | 1 TSV per book |
+| **Organization** | Category/topic/files | Category/term files | Flat TSV files |
+| **Content Focus** | Training methodology | Term definitions | Verse guidance |
+| **Cross-References** | Topic relationships | Bible passages | TA articles |
+| **Target Use** | Learning/training | Reference lookup | Contextual help |
+
+## Common Issues and Solutions
+
+### Issue 1: Three-File Article Structure
+**Problem**: Each topic split across title.md, sub-title.md, and 01.md
+**Solution**: Build article assembly process to combine files correctly
+
+### Issue 2: Deep Directory Nesting
+**Problem**: Topics nested in category/topic/file structure
+**Solution**: Implement recursive directory traversal and indexing
+
+### Issue 3: Cross-Reference Complexity
+**Problem**: Articles reference each other and are referenced by Translation Notes
+**Solution**: Build comprehensive cross-reference database
+
+---
+
+This guide is based on analysis of Door43 Translation Academy repositories and should be used alongside the main [Door43 API Developer Guide](../../3-door43-api-developer-guide).

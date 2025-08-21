@@ -1,0 +1,240 @@
+---
+title: "translationStudio to Resource Container Migration"
+description: "Convert translationStudio repositories to standard Resource Container format"
+category: "migration"
+difficulty: "intermediate"
+prerequisites:
+  - path: "/2-unfoldingword-developer-guide"
+    title: "unfoldingWord Developer Guide"
+  - path: "/4-repository-formats/tool-generated/translationstudio-format-guide"
+    title: "translationStudio Format Guide"
+  - path: "/4-repository-formats/resource-container/"
+    title: "Resource Container Format"
+related:
+  - path: "/4-repository-formats/tool-generated/"
+    title: "Tool-Generated Formats"
+    description: "Source format documentation"
+tags: ["migration", "translationstudio", "resource-container", "obs", "completion-tracking"]
+---
+
+# translationStudio to Resource Container Migration
+
+This section provides comprehensive guides for converting translationStudio (tS) repositories to standard Resource Container (RC) format. translationStudio projects focus on single books or story collections with completion tracking and numbered content files.
+
+## 🎯 **Migration Overview**
+
+### **Why Convert tS to RC?**
+- **Format Standardization**: Convert tool-specific format to ecosystem standard
+- **Broader Tool Compatibility**: Enable use with RC-compatible applications
+- **Content Consolidation**: Organize numbered files into standard structure
+- **Workflow Integration**: Integrate with standard RC-based workflows
+- **Completion Data Preservation**: Maintain translation progress information
+
+### **translationStudio Characteristics**
+Based on the [translationStudio Format Guide](../../4-repository-formats/tool-generated/translationstudio-format-guide):
+
+- **Single Book/Collection Focus**: Bible book or Open Bible Stories
+- **Numbered Content Files**: Files named `01`, `02`, `03` (no extensions)
+- **Completion Tracking**: `finished_chunks[]` array for progress
+- **Two Content Types**: Bible chapters (USFM) or story format
+- **Tool-Specific Metadata**: translationStudio-specific manifest format
+
+## 📚 **Migration Guides**
+
+### **📖 [Bible Book Migration](bible-book-migration)**
+Migration guide for translationStudio Bible book projects.
+
+**Covers**:
+- Numbered chapter files (`01`, `02`, `03`) to USFM organization
+- Manifest conversion (`package_version` → `dublin_core`)
+- USFM content validation and structure
+- Chapter-based completion tracking
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Medium
+- 📝 **Content**: USFM chapters in numbered files
+- 🎯 **Target**: Resource Container (single book)
+- ⏱️ **Time**: 2-3 hours
+
+### **📚 [OBS Migration](obs-migration)**
+Specialized migration guide for Open Bible Stories projects.
+
+**Covers**:
+- Story files (`01`-`50`) to OBS structure
+- Story format to standard OBS markdown
+- Image reference handling
+- Story-based completion tracking
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Medium
+- 📝 **Content**: 50 story files with narrative format
+- 🎯 **Target**: Resource Container (OBS)
+- ⏱️ **Time**: 3-4 hours
+
+### **📊 [Completion Data Handling](completion-data-handling)**
+Guide for preserving and converting completion tracking data.
+
+**Covers**:
+- `finished_chunks[]` analysis and conversion
+- Progress calculation and reporting
+- Chunk-level completion mapping
+- Quality assurance integration
+
+**Characteristics**:
+- ⭐ **Complexity**: Low
+- 📝 **Content**: JSON completion data
+- 🎯 **Focus**: Progress preservation
+- ⏱️ **Time**: 1 hour (additional)
+
+## 🔍 **translationStudio Repository Analysis**
+
+### **Bible Book Structure**
+```
+es-419_rut_text_ulb/
+├── 📄 manifest.json                    # tS manifest (package_version, generator)
+├── 📄 LICENSE.md                       # License
+├── 📄 front                            # Front matter
+├── 📄 01                               # Chapter 1 (USFM content)
+├── 📄 02                               # Chapter 2
+├── 📄 03                               # Chapter 3
+└── 📄 04                               # Chapter 4
+```
+
+### **Open Bible Stories Structure**
+```
+es-419_obs_text_obs/
+├── 📄 manifest.json                    # tS manifest
+├── 📄 LICENSE.md                       # License
+├── 📄 front                            # Front matter (title page)
+├── 📄 01                               # Story 1
+├── 📄 02                               # Story 2
+├── ...                                 # Stories 3-49
+└── 📄 50                               # Story 50
+```
+
+### **Key Identification Markers**
+- **Manifest**: Contains `package_version` field and `generator.name: "ts-desktop"`
+- **File Pattern**: Numbered files without extensions (`01`, `02`, `03`)
+- **Content Types**: 
+  - Bible books: USFM content in numbered chapter files
+  - OBS: Story format with section markers (`======`)
+- **Completion**: `finished_chunks[]` array with `"01-01"`, `"01-02"` format
+
+## 📊 **Migration Complexity Analysis**
+
+| Repository Type | Complexity | Key Challenges |
+|-----------------|------------|----------------|
+| **Bible Books** | ⭐⭐ Medium | USFM validation, chapter organization |
+| **Open Bible Stories** | ⭐⭐ Medium | Story format conversion, image handling |
+| **Completion Data** | ⭐ Low | Progress mapping, chunk analysis |
+| **File Organization** | ⭐⭐ Medium | Numbered files → standard naming |
+
+## 🔄 **Migration Process Overview**
+
+### **Step 1: Repository Analysis**
+- Identify translationStudio format using detection patterns
+- Determine content type (Bible book vs OBS)
+- Analyze numbered files and completion data
+
+### **Step 2: Content Type Detection**
+- Check `project.id` for "obs" (Open Bible Stories)
+- Examine file content for USFM vs story format
+- Count files to determine scope (4 chapters vs 50 stories)
+
+### **Step 3: Manifest Conversion**
+- Convert tS manifest to RC `dublin_core` structure
+- Map project/resource information to RC fields
+- Set appropriate subject and type based on content
+
+### **Step 4: File Organization**
+- Convert numbered files to standard RC naming
+- Preserve content exactly while organizing structure
+- Handle front matter and special files
+
+### **Step 5: Completion Integration**
+- Process `finished_chunks[]` data
+- Calculate completion statistics
+- Integrate progress information into RC metadata
+
+## ⚠️ **Migration Considerations**
+
+### **Key Challenges**
+- **File Extensions**: Numbered files have no extensions
+- **Content Detection**: Must examine file content to determine format
+- **Completion Mapping**: Chunk-based progress needs interpretation
+- **Image References**: OBS stories reference external images
+- **Front Matter**: Special files need appropriate handling
+
+### **Best Practices**
+- **Content Validation**: Verify USFM or story format before processing
+- **Progress Preservation**: Maintain all completion tracking data
+- **Image Handling**: Preserve image references and metadata
+- **Structure Consistency**: Follow RC conventions for file organization
+
+### **Content Type Handling**
+
+#### **Bible Books (USFM Content)**
+```usfm
+\id RUT unfoldingWord® Literal Text
+\ide UTF-8
+\h Ruth
+\toc1 The Book of Ruth
+\c 1
+\p
+\v 1 En los días cuando gobernaban los jueces...
+```
+
+#### **Open Bible Stories (Story Format)**
+```
+====== La Creación ======
+
+{{https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg?direct&}}
+
+En el principio, Dios creó los cielos y la tierra...
+
+====== Siguiente Historia ======
+```
+
+## 📈 **Success Criteria**
+
+A successful tS→RC migration should achieve:
+
+- ✅ **Format Compliance**: Valid Resource Container structure
+- ✅ **Content Integrity**: All numbered file content preserved exactly
+- ✅ **Proper Organization**: Files organized according to RC conventions
+- ✅ **Completion Preservation**: Progress tracking data maintained
+- ✅ **Content Type Accuracy**: Correct subject/type classification
+- ✅ **Tool Compatibility**: Works with standard RC applications
+
+## 🛠️ **Migration Tools**
+
+### **Required Tools**
+- translationStudio format detector
+- Content type analyzer (USFM vs story format)
+- File organization converter
+- Completion data processor
+
+### **Content Processing Tools**
+- **USFM Validator**: For Bible book content
+- **Story Format Parser**: For OBS content
+- **Image Reference Extractor**: For OBS image handling
+- **Progress Calculator**: For completion statistics
+
+### **Validation Tools**
+- Resource Container validator
+- Content integrity checker
+- Progress data validator
+- Tool compatibility tester
+
+## 📋 **Migration Decision Matrix**
+
+| Source Indicator | Content Type | Migration Guide | RC Subject |
+|------------------|--------------|-----------------|------------|
+| `project.id: "obs"` | Open Bible Stories | [OBS Migration](obs-migration) | "Open Bible Stories" |
+| `format: "usfm"` + numbered files | Bible Book | [Bible Book Migration](bible-book-migration) | "Bible" |
+| Story format content | Open Bible Stories | [OBS Migration](obs-migration) | "Open Bible Stories" |
+| USFM content | Bible Book | [Bible Book Migration](bible-book-migration) | "Bible" |
+
+---
+
+**Start Here**: Determine your content type using the decision matrix above, then follow the appropriate migration guide. Add [Completion Data Handling](completion-data-handling) to preserve progress information.

@@ -1,0 +1,142 @@
+---
+title: "Bible Text RC to SB Migration"
+description: "Migration guides for Bible text Resource Containers to Scripture Burrito format"
+category: "migration"
+difficulty: "beginner"
+tags: ["bible-text", "usfm", "migration", "uhb", "ugnt", "ult", "ust", "obs"]
+---
+
+# Bible Text Resource Container to Scripture Burrito Migration
+
+This section covers migration of Bible text repositories from Resource Container to Scripture Burrito format. Bible text migrations are among the most straightforward due to their standard USFM content and clear structure.
+
+## 📖 **Bible Text Migration Guides**
+
+### **[Original Language Texts](original-languages)**
+Migration guide for original language Bible texts:
+- **UHB** (Hebrew Bible) - Ancient Hebrew text
+- **UGNT** (Greek New Testament) - Ancient Greek text
+
+**Characteristics**:
+- ⭐ **Complexity**: Low
+- 📝 **Content**: USFM files
+- 🎯 **Target Flavor**: textTranslation
+- ⏱️ **Time**: 1-2 hours
+
+### **[Gateway Language Translations](gateway-languages)**
+Migration guide for gateway language Bible translations:
+- **ULT** (Literal Translation) - Word-for-word translation with alignment
+- **UST** (Simplified Translation) - Thought-for-thought translation with alignment
+
+**Characteristics**:
+- ⭐ **Complexity**: Low
+- 📝 **Content**: USFM files with alignment data
+- 🎯 **Target Flavor**: textTranslation
+- ⏱️ **Time**: 2-3 hours
+
+### **[Bible Stories](bible-stories)**
+Migration guide for Open Bible Stories:
+- **OBS** (Open Bible Stories) - Story-based Bible content
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Low-Medium
+- 📝 **Content**: USFM story files
+- 🎯 **Target Flavor**: scripturalTextStories
+- ⏱️ **Time**: 2-4 hours
+
+## 🎯 **Why Migrate Bible Text Repositories**
+
+### **Benefits of Scripture Burrito for Bible Texts**
+- **Better Content Organization**: Explicit MIME type specification for USFM files
+- **Enhanced Scope Precision**: Book-level scope definitions instead of simple categories
+- **Improved Alignment Support**: Better handling of word alignment data
+- **Cross-Tool Compatibility**: Works with broader ecosystem of Bible tools
+- **Future-Proof Format**: Industry standard for Bible text interchange
+
+### **Migration Advantages**
+- **Minimal Data Loss**: All RC data is preservable
+- **Enhanced Metadata**: Better content typing and organization
+- **Improved Relationships**: Better dependency modeling
+- **Tool Ecosystem**: Access to Scripture Burrito-compatible tools
+
+## 📊 **Bible Text Migration Comparison**
+
+| Repository Type | RC Subject | SB Flavor | Alignment Data | Complexity |
+|-----------------|------------|-----------|----------------|------------|
+| **UHB** | "Bible" | textTranslation | No | ⭐ Low |
+| **UGNT** | "Bible" | textTranslation | No | ⭐ Low |
+| **ULT** | "Aligned Bible" | textTranslation | Yes | ⭐ Low |
+| **UST** | "Aligned Bible" | textTranslation | Yes | ⭐ Low |
+| **OBS** | "Open Bible Stories" | scripturalTextStories | No | ⭐⭐ Low-Med |
+
+## 🔄 **Common Migration Process**
+
+All Bible text migrations follow a similar process:
+
+### **Step 1: Pre-Migration Analysis**
+- Verify RC structure and content
+- Check for alignment data
+- Identify book scope and versification
+
+### **Step 2: Create SB Metadata**
+- Convert dublin_core to identification
+- Set appropriate flavor type (textTranslation or scripturalTextStories)
+- Map language information
+
+### **Step 3: Convert Content**
+- Map USFM files to ingredients
+- Set mimeType to "text/usfm"
+- Create book-level scope objects
+- Preserve alignment markers
+
+### **Step 4: Handle Relationships**
+- Convert RC relations to SB relationships
+- Maintain dependency information
+- Preserve version specifications
+
+### **Step 5: Validate**
+- Check SB metadata structure
+- Verify content integrity
+- Test with SB-compatible tools
+
+## 🛠️ **Bible Text Migration Tools**
+
+### **Required Tools**
+- USFM validator
+- Alignment data checker
+- Scripture Burrito validator
+- Content comparison tools
+
+### **Automation Support**
+- Batch USFM processing
+- Alignment preservation scripts
+- Metadata generation tools
+- Quality assurance automation
+
+## ⚠️ **Bible Text Migration Considerations**
+
+### **Key Challenges**
+- **Alignment Data**: Preserve word-level alignment markers exactly
+- **Versification**: Handle different versification systems
+- **Large Files**: Some books with alignment data are very large
+- **Cross-References**: Maintain internal and external references
+
+### **Best Practices**
+- **Preserve USFM Structure**: Maintain exact USFM formatting
+- **Validate Alignment**: Ensure alignment markers are intact
+- **Test Thoroughly**: Verify content displays correctly in SB tools
+- **Document Changes**: Record any conversion decisions
+
+## 📈 **Success Criteria**
+
+A successful Bible text migration should achieve:
+
+- ✅ **Content Preservation**: All USFM content exactly preserved
+- ✅ **Alignment Integrity**: Word alignment data intact (if present)
+- ✅ **Scope Accuracy**: Correct book identification and scope
+- ✅ **Tool Compatibility**: Works with Scripture Burrito Bible tools
+- ✅ **Validation Success**: Passes Scripture Burrito validation
+
+---
+
+**Choose Your Migration Guide**: Select the appropriate guide based on your Bible text repository type, or start with [Original Languages](original-languages) for the most common case.

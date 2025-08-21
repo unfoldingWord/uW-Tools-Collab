@@ -1,0 +1,284 @@
+---
+title: "TC Book Integration into Existing RC"
+description: "Guide for integrating translationCore books into existing Resource Container repositories"
+category: "migration"
+difficulty: "intermediate"
+prerequisites:
+  - path: "/4-repository-formats/tool-generated/translationcore-format-guide"
+    title: "translationCore Format Guide"
+  - path: "/4-repository-formats/resource-container/"
+    title: "Resource Container Format"
+tags: ["translationcore", "resource-container", "book-integration", "usfm"]
+---
+
+# translationCore Book Integration into Existing Resource Container
+
+This guide covers integrating a single translationCore (TC) book into an existing Resource Container (RC) repository. This is the most common scenario when teams are working on multiple books and want to consolidate their work into a unified Bible translation project.
+
+## 🎯 **Integration Scenarios**
+
+### **📖 Add New Book to RC**
+The TC book doesn't exist in the target RC repository.
+- **Action**: Add new book file to RC
+- **Manifest**: Add book to projects array and update scope
+- **Complexity**: ⭐⭐ Medium
+
+### **🔄 Replace Existing Book in RC**
+The TC book replaces an existing book in the RC repository.
+- **Action**: Replace existing book file with TC version
+- **Manifest**: Update book metadata if needed
+- **Complexity**: ⭐⭐ Medium
+
+### **📚 Update Book in RC**
+Merge changes from TC book with existing RC book.
+- **Action**: Careful content merging and comparison
+- **Manifest**: Update modification dates and contributors
+- **Complexity**: ⭐⭐⭐ High
+
+## 🔍 **Pre-Integration Analysis**
+
+### **Step 1: Analyze TC Repository**
+
+**Identify TC Format**:
+```bash
+# Check for TC manifest indicators
+grep -E "(tc_version|generator.*tc-desktop)" manifest.json
+```
+
+**Extract Key Information**:
+- **Book ID**: From `manifest.project.id` (e.g., "jon", "rut", "eph")
+- **Language**: From `manifest.target_language.id` (e.g., "es-419")
+- **Resource**: From `manifest.resource.id` (e.g., "glt", "ust")
+- **Dependencies**: From `manifest.tsv_relation[]`
+
+**Select Primary USFM File**:
+translationCore generates exactly two USFM files:
+1. `{target_language.id}_{resource.id}_{project.id}_book.usfm` (working file - **always use this**)
+2. `{project.id}.usfm` (initial import file - reference only)
+
+> **Note**: The working file contains all translation work and alignment data from translationCore. The simple file is the original import. Any additional USFM files are user-created.
+
+### **Step 2: Analyze Target RC Repository**
+
+**Verify RC Format**:
+```yaml
+# Check RC manifest structure
+dublin_core:
+  type: bundle
+  format: application/zip; type=bundle
+  identifier: {lang}_{resource}
+```
+
+**Check Existing Books**:
+- Review `projects[]` array for existing books
+- Check file structure for `{##-BOOK}.usfm` pattern
+- Identify book numbering scheme
+
+**Assess Compatibility**:
+- **Language Match**: TC and RC target languages must match
+- **Resource Type**: Verify resource compatibility (ULT, UST, etc.)
+- **Dependencies**: Check source text alignment
+
+## 📋 **Integration Process**
+
+### **Step 1: Prepare TC Content**
+
+**Extract USFM Content**:
+```bash
+# Get the primary USFM file from TC repository
+curl -H "Authorization: token {token}" \
+  "https://git.door43.org/api/v1/repos/{owner}/{tc-repo}/raw/{branch}/{primary-usfm-file}"
+```
+
+**Validate USFM Structure**:
+- Verify `\id` marker matches expected book
+- Check alignment markers are intact (`\zaln-s`, `\zaln-e`, `\w`)
+- Validate chapter and verse structure
+
+**Determine Book Number**:
+```bash
+# Standard book numbering (01-66)
+# Genesis=01, Exodus=02, ..., Jonah=32, ..., Revelation=66
+```
+
+### **Step 2: Prepare RC Integration**
+
+**Create Book Filename**:
+```bash
+# RC naming convention: {##-BOOK}.usfm
+# Examples:
+# 01-GEN.usfm (Genesis)
+# 32-JON.usfm (Jonah)  
+# 45-ROM.usfm (Romans)
+```
+
+**Backup Existing Book** (if replacing):
+```bash
+# Create backup before replacement
+cp {##-BOOK}.usfm {##-BOOK}.usfm.backup.$(date +%Y%m%d)
+```
+
+### **Step 3: Integrate Content**
+
+**Add/Replace Book File**:
+```bash
+# Copy TC USFM content to RC book file
+# Preserve all alignment data exactly
+cp tc_book_content.usfm {##-BOOK}.usfm
+```
+
+**Verify Content Integration**:
+- Check file size is reasonable
+- Verify USFM structure is intact
+- Confirm alignment markers preserved
+
+### **Step 4: Update RC Manifest**
+
+**Add New Book to Projects Array**:
+```yaml
+projects:
+  - title: "Genesis"
+    versification: "ufw"
+    identifier: "gen"
+    sort: 1
+    path: "./01-GEN.usfm"
+    categories: ["bible-ot"]
+  # Add new book entry
+  - title: "Jonah"
+    versification: "ufw"  
+    identifier: "jon"
+    sort: 32
+    path: "./32-JON.usfm"
+    categories: ["bible-ot"]
+```
+
+**Update Dublin Core Metadata**:
+```yaml
+dublin_core:
+  modified: "2024-01-15"  # Update modification date
+  contributor:
+    - "Original Translator"
+    - "TC Book Contributor"  # Add TC contributor
+```
+
+**Map TC Dependencies**:
+```yaml
+# Convert TC tsv_relation to RC relation
+dublin_core:
+  relation:
+    - "en/ult"     # From TC tsv_relation
+    - "en/ust"
+    - "hbo/uhb?v=2.1.30"
+```
+
+### **Step 5: Validation**
+
+**Validate RC Structure**:
+```bash
+# Check manifest syntax
+yamllint manifest.yaml
+
+# Verify all referenced files exist
+for file in $(grep "path:" manifest.yaml | cut -d'"' -f2); do
+  [ -f "$file" ] || echo "Missing: $file"
+done
+```
+
+**Test USFM Content**:
+- Parse USFM for syntax errors
+- Verify alignment data integrity
+- Check cross-references work
+
+**Validate Book Integration**:
+- Confirm book appears in projects array
+- Check sort order is correct
+- Verify categories are appropriate
+
+## ⚠️ **Integration Considerations**
+
+### **Critical Preservation Requirements**
+
+**Alignment Data**:
+- **Never modify** alignment markers (`\zaln-s`, `\zaln-e`)
+- **Preserve exactly** Strong's numbers and morphology
+- **Maintain** occurrence tracking (`x-occurrence`, `x-occurrences`)
+
+**USFM Structure**:
+- Keep all USFM markers intact
+- Preserve chapter and verse numbering
+- Maintain paragraph and section structure
+
+### **Common Integration Challenges**
+
+**File Naming Conflicts**:
+- **Issue**: TC uses different naming than RC conventions
+- **Solution**: Always rename to RC format (`{##-BOOK}.usfm`)
+
+**Book Number Determination**:
+- **Issue**: Need correct book number for RC
+- **Solution**: Use standard biblical book order (Genesis=01, Revelation=66)
+
+**Manifest Complexity**:
+- **Issue**: RC manifest has complex project structure
+- **Solution**: Follow existing patterns in target RC
+
+**Dependency Mapping**:
+- **Issue**: TC `tsv_relation` vs RC `dublin_core.relation`
+- **Solution**: Map each dependency individually
+
+### **Quality Assurance Checklist**
+
+**Before Integration**:
+- ✅ TC repository format confirmed
+- ✅ Primary USFM file identified
+- ✅ Target RC repository analyzed
+- ✅ Integration strategy selected
+- ✅ Backup created (if replacing)
+
+**After Integration**:
+- ✅ Book file correctly named and placed
+- ✅ Manifest updated with new book
+- ✅ USFM content validates successfully
+- ✅ Alignment data preserved intact
+- ✅ Dependencies mapped correctly
+- ✅ RC structure remains valid
+
+## 🛠️ **Integration Tools**
+
+### **Required Tools**
+- **USFM Validator**: Verify content structure
+- **Alignment Checker**: Ensure alignment data integrity
+- **RC Validator**: Validate Resource Container structure
+- **YAML Linter**: Check manifest syntax
+
+### **Recommended Automation**
+```bash
+#!/bin/bash
+# TC to RC Integration Script Template
+
+TC_REPO="$1"
+RC_REPO="$2" 
+BOOK_ID="$3"
+
+# 1. Extract TC content
+# 2. Determine book number
+# 3. Create RC book file
+# 4. Update RC manifest
+# 5. Validate integration
+```
+
+## 📈 **Success Criteria**
+
+A successful TC book integration should achieve:
+
+- ✅ **Content Preservation**: All TC USFM content exactly preserved
+- ✅ **Alignment Integrity**: Word alignment data completely intact
+- ✅ **RC Compliance**: Book properly integrated into RC structure
+- ✅ **Manifest Accuracy**: RC manifest correctly updated
+- ✅ **File Organization**: Book file follows RC naming conventions
+- ✅ **Dependency Mapping**: TC dependencies correctly mapped to RC format
+- ✅ **Validation Success**: RC validates with integrated book
+
+---
+
+**Next Steps**: After successful integration, consider using [Alignment Data Handling](alignment-data-handling) for advanced alignment verification, or proceed with additional TC books using the same process.

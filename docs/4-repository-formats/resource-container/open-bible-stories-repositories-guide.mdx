@@ -1,0 +1,319 @@
+# Open Bible Stories Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Open Bible Stories (OBS) repositories in Door43. These repositories contain Bible overview stories in Markdown format, designed to provide a comprehensive Bible narrative in 50 interconnected stories.
+
+**Repository Types Covered:**
+- **Open Bible Stories**: 50-story Bible overview
+- **OBS Translation Notes**: Story-specific translation guidance
+- **OBS Translation Words Links**: Word links for OBS content
+
+## Repository Characteristics
+
+### Open Bible Stories Repositories
+
+**Examples**: `en_obs`, `en_obs-tn`, `en_obs-twl`
+
+**Key Characteristics:**
+- Subject: "Open Bible Stories" (or OBS variants)
+- Container type: "bundle" (for main OBS) or "help" (for support resources)
+- Content: Markdown files with story content
+- Format: Markdown or TSV (for support resources)
+- Organization: 50 numbered stories
+- Scope: Complete Bible narrative overview
+
+## How to Identify Open Bible Stories Repositories
+
+**Step 1: Check Repository Name Pattern**
+- Look for "obs" in repository name
+- Main OBS: `{lang}_obs`
+- OBS support: `{lang}_obs-{type}` (like `en_obs-tn`)
+
+**Step 2: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should contain "Open Bible Stories" or "OBS"
+
+**Step 3: Verify Content Structure**
+- Main OBS: Look for numbered Markdown files (01.md, 02.md, etc.)
+- OBS support: Look for TSV files with story-based organization
+
+## Manifest Structure
+
+### Main Open Bible Stories Manifest
+
+```yaml
+dublin_core:
+  identifier: 'obs'                    # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Open Bible Stories'        # Resource type
+  type: 'bundle'                      # Complete story collection
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/obs-tn'                     # OBS Translation Notes
+    - 'en/obs-twl'                    # OBS Translation Words Links
+
+projects:                             # Story files
+  - identifier: '01'                  # Story number
+    title: 'The Creation'             # Story title
+    path: './content/01.md'          # Markdown file path
+    sort: 1                          # Display order
+    categories: ['bible-overview']   # Content category
+```
+
+### OBS Support Resource Manifest
+
+```yaml
+dublin_core:
+  identifier: 'obs-tn'                # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'OBS Translation Notes'     # Resource type
+  type: 'help'                        # Help/guidance resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/obs'                        # Main OBS content
+    - 'en/ta'                         # Translation Academy
+
+projects:                             # TSV files for stories
+  - identifier: '01'                  # Story number
+    title: 'The Creation'             # Story title
+    path: './tn_01.tsv'              # TSV file path
+    sort: 1                          # Display order
+    categories: ['obs-notes']        # Content category
+```
+
+## File Structure Patterns
+
+### Main Open Bible Stories Structure
+
+```
+en_obs/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📁 content/                      # Story content directory
+│   ├── 📄 01.md                     # Story 1: The Creation
+│   ├── 📄 02.md                     # Story 2: Sin Enters the World
+│   ├── 📄 03.md                     # Story 3: The Flood
+│   ├── ...                          # Stories 4-49
+│   └── 📄 50.md                     # Story 50: Jesus Returns
+└── 📁 images/                       # Story images (optional)
+    ├── 📄 obs-en-01-01.jpg         # Story 1, frame 1 image
+    └── ...                          # More story images
+```
+
+### OBS Translation Notes Structure
+
+```
+en_obs-tn/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 tn_01.tsv                     # Story 1 notes
+├── 📄 tn_02.tsv                     # Story 2 notes
+├── ...                              # All 50 stories
+└── 📄 tn_50.tsv                     # Story 50 notes
+```
+
+## Content Analysis
+
+### Open Bible Stories Content Structure
+
+**Story Markdown Format**:
+```markdown
+# 01. The Creation
+
+![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)
+
+In the beginning, God created the universe. He created the earth, but it was empty and dark. God's Spirit was there over the water.
+
+![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg)
+
+Then God said, "Let there be light!" And there was light. God saw that the light was good and called it "day." He separated it from the darkness, which he called "night." God created the light on the first day of creation.
+
+---
+
+_A Bible story from: Genesis 1:1-13_
+```
+
+**Key Features**:
+- **Story structure**: Multiple frames per story
+- **Images**: Each frame has associated image
+- **Narrative format**: Simplified Bible narrative
+- **Source references**: Bible passages at end
+- **Frame organization**: Stories divided into frames/scenes
+
+### OBS Translation Notes Content
+
+**TSV Format** (similar to Bible TN but story-focused):
+```tsv
+Reference	ID	Tags	SupportReference	Quote	Occurrence	Note
+01:01	abc1	culture	rc://*/ta/man/translate/translate-names	God	1	This is the name of the one true God who created and rules over everything.
+01:02	abc2	grammar	rc://*/ta/man/translate/figs-metaphor	God's Spirit was there	1	This means God's Spirit was present and active.
+```
+
+## How to Process Open Bible Stories Repositories
+
+### Step 1: Identify OBS Repository Type
+
+**Check Repository Characteristics**:
+- Look for "obs" in repository name
+- Check manifest subject for "Open Bible Stories"
+- Determine if it's main content or support resource
+
+### Step 2: Process Story Structure
+
+**For Main OBS Repository**:
+- Extract story list from projects array
+- Note story titles and file paths
+- Check for content directory organization
+
+**Expected Story Count**: 50 stories (01-50)
+**Story Themes**: Creation to New Heaven/Earth chronologically
+
+### Step 3: Process Story Content
+
+**For Each Story File**:
+- Download Markdown content
+- Parse story structure (title, frames, images)
+- Extract frame content and image references
+- Note source Bible references
+
+### Step 4: Handle Story Images
+
+**Image Processing**:
+- Extract image URLs from story content
+- Note image naming patterns (obs-{lang}-{story}-{frame}.jpg)
+- Handle image availability and fallbacks
+
+### Step 5: Process Support Resources
+
+**For OBS Translation Notes**:
+- Process TSV files similar to Bible Translation Notes
+- Note story-specific references instead of verse references
+
+**For OBS Translation Words Links**:
+- Process TSV files similar to Bible TWL
+- Handle story-frame references instead of verse references
+
+## Story Content Characteristics
+
+### Story Structure Analysis
+
+**50 Stories Total**:
+1. **Creation Stories** (01-03): Creation, Fall, Flood
+2. **Patriarch Stories** (04-08): Abraham, Isaac, Jacob, Joseph
+3. **Exodus Stories** (09-13): Moses, Exodus, Law, Wilderness
+4. **Conquest Stories** (14-15): Joshua, Judges
+5. **Kingdom Stories** (16-18): David, Solomon, Divided Kingdom
+6. **Exile Stories** (19-20): Exile and Return
+7. **Jesus Stories** (21-31): Birth, Ministry, Death, Resurrection
+8. **Church Stories** (32-43): Early Church, Paul's Ministry
+9. **End Times Stories** (44-50): Second Coming, New Creation
+
+### Frame Structure Analysis
+
+**Frames per Story**: 3-15 frames typically
+**Content per Frame**: 50-200 words
+**Images per Frame**: 1 image per frame
+**Total Frames**: ~365 frames across all stories
+
+## Application Integration
+
+### How to Display Open Bible Stories in Preview Apps
+
+**Step 1: Organize by Story Sequence**
+- Present all 50 stories in chronological order
+- Show story titles and themes clearly
+- Enable sequential navigation through stories
+
+**Step 2: Handle Story Content**
+- Display story frames in sequence
+- Show associated images for each frame
+- Render markdown content appropriately
+
+**Step 3: Enable Story Navigation**
+- Provide story-to-story navigation
+- Enable frame-by-frame progression within stories
+- Show progress through complete story sequence
+
+**Step 4: Connect Support Resources**
+- Link to OBS Translation Notes for story guidance
+- Connect to OBS Translation Words Links for term definitions
+- Enable cross-navigation between main content and support
+
+### How to Use Open Bible Stories in Editing Apps
+
+**Step 1: Set Up Story Access**
+- Configure access to all 50 story files
+- Set up markdown parsing for story content
+- Handle image references and display
+
+**Step 2: Enable Story-Based Editing**
+- Allow frame-by-frame editing within stories
+- Maintain story structure and image associations
+- Support story sequence navigation
+
+**Step 3: Integrate Support Resources**
+- Show relevant OBS Translation Notes for current story
+- Enable access to OBS Translation Words Links
+- Provide contextual guidance during story translation
+
+**Step 4: Handle Story Relationships**
+- Maintain connections between related stories
+- Show Bible source references for each story
+- Enable navigation from stories to full Bible passages
+
+## Best Practices
+
+### 1. Story Structure Handling
+- Maintain frame organization within stories
+- Handle image references and availability
+- Preserve story sequence and relationships
+
+### 2. Content Processing
+- Parse markdown content appropriately
+- Handle image URLs and fallbacks
+- Process Bible source references
+
+### 3. Support Resource Integration
+- Connect OBS-TN and OBS-TWL to main OBS content
+- Enable story-based cross-referencing
+- Maintain consistency with Bible-based resources
+
+### 4. User Experience
+- Present stories as cohesive narrative
+- Enable both sequential and random access
+- Support different reading/study modes
+
+## Differences from Bible Repositories
+
+| Aspect | Open Bible Stories | Bible Text |
+|--------|-------------------|------------|
+| **Content Unit** | Stories (50) | Books (66) |
+| **Internal Structure** | Frames within stories | Verses within chapters |
+| **Narrative Style** | Simplified overview | Complete text |
+| **Images** | Extensive image integration | No images |
+| **Scope** | Bible overview | Complete Scripture |
+| **Target Audience** | General audience | Translators/scholars |
+| **Cross-References** | Story-to-Bible mapping | Verse-level precision |
+
+## Common Issues and Solutions
+
+### Issue 1: Image Handling
+**Problem**: Stories reference many images that may not be locally available
+**Solution**: Implement image caching and fallback strategies
+
+### Issue 2: Story-Bible Mapping
+**Problem**: Connecting story content to specific Bible passages
+**Solution**: Use source references and create story-to-Bible index
+
+### Issue 3: Frame Navigation
+**Problem**: Stories have internal frame structure different from verses
+**Solution**: Build frame-aware navigation and reference system
+
+---
+
+This guide is based on analysis of Door43 Open Bible Stories repositories and should be used alongside the main [Door43 API Developer Guide](../../3-door43-api-developer-guide).

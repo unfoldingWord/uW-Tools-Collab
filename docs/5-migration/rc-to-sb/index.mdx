@@ -1,0 +1,142 @@
+---
+title: "Resource Container to Scripture Burrito Migration"
+description: "Complete guides for converting Resource Container repositories to Scripture Burrito format"
+category: "migration"
+difficulty: "intermediate"
+prerequisites:
+  - path: "/2-unfoldingword-developer-guide"
+    title: "unfoldingWord Developer Guide"
+  - path: "/4-repository-formats/"
+    title: "Repository Formats Overview"
+related:
+  - path: "/4-repository-formats/resource-container/"
+    title: "Resource Container Formats"
+    description: "Source format documentation"
+  - path: "/4-repository-formats/scripture-burrito/"
+    title: "Scripture Burrito Formats"  
+    description: "Target format documentation"
+tags: ["migration", "conversion", "resource-container", "scripture-burrito"]
+---
+
+# Resource Container to Scripture Burrito Migration
+
+This section provides comprehensive guides for converting Resource Container (RC) repositories to Scripture Burrito (SB) format. Each guide is tailored to the specific characteristics and requirements of different resource types.
+
+## 🎯 **Migration Overview**
+
+### **Why Migrate from RC to SB?**
+- **Format Modernization**: Scripture Burrito offers more flexible organization
+- **Standardization**: Align with broader Bible translation community standards
+- **Tool Compatibility**: Enable use with Scripture Burrito-compatible tools
+- **Future-Proofing**: Prepare for evolving ecosystem requirements
+
+### **Migration Strategy**
+All migration guides follow a consistent approach:
+1. **Analyze** source RC structure
+2. **Map** content to SB ingredients
+3. **Transform** metadata and file organization
+4. **Validate** converted repository
+5. **Test** with target applications
+
+## 📚 **Migration Guides by Category**
+
+### **📖 [Bible Text Migrations](bible-text/)**
+Convert Bible text repositories (UHB, UGNT, ULT, UST, OBS) to Scripture Burrito format.
+
+- **[Original Languages](bible-text/original-languages)** - UHB, UGNT migrations
+- **[Gateway Languages](bible-text/gateway-languages)** - ULT, UST migrations  
+- **[Bible Stories](bible-text/bible-stories)** - OBS migrations
+
+**Complexity**: ⭐ Low | **Target Flavor**: textTranslation
+
+### **📝 [Translation Support Migrations](translation-support/)**
+Convert translation support resources to Scripture Burrito format.
+
+- **[Translation Notes](translation-support/translation-notes)** - TN, OBS-TN migrations
+- **[Translation Words](translation-support/translation-words)** - TW migrations
+- **[Translation Academy](translation-support/translation-academy)** - TA migrations
+- **[Translation Questions](translation-support/translation-questions)** - TQ migrations
+
+**Complexity**: ⭐⭐ Medium | **Target Flavors**: parascripturalWordAlignment, glossary, peripheralResource
+
+### **🔧 [Specialized Migrations](specialized/)**
+Handle custom and non-standard Resource Container types.
+
+- **[Custom Resources](specialized/custom-resources)** - Non-standard RC types
+- **[Legacy Formats](specialized/legacy-formats)** - Old RC versions
+
+**Complexity**: ⭐⭐⭐ Variable | **Target Flavors**: Various
+
+## 🗺️ **Quick Start Guide**
+
+### **Step 1: Identify Your Resource Type**
+```bash
+# Check the RC manifest
+cat manifest.yaml | grep "subject:"
+```
+
+### **Step 2: Choose Migration Guide**
+| RC Subject | Migration Guide | SB Flavor |
+|------------|-----------------|-----------|
+| "Bible" or "Aligned Bible" | [Bible Text](bible-text/) | textTranslation |
+| "Translation Notes" | [Translation Support](translation-support/translation-notes) | parascripturalWordAlignment |
+| "Translation Words" | [Translation Support](translation-support/translation-words) | glossary |
+| "Translation Academy" | [Translation Support](translation-support/translation-academy) | peripheralResource |
+
+### **Step 3: Follow Specific Guide**
+Each guide provides:
+- Pre-migration analysis steps
+- Step-by-step conversion process
+- Validation procedures
+- Best practices and common issues
+
+## 📊 **Migration Complexity Matrix**
+
+| Resource Type | Complexity | Time Estimate | Key Challenges |
+|---------------|------------|---------------|----------------|
+| **Bible Text** | ⭐ Low | 2-4 hours | USFM validation, alignment data |
+| **Translation Notes** | ⭐⭐ Medium | 4-8 hours | TSV parsing, reference mapping |
+| **Translation Words** | ⭐⭐ Medium | 4-6 hours | Markdown organization, linking |
+| **Translation Academy** | ⭐⭐⭐ High | 8-16 hours | Article hierarchies, dependencies |
+
+## 🛠️ **Tools & Automation**
+
+### **General Conversion Process**
+Start with the **[General Conversion Guide](general-conversion-guide)** for:
+- Understanding RC to SB mapping principles
+- Common conversion patterns
+- Field mapping reference
+- Implementation guidelines
+
+### **Migration Tools**
+- **[Automation Tools](../tools/)** - Automated migration assistance
+- **Validation Scripts** - Quality assurance tools
+- **Batch Processing** - Handle multiple repositories
+
+## ⚠️ **Important Considerations**
+
+### **Before You Start**
+- ✅ **Backup** original repositories
+- ✅ **Understand** both source and target formats
+- ✅ **Test** with small repositories first
+- ✅ **Plan** for validation and testing
+
+### **Common Pitfalls**
+- 🚫 **Metadata Loss**: Ensure all RC metadata is preserved
+- 🚫 **Link Breakage**: Maintain cross-references and dependencies  
+- 🚫 **Format Violations**: Follow Scripture Burrito specifications exactly
+- 🚫 **Content Corruption**: Validate content integrity after conversion
+
+## 📈 **Success Metrics**
+
+After completing a migration, verify:
+
+- ✅ **Content Integrity**: All original content is preserved
+- ✅ **Metadata Completeness**: All RC metadata mapped to SB
+- ✅ **Link Preservation**: Cross-references work correctly
+- ✅ **Tool Compatibility**: Converted repository works with SB tools
+- ✅ **Validation Passes**: Scripture Burrito validator reports no errors
+
+---
+
+**Next Steps**: Choose your migration path based on your Resource Container type, or start with the [General Conversion Guide](general-conversion-guide) to understand the overall process.

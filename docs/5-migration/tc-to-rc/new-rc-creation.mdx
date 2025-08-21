@@ -1,0 +1,372 @@
+---
+title: "Create New RC from First TC Book"
+description: "Guide for creating a new Resource Container repository starting with a translationCore book"
+category: "migration"
+difficulty: "advanced"
+prerequisites:
+  - path: "/4-repository-formats/tool-generated/translationcore-format-guide"
+    title: "translationCore Format Guide"
+  - path: "/4-repository-formats/resource-container/"
+    title: "Resource Container Format"
+tags: ["translationcore", "resource-container", "new-repository", "manifest-creation"]
+---
+
+# Create New Resource Container from First translationCore Book
+
+This guide covers creating a new Resource Container (RC) repository starting with a single translationCore (TC) book. This scenario occurs when no suitable RC exists for the target language/resource combination, requiring a complete RC structure to be built from scratch.
+
+## 🎯 **When to Create New RC**
+
+### **Use Cases**
+- **No Existing RC**: No RC repository exists for the language/resource combination
+- **New Translation Project**: Starting a fresh Bible translation project
+- **Organization's First RC**: Creating the first RC repository for an organization
+- **Resource Type Mismatch**: Existing RCs don't match the TC resource type
+
+### **Prerequisites**
+- translationCore book project completed and validated
+- Target language and resource type determined
+- Organization/repository hosting location identified
+- Understanding of RC structure and requirements
+
+## 🔍 **Pre-Creation Analysis**
+
+### **Step 1: Analyze TC Source**
+
+**Extract TC Metadata**:
+```json
+{
+  "project": {"id": "jon", "name": "Jonah"},
+  "resource": {"id": "glt", "name": "Gateway Language Translation"},
+  "target_language": {
+    "id": "es-419",
+    "name": "Español Latin America",
+    "direction": "ltr"
+  },
+  "tsv_relation": ["en/ult", "en/ust", "hbo/uhb?v=2.1.30"]
+}
+```
+
+**Determine RC Characteristics**:
+- **RC Identifier**: `{lang}_{resource}` (e.g., "es-419_glt")
+- **Subject**: "Bible" or "Aligned Bible" (if alignment data present)
+- **Type**: "bundle" (standard RC type)
+- **Format**: "application/zip; type=bundle"
+
+### **Step 2: Plan RC Structure**
+
+**Repository Naming**:
+```
+{lang}_{resource}_{type}
+# Examples:
+# es-419_glt_text_bible
+# fr_ust_text_bible
+# sw_ult_text_bible
+```
+
+**File Structure Planning**:
+```
+new-rc-repo/
+├── manifest.yaml              # RC manifest
+├── LICENSE.md                 # License file
+├── README.md                  # Repository documentation
+└── {##-BOOK}.usfm            # First book from TC
+```
+
+## 📋 **RC Creation Process**
+
+### **Step 1: Create Repository Structure**
+
+**Initialize Repository**:
+```bash
+# Create new repository directory
+mkdir {lang}_{resource}_text_bible
+cd {lang}_{resource}_text_bible
+
+# Initialize git repository
+git init
+```
+
+**Create Basic Files**:
+```bash
+# Create essential files
+touch manifest.yaml
+touch LICENSE.md
+touch README.md
+```
+
+### **Step 2: Create RC Manifest**
+
+**Generate Dublin Core Structure**:
+```yaml
+---
+dublin_core:
+  conformsto: 'rc0.2'
+  contributor:
+    - 'TC Book Translator'
+  creator: 'Organization Name'
+  description: 'Bible translation in {Language Name}'
+  format: 'application/zip; type=bundle'
+  identifier: '{lang}_{resource}'
+  issued: '2024-01-15'
+  language:
+    identifier: '{lang}'
+    title: '{Language Name}'
+    direction: 'ltr'
+  modified: '2024-01-15'
+  publisher: 'Organization Name'
+  relation:
+    - 'en/ult'
+    - 'en/ust'
+    - 'hbo/uhb?v=2.1.30'
+  rights: 'CC BY-SA 4.0'
+  source:
+    - identifier: '{lang}_{resource}'
+      language: '{lang}'
+      version: '1.0'
+  subject: 'Bible'
+  title: '{Language Name} {Resource Name}'
+  type: 'bundle'
+  version: '1.0'
+
+checking:
+  checking_entity:
+    - 'Organization Name'
+  checking_level: '1'
+
+projects:
+  - title: '{Book Name}'
+    versification: 'ufw'
+    identifier: '{book_id}'
+    sort: {book_number}
+    path: './{##-BOOK}.usfm'
+    categories:
+      - 'bible-ot'  # or 'bible-nt'
+```
+
+**Customize for TC Source**:
+```yaml
+# Example for Jonah (es-419_glt)
+dublin_core:
+  identifier: 'es-419_glt'
+  language:
+    identifier: 'es-419'
+    title: 'Español Latin America'
+    direction: 'ltr'
+  subject: 'Aligned Bible'  # If TC has alignment data
+  title: 'Español Latin America Gateway Language Translation'
+
+projects:
+  - title: 'Jonah'
+    versification: 'ufw'
+    identifier: 'jon'
+    sort: 32
+    path: './32-JON.usfm'
+    categories:
+      - 'bible-ot'
+```
+
+### **Step 3: Integrate TC Book Content**
+
+**Extract and Convert TC USFM**:
+```bash
+# Get the working USFM file from TC (contains all translation work)
+# translationCore naming: {target_language.id}_{resource.id}_{project.id}_book.usfm
+curl -H "Authorization: token {token}" \
+  "https://git.door43.org/api/v1/repos/{owner}/{tc-repo}/raw/{branch}/{target_language.id}_{resource.id}_{project.id}_book.usfm"
+```
+
+**Create RC Book File**:
+```bash
+# Determine book number (Jonah = 32)
+BOOK_NUM="32"
+BOOK_CODE="JON"
+
+# Create RC book file
+cp tc_book_content.usfm "${BOOK_NUM}-${BOOK_CODE}.usfm"
+```
+
+**Validate USFM Content**:
+- Verify `\id` marker matches book
+- Check alignment markers preserved
+- Validate chapter/verse structure
+
+### **Step 4: Create Supporting Files**
+
+**LICENSE.md**:
+```markdown
+# License
+
+This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
+
+## You are free to:
+
+* **Share** — copy and redistribute the material in any medium or format
+* **Adapt** — remix, transform, and build upon the material for any purpose, even commercially
+
+## Under the following terms:
+
+* **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+* **ShareAlike** — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+```
+
+**README.md**:
+```markdown
+# {Language Name} {Resource Name}
+
+This repository contains a Bible translation in {Language Name} using the {Resource Name} approach.
+
+## Current Status
+
+- **Books Completed**: 1 ({Book Name})
+- **Translation Approach**: {Resource Description}
+- **Checking Level**: 1
+
+## Source Texts
+
+- Unlocked Literal Bible (ULT)
+- Unlocked Simplified Bible (UST)
+- Hebrew Bible (UHB)
+- Greek New Testament (UGNT)
+
+## License
+
+This work is licensed under CC BY-SA 4.0. See LICENSE.md for details.
+```
+
+### **Step 5: Repository Finalization**
+
+**Validate RC Structure**:
+```bash
+# Check manifest syntax
+yamllint manifest.yaml
+
+# Verify file references
+grep "path:" manifest.yaml | while read -r line; do
+  file=$(echo "$line" | cut -d'"' -f2)
+  [ -f "$file" ] || echo "Missing: $file"
+done
+```
+
+**Initial Commit**:
+```bash
+git add .
+git commit -m "Initial RC creation with {Book Name} from translationCore
+
+- Created RC manifest with dublin_core structure
+- Added {Book Name} ({##-BOOK}.usfm) from TC project
+- Preserved alignment data and USFM structure
+- Set up for future book additions"
+```
+
+## 🔄 **Future Book Addition Preparation**
+
+### **Scalable Structure Design**
+
+**Manifest Template for Additional Books**:
+```yaml
+# Template for adding more books
+projects:
+  - title: '{Book Name}'
+    versification: 'ufw'
+    identifier: '{book_id}'
+    sort: {book_number}
+    path: './{##-BOOK}.usfm'
+    categories:
+      - 'bible-ot'  # or 'bible-nt'
+```
+
+**Book Addition Process**:
+1. Integrate new TC book using [Book Integration Guide](book-integration)
+2. Update manifest with new project entry
+3. Increment version number
+4. Update modification date
+
+### **Version Management**
+
+**Version Numbering Strategy**:
+- **1.0**: Initial RC with first book
+- **1.1**: Second book added
+- **1.x**: Additional books
+- **2.0**: Complete testament or major milestone
+
+## ⚠️ **Creation Considerations**
+
+### **Critical Decisions**
+
+**Subject Classification**:
+- **"Bible"**: Standard Bible text without alignment
+- **"Aligned Bible"**: Bible text with word alignment data
+- **Decision**: Based on presence of alignment markers in TC
+
+**Resource Type Mapping**:
+- **TC "glt"** → RC identifier includes "glt"
+- **TC "ust"** → RC subject "Bible", resource type preserved
+- **TC "ult"** → RC subject "Aligned Bible" (typically has alignment)
+
+**Language Information**:
+- Use exact language code from TC (`target_language.id`)
+- Preserve language name and direction
+- Maintain BCP 47 compliance
+
+### **Common Creation Pitfalls**
+
+**Incomplete Manifest**:
+- **Issue**: Missing required dublin_core fields
+- **Solution**: Use complete template and validate
+
+**Incorrect Book Numbering**:
+- **Issue**: Wrong sort order or book number
+- **Solution**: Use standard biblical book order reference
+
+**Alignment Data Loss**:
+- **Issue**: Stripping alignment markers during transfer
+- **Solution**: Preserve TC USFM content exactly
+
+**Dependency Mapping Errors**:
+- **Issue**: Incorrect relation field mapping
+- **Solution**: Map each TC tsv_relation entry individually
+
+## 📈 **Success Criteria**
+
+A successful new RC creation should achieve:
+
+- ✅ **Valid RC Structure**: Compliant with RC 0.2 specification
+- ✅ **Complete Manifest**: All required dublin_core fields present
+- ✅ **Content Preservation**: TC book content exactly preserved
+- ✅ **Alignment Integrity**: Word alignment data intact (if present)
+- ✅ **Scalable Design**: Ready for additional book integration
+- ✅ **Proper Classification**: Correct subject and type fields
+- ✅ **Documentation**: README and LICENSE files present
+- ✅ **Version Control**: Initial commit with clear history
+
+## 🛠️ **Creation Tools**
+
+### **Required Tools**
+- **RC Manifest Generator**: Create dublin_core structure
+- **USFM Validator**: Verify book content
+- **YAML Linter**: Validate manifest syntax
+- **Book Number Reference**: Standard biblical book ordering
+
+### **Automation Template**
+```bash
+#!/bin/bash
+# New RC Creation Script Template
+
+TC_REPO="$1"
+LANG_CODE="$2"
+RESOURCE_TYPE="$3"
+ORG_NAME="$4"
+
+# 1. Analyze TC repository
+# 2. Create RC directory structure
+# 3. Generate manifest template
+# 4. Extract and integrate TC book
+# 5. Create supporting files
+# 6. Validate RC structure
+# 7. Initialize git repository
+```
+
+---
+
+**Next Steps**: After creating the new RC, use [Book Integration](book-integration) to add additional TC books to complete the Bible translation project.

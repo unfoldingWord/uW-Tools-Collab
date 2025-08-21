@@ -1,0 +1,165 @@
+---
+title: "Translation Support RC to SB Migration"
+description: "Migration guides for translation support Resource Containers to Scripture Burrito format"
+category: "migration"
+difficulty: "intermediate"
+tags: ["translation-support", "migration", "tn", "tw", "ta", "tq", "tsv", "markdown"]
+---
+
+# Translation Support Resource Container to Scripture Burrito Migration
+
+This section covers migration of translation support repositories from Resource Container to Scripture Burrito format. These resources provide guidance, definitions, and training materials for Bible translators.
+
+## 📝 **Translation Support Migration Guides**
+
+### **[Translation Notes](translation-notes)**
+Migration guide for verse-specific translation guidance:
+- **TN** (Translation Notes) - Bible verse guidance
+- **OBS-TN** (OBS Translation Notes) - Story-specific guidance
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Low-Medium
+- 📝 **Content**: TSV files with verse-specific notes
+- 🎯 **Target Flavor**: parascripturalWordAlignment
+- ⏱️ **Time**: 2-3 hours
+
+### **[Translation Words](translation-words)**
+Migration guide for biblical term definitions:
+- **TW** (Translation Words) - Biblical term definitions and explanations
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Low-Medium
+- 📝 **Content**: Nested Markdown files
+- 🎯 **Target Flavor**: glossary
+- ⏱️ **Time**: 2-3 hours
+
+### **[Translation Academy](translation-academy)**
+Migration guide for translation training materials:
+- **TA** (Translation Academy) - Translation methodology and training
+
+**Characteristics**:
+- ⭐⭐⭐ **Complexity**: Medium
+- 📝 **Content**: Multi-file Markdown articles
+- 🎯 **Target Flavor**: peripheralResource
+- ⏱️ **Time**: 3-4 hours
+
+### **[Translation Questions](translation-questions)**
+Migration guide for comprehension questions:
+- **TQ** (Translation Questions) - Quality assurance questions
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Low-Medium
+- 📝 **Content**: TSV files with Q&A format
+- 🎯 **Target Flavor**: parascripturalWordAlignment
+- ⏱️ **Time**: 2-3 hours
+
+## 🎯 **Why Migrate Translation Support Repositories**
+
+### **Benefits of Scripture Burrito for Translation Support**
+- **Enhanced Cross-Referencing**: Better relationship modeling between resources
+- **Precise Content Typing**: Explicit MIME types for TSV and Markdown content
+- **Improved Organization**: Better handling of complex file structures
+- **Tool Integration**: Access to specialized Scripture Burrito tools
+- **Workflow Support**: Better support for translation workflows
+
+### **Migration Advantages**
+- **No Data Loss**: All RC content is preservable and enhanced
+- **Better Relationships**: Improved dependency and cross-reference modeling
+- **Enhanced Metadata**: Richer content description and organization
+- **Future-Proof**: Industry standard format for translation tools
+
+## 📊 **Translation Support Migration Comparison**
+
+| Repository Type | RC Subject | Content Type | SB Flavor | Key Features |
+|-----------------|------------|--------------|-----------|--------------|
+| **TN** | "Translation Notes" | TSV | parascripturalWordAlignment | Verse guidance, cross-refs |
+| **TW** | "Translation Words" | Markdown | glossary | Term definitions, categories |
+| **TA** | "Translation Academy" | Markdown | peripheralResource | Training articles, hierarchy |
+| **TQ** | "Translation Questions" | TSV | parascripturalWordAlignment | Q&A format, comprehension |
+
+## 🔄 **Common Migration Challenges**
+
+### **Content Structure Complexity**
+- **TSV Data**: Preserve column structure and cross-references
+- **Nested Directories**: Handle complex file organization (TW, TA)
+- **Multi-File Articles**: Combine article components (TA)
+- **Cross-References**: Maintain links between resources
+
+### **Relationship Modeling**
+- **Resource Dependencies**: Map RC relations to SB relationships
+- **Internal Links**: Preserve cross-references within resources
+- **External Links**: Maintain links to other resources (Bible texts, etc.)
+
+## 🛠️ **Translation Support Migration Tools**
+
+### **Content Processing Tools**
+- **TSV Parser**: Handle tab-separated value files
+- **Markdown Processor**: Process nested Markdown structures
+- **Cross-Reference Mapper**: Maintain link integrity
+- **Directory Structure Analyzer**: Handle complex file organizations
+
+### **Quality Assurance Tools**
+- **Link Validator**: Verify cross-references work
+- **Content Comparison**: Ensure no data loss
+- **Structure Validator**: Check SB compliance
+- **Workflow Tester**: Test with translation tools
+
+## 📋 **Migration Process Overview**
+
+All translation support migrations follow similar steps:
+
+### **Step 1: Analyze Source Structure**
+- Examine file organization and content types
+- Identify cross-references and dependencies
+- Map content to appropriate SB flavor
+
+### **Step 2: Create SB Metadata**
+- Convert dublin_core to identification
+- Set appropriate flavor type
+- Map relationships and dependencies
+
+### **Step 3: Process Content**
+- Convert files to appropriate ingredients
+- Set correct mimeType and role
+- Create precise scope objects
+- Preserve cross-references
+
+### **Step 4: Enhance with SB Features**
+- Add semantic categorization
+- Improve relationship modeling
+- Include workflow-specific metadata
+
+### **Step 5: Validate and Test**
+- Check SB metadata structure
+- Verify content integrity
+- Test cross-references
+- Validate with SB tools
+
+## ⚠️ **Translation Support Migration Considerations**
+
+### **Key Challenges**
+- **Complex Structures**: Nested directories and multi-file articles
+- **Cross-Reference Integrity**: Maintaining links between resources
+- **Content Relationships**: Preserving semantic connections
+- **Workflow Integration**: Ensuring tools can use converted resources
+
+### **Best Practices**
+- **Preserve Structure**: Maintain logical organization
+- **Enhance Metadata**: Add semantic information where possible
+- **Test Thoroughly**: Verify all cross-references work
+- **Document Decisions**: Record conversion choices
+
+## 📈 **Success Criteria**
+
+A successful translation support migration should achieve:
+
+- ✅ **Content Preservation**: All original content exactly preserved
+- ✅ **Structure Integrity**: Logical organization maintained
+- ✅ **Cross-Reference Accuracy**: All links work correctly
+- ✅ **Enhanced Metadata**: Improved content description
+- ✅ **Tool Compatibility**: Works with SB translation tools
+- ✅ **Workflow Support**: Enables efficient translation workflows
+
+---
+
+**Choose Your Migration Guide**: Select the appropriate guide based on your translation support repository type, or start with [Translation Notes](translation-notes) for the most common case.

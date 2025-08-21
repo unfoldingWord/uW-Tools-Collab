@@ -1,0 +1,199 @@
+# Migration Guide Index
+
+## Introduction
+
+This index provides a complete reference to all migration guides for converting between different repository formats in the unfoldingWord ecosystem. Each guide is tailored to the specific characteristics and requirements of different source and target formats.
+
+## Migration Guide Categories
+
+### 📈 Format Evolution: RC → SB
+
+#### **[Resource Container to Scripture Burrito](rc-to-sb/)**
+Convert standard Resource Container repositories to modern Scripture Burrito format.
+
+##### **Bible Text Migrations**
+- **[Original Languages](rc-to-sb/bible-text/original-languages)** - UHB, UGNT migrations
+  - **Complexity**: ⭐ Low | **Target Flavor**: textTranslation
+- **[Gateway Languages](rc-to-sb/bible-text/gateway-languages)** - ULT, UST migrations  
+  - **Complexity**: ⭐ Low | **Target Flavor**: textTranslation
+- **[Bible Stories](rc-to-sb/bible-text/bible-stories)** - OBS migrations
+  - **Complexity**: ⭐⭐ Low-Medium | **Target Flavor**: scripturalTextStories
+
+##### **Translation Support Migrations**
+- **[Translation Notes](rc-to-sb/translation-support/translation-notes)** - TN, OBS-TN
+  - **Complexity**: ⭐⭐ Low-Medium | **Target Flavor**: parascripturalWordAlignment
+- **[Translation Words](rc-to-sb/translation-support/translation-words)** - TW
+  - **Complexity**: ⭐⭐ Low-Medium | **Target Flavor**: glossary
+- **[Translation Academy](rc-to-sb/translation-support/translation-academy)** - TA
+  - **Complexity**: ⭐⭐⭐ Medium | **Target Flavor**: peripheralResource
+- **[Translation Questions](rc-to-sb/translation-support/translation-questions)** - TQ
+  - **Complexity**: ⭐⭐ Low-Medium | **Target Flavor**: parascripturalWordAlignment
+
+##### **Specialized Migrations**
+- **[Custom Resources](rc-to-sb/specialized/custom-resources)** - Non-standard RC types
+- **[Legacy Formats](rc-to-sb/specialized/legacy-formats)** - Old RC versions
+- **[General Conversion Guide](rc-to-sb/general-conversion-guide)** - Generic patterns
+
+### 🔧 Tool Consolidation: TC/tS → RC
+
+#### **[translationCore to Resource Container](tc-to-rc/)**
+Integrate single-book translationCore projects into multi-book Resource Container repositories.
+
+- **[Book Integration into Existing RC](tc-to-rc/book-integration)** - Add/replace books in existing RC
+  - **Complexity**: ⭐⭐ Medium | **Target**: Existing Resource Container
+- **[New RC Creation from First TC Book](tc-to-rc/new-rc-creation)** - Create new RC starting with TC book
+  - **Complexity**: ⭐⭐⭐ High | **Target**: New Resource Container
+- **[Alignment Data Preservation](tc-to-rc/alignment-data-handling)** - Word alignment integrity
+  - **Complexity**: ⭐⭐⭐ High | **Focus**: Data preservation
+
+#### **[translationStudio to Resource Container](ts-to-rc/)**
+Convert translationStudio repositories to standard Resource Container format.
+
+- **[Bible Book Migration](ts-to-rc/bible-book-migration)** - Chapter-based books
+  - **Complexity**: ⭐⭐ Medium | **Target**: Resource Container
+- **[OBS Migration](ts-to-rc/obs-migration)** - Open Bible Stories
+  - **Complexity**: ⭐⭐ Medium | **Target**: Resource Container (OBS)
+- **[Completion Data Handling](ts-to-rc/completion-data-handling)** - Progress tracking
+  - **Complexity**: ⭐ Low | **Focus**: Progress preservation
+
+## Quick Migration Reference
+
+### By Resource Container Type
+
+| RC Repository | Migration Guide | SB Flavor | Complexity | Key Features |
+|---------------|-----------------|-----------|------------|--------------|
+| **UHB** (Hebrew Bible) | [Bible Text](rc-to-sb/bible-text/original-languages) | textTranslation | ⭐ Low | Original language, RTL |
+| **UGNT** (Greek NT) | [Bible Text](rc-to-sb/bible-text/original-languages) | textTranslation | ⭐ Low | Original language, LTR |
+| **ULT** (Literal Translation) | [Bible Text](rc-to-sb/bible-text/gateway-languages) | textTranslation | ⭐ Low | Word alignment |
+| **UST** (Simplified Translation) | [Bible Text](rc-to-sb/bible-text/gateway-languages) | textTranslation | ⭐ Low | Word alignment |
+| **TN** (Translation Notes) | [Translation Notes](rc-to-sb/translation-support/translation-notes) | parascripturalWordAlignment | ⭐⭐ Low-Med | TSV, cross-refs |
+| **TQ** (Translation Questions) | [Translation Questions](rc-to-sb/translation-support/translation-questions) | parascripturalWordAlignment | ⭐⭐ Low-Med | TSV, Q&A format |
+| **TW** (Translation Words) | [Translation Words](rc-to-sb/translation-support/translation-words) | glossary | ⭐⭐ Low-Med | Nested directories |
+| **TWL** (Translation Words Links) | [Translation Words Links](rc-to-sb/translation-support/translation-notes) | parascripturalWordAlignment | ⭐⭐ Low-Med | TSV, word links |
+| **TA** (Translation Academy) | [Translation Academy](rc-to-sb/translation-support/translation-academy) | peripheralResource | ⭐⭐⭐ Medium | Multi-file articles |
+| **OBS** (Open Bible Stories) | [Bible Stories](rc-to-sb/bible-text/bible-stories) | scripturalTextStories | ⭐⭐ Low-Med | Story structure |
+
+### By Scripture Burrito Flavor
+
+| SB Flavor | RC Types | Migration Guide | Purpose |
+|-----------|----------|-----------------|---------|
+| **textTranslation** | UHB, UGNT, ULT, UST | [Bible Text](rc-to-sb/bible-text/) | Bible translations |
+| **scripturalTextStories** | OBS | [Bible Stories](rc-to-sb/bible-text/bible-stories) | Bible story collections |
+| **parascripturalWordAlignment** | TN, TQ, TWL | [Translation Support](rc-to-sb/translation-support/) | Verse-specific guidance |
+| **glossary** | TW | [Translation Words](rc-to-sb/translation-support/translation-words) | Term definitions |
+| **peripheralResource** | TA | [Translation Academy](rc-to-sb/translation-support/translation-academy) | Training materials |
+
+## Migration Planning Workflow
+
+### Step 1: Identify Repository Type
+
+**Repository Analysis**:
+- Check `dublin_core.subject` field in manifest.yaml
+- Verify `dublin_core.type` field
+- Examine file structure and organization
+- Refer to quick reference table above
+
+### Step 2: Select Migration Guide
+
+**Guide Selection**:
+- Use repository type to select appropriate migration guide
+- Note complexity level for planning purposes
+- Review key features and considerations
+
+### Step 3: Follow Specific Migration Steps
+
+**Migration Process**:
+- Follow step-by-step instructions in selected guide
+- Apply repository-specific best practices
+- Validate conversion using guide recommendations
+
+### Step 4: Quality Assurance
+
+**Validation Process**:
+- Use Scripture Burrito validation tools
+- Test with SB-compatible applications
+- Verify all content and metadata integrity
+
+## Migration Benefits by Repository Type
+
+### Bible Text Repositories
+- **Enhanced Alignment Support**: Better word alignment handling
+- **Improved Scope Precision**: Book-level scope vs categories
+- **Better Tool Compatibility**: Access to SB Bible tools
+
+### Translation Support Repositories
+- **Enhanced Cross-Referencing**: Better relationship modeling
+- **Precise Content Typing**: Explicit MIME types for TSV/Markdown
+- **Improved Workflow Support**: Flavor-specific tool features
+
+### Training Resources
+- **Better Article Organization**: Unified article structure
+- **Enhanced Learning Paths**: Explicit training progression
+- **Improved Cross-References**: Better topic interconnection
+
+## Implementation Strategy
+
+### Phase 1: High-Impact, Low-Complexity
+1. **Bible Text Repositories** (UHB, UGNT, ULT, UST) - Low complexity, high impact
+2. **Translation Notes** (TN) - Medium complexity, high impact
+
+### Phase 2: Support Resources
+1. **Translation Words** (TW) - Medium complexity, good impact
+2. **Translation Questions** (TQ) - Low complexity, good impact
+3. **Translation Words Links** (TWL) - Low complexity, good impact
+
+### Phase 3: Complex Resources
+1. **Translation Academy** (TA) - Higher complexity, good long-term impact
+2. **Open Bible Stories** (OBS) - Medium complexity, specialized impact
+
+## Tools and Automation
+
+### Conversion Tool Requirements
+
+**For All Migrations**:
+- RC manifest parser (YAML)
+- SB metadata generator (JSON)
+- File structure analyzer
+- Content integrity validator
+
+**Repository-Specific Tools**:
+- **Bible Text**: USFM alignment preservation
+- **Translation Notes**: TSV parser and cross-reference handler
+- **Translation Words**: Directory structure mapper
+- **Translation Academy**: Multi-file article combiner
+
+### Validation Tools
+
+**Scripture Burrito Validation**:
+- SB schema validator
+- Flavor-specific validation
+- Content integrity checker
+- Relationship validator
+
+## Success Metrics
+
+### Migration Quality Indicators
+
+**Technical Success**:
+- All content files properly referenced in ingredients
+- Valid SB metadata.json structure
+- Correct flavor type assignment
+- Preserved cross-references and relationships
+
+**Functional Success**:
+- Converted SB loads in SB-compatible tools
+- All features work as expected
+- Cross-references resolve correctly
+- No data loss from original RC
+
+### Long-Term Benefits
+
+**Ecosystem Advantages**:
+- Access to growing SB tool ecosystem
+- Better interoperability with other Bible tools
+- Future-proof format for ongoing development
+- Enhanced capabilities over original RC format
+
+---
+
+This migration guide index helps developers plan and execute systematic conversion of Resource Container repositories to Scripture Burrito format, ensuring comprehensive coverage and successful migration outcomes.

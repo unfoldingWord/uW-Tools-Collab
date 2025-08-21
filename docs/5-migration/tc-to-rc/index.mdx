@@ -1,0 +1,212 @@
+---
+title: "translationCore to Resource Container Migration"
+description: "Convert single-book translationCore projects to standard Resource Container format"
+category: "migration"
+difficulty: "intermediate"
+prerequisites:
+  - path: "/2-unfoldingword-developer-guide"
+    title: "unfoldingWord Developer Guide"
+  - path: "/4-repository-formats/tool-generated/translationcore-format-guide"
+    title: "translationCore Format Guide"
+  - path: "/4-repository-formats/resource-container/"
+    title: "Resource Container Format"
+related:
+  - path: "/4-repository-formats/tool-generated/"
+    title: "Tool-Generated Formats"
+    description: "Source format documentation"
+tags: ["migration", "translationcore", "resource-container", "single-book"]
+---
+
+# translationCore to Resource Container Migration
+
+This section provides comprehensive guides for converting translationCore (TC) repositories to standard Resource Container (RC) format. translationCore projects focus on single books with rich word alignment data and tool-specific metadata.
+
+## 🎯 **Migration Overview**
+
+### **Why Integrate TC Books into RC?**
+- **Multi-Book Consolidation**: Combine single-book TC projects into complete Bible RC
+- **Workflow Continuity**: Maintain translation progress across books in unified repository
+- **Content Preservation**: Preserve all translation work and alignment data from TC
+- **Team Collaboration**: Enable multiple translators to work on different books
+- **Format Standardization**: Convert from tool-specific to ecosystem standard format
+
+### **translationCore Characteristics**
+Based on the [translationCore Format Guide](../../4-repository-formats/tool-generated/translationcore-format-guide):
+
+- **Single Book Focus**: Each repository contains one Bible book
+- **Two USFM Files**: Simple and complete versions (app-generated only)
+- **Rich Alignment Data**: Extensive word-level alignment markers
+- **Tool-Specific Metadata**: translationCore-specific manifest format
+- **App Data Directory**: `.apps/translationCore/` with tool data
+
+## 📚 **Integration Scenarios & Guides**
+
+### **🔄 [Book Integration into Existing RC](book-integration)**
+Integrate a translationCore book into an existing Resource Container repository.
+
+**Scenarios**:
+- **Replace Existing Book**: Update book file in existing RC with TC version
+- **Add New Book**: Add TC book as new book to existing RC
+- **Update Manifest**: Modify RC manifest to reflect changes
+
+**Covers**:
+- Target RC repository identification and analysis
+- USFM file selection and naming conventions
+- Manifest updates and book scope additions
+- Alignment data preservation during integration
+
+**Characteristics**:
+- ⭐⭐ **Complexity**: Medium
+- 📝 **Content**: USFM integration into multi-book structure
+- 🎯 **Target**: Existing Resource Container
+- ⏱️ **Time**: 1-2 hours
+
+### **🆕 [New RC Creation from First TC Book](new-rc-creation)**
+Create a new Resource Container repository starting with a translationCore book.
+
+**Use Cases**:
+- No existing RC for the target language/resource combination
+- Starting a new translation project
+- Creating organization's first RC repository
+
+**Covers**:
+- RC repository structure creation from scratch
+- Manifest generation with proper dublin_core structure
+- Book file organization and naming
+- Project scope definition for future book additions
+
+**Characteristics**:
+- ⭐⭐⭐ **Complexity**: Medium-High
+- 📝 **Content**: Complete RC structure creation
+- 🎯 **Target**: New Resource Container repository
+- ⏱️ **Time**: 2-3 hours
+
+### **🔗 [Alignment Data Preservation](alignment-data-handling)**
+Specialized guide for preserving word alignment data during integration.
+
+**Covers**:
+- USFM alignment marker preservation (`\zaln-s`, `\zaln-e`, `\w`)
+- Strong's number and morphology data integrity
+- Occurrence tracking and alignment consistency
+- Source text relationship maintenance in RC context
+
+**Characteristics**:
+- ⭐⭐⭐ **Complexity**: High
+- 📝 **Content**: Word-level alignment markers
+- 🎯 **Focus**: Data integrity across integration
+- ⏱️ **Time**: 1-2 hours (additional)
+
+## 🔍 **translationCore Repository Analysis**
+
+### **Typical Repository Structure**
+Based on [es-419_tps_est_book](https://git.door43.org/abelper8/es-419_tps_est_book):
+```
+es-419_tps_est_book/
+├── 📄 manifest.json                    # TC manifest (tc_version, generator)
+├── 📄 est.usfm                         # Initial import file
+├── 📄 es-419_tps_est_book.usfm        # Working file (primary - contains all translation work)
+├── 📄 settings.json                    # App settings
+├── 📄 LICENSE.md                       # License
+└── 📁 .apps/translationCore/           # Tool data
+    ├── 📁 alignmentData/
+    ├── 📁 checkData/
+    └── 📁 selectionsData/
+```
+
+### **Key Identification Markers**
+- **Manifest**: Contains `tc_version` field or `generator.name: "tc-desktop"`
+- **File Pattern**: Exactly two USFM files (`{project.id}.usfm`, `{target_language.id}_{resource.id}_{project.id}_book.usfm`)
+- **Content**: Rich USFM with alignment markers (`\zaln-s`, `\zaln-e`, `\w`)
+- **Dependencies**: Uses `tsv_relation[]` instead of `dublin_core.relation[]`
+
+## 📊 **Integration Complexity Analysis**
+
+| Integration Scenario | Complexity | Key Challenges |
+|---------------------|------------|----------------|
+| **Add to Existing RC** | ⭐⭐ Medium | Book naming, manifest updates, scope integration |
+| **Replace Book in RC** | ⭐⭐ Medium | Content replacement, alignment preservation |
+| **Create New RC** | ⭐⭐⭐ High | Complete RC structure, manifest creation |
+| **Alignment Preservation** | ⭐⭐⭐ High | Complex USFM markers, data integrity |
+| **Multi-Book Coordination** | ⭐⭐ Medium | Consistent naming, scope management |
+
+## 🔄 **Integration Process Overview**
+
+### **Step 1: TC Repository Analysis**
+- Identify translationCore format using detection patterns
+- Analyze file structure and select primary USFM file
+- Extract book ID, language, and resource information
+
+### **Step 2: Target RC Assessment**
+- **Existing RC**: Identify target RC repository for integration
+- **New RC**: Determine if new RC creation is needed
+- Analyze target language/resource combination
+
+### **Step 3: Integration Strategy Selection**
+- **Add New Book**: TC book doesn't exist in target RC
+- **Replace Existing**: TC book replaces existing book in RC
+- **Create New RC**: No suitable RC exists for integration
+
+### **Step 4: Content Integration**
+- Select and rename USFM file according to RC conventions
+- Preserve all alignment data and USFM structure
+- Handle file organization within RC structure
+
+### **Step 5: Manifest Updates**
+- **Existing RC**: Update manifest to include new/updated book
+- **New RC**: Create complete dublin_core manifest structure
+- Map TC dependencies to RC relation format
+
+### **Step 6: Validation and Testing**
+- Validate RC structure and book integration
+- Test alignment data integrity
+- Verify multi-book RC consistency
+
+## ⚠️ **Migration Considerations**
+
+### **Key Challenges**
+- **File Selection**: Choose between initial import and working USFM files (always use working file)
+- **Alignment Complexity**: Rich alignment data must be preserved exactly
+- **Single Book Scope**: TC's single-book focus vs RC's multi-book capability
+- **Tool Dependencies**: TC-specific dependencies may not map directly
+
+### **Best Practices**
+- **Preserve All Alignment Data**: Never strip alignment markers
+- **Always Use Working Files**: Use `{target_language.id}_{resource.id}_{project.id}_book.usfm` (contains all translation work)
+- **Maintain Dependencies**: Map all source relationships accurately
+- **Test Thoroughly**: Verify alignment data works in RC tools
+
+### **Data Preservation Priorities**
+1. **USFM Content**: All text and markup preserved exactly
+2. **Alignment Data**: Word-level alignment markers intact
+3. **Metadata**: Project, resource, and language information
+4. **Dependencies**: Source text relationships maintained
+5. **Tool Data**: Optional but valuable for advanced features
+
+## 📈 **Success Criteria**
+
+A successful TC→RC migration should achieve:
+
+- ✅ **Format Compliance**: Valid Resource Container structure
+- ✅ **Content Integrity**: All USFM content and alignment data preserved
+- ✅ **Metadata Completeness**: All TC metadata mapped to RC equivalents
+- ✅ **Dependency Accuracy**: Source relationships correctly represented
+- ✅ **Tool Compatibility**: Works with standard RC applications
+- ✅ **Alignment Functionality**: Word alignment features work correctly
+
+## 🛠️ **Migration Tools**
+
+### **Required Tools**
+- translationCore format detector
+- USFM alignment validator
+- RC metadata generator
+- Content integrity checker
+
+### **Validation Tools**
+- Resource Container validator
+- Alignment data checker
+- Cross-reference validator
+- Tool compatibility tester
+
+---
+
+**Start Here**: Begin with [Single Book Migration](single-book-migration) for the core conversion process, then add [Alignment Data Handling](alignment-data-handling) for advanced alignment preservation.

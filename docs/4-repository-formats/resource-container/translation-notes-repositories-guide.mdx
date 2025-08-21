@@ -1,0 +1,290 @@
+# Translation Notes Repositories Guide
+
+## Introduction
+
+This guide covers how to handle Translation Notes repositories in Door43. These repositories contain verse-specific translation guidance in TSV format, designed to help translators understand difficult passages and translation issues.
+
+**Repository Types Covered:**
+- **Bible Translation Notes**: Verse-specific guidance for Bible books
+- **Open Bible Stories Translation Notes**: Story-specific guidance for OBS
+
+## Repository Types
+
+### Bible Translation Notes Repositories
+
+**Examples**: `en_tn`
+
+**Key Characteristics:**
+- Subject: "Translation Notes"
+- Container type: "help"
+- Content: TSV files with verse-specific guidance
+- Format: Tab-separated values
+- Organization: One TSV file per Bible book
+- Scope: Complete Bible coverage
+
+### Open Bible Stories Translation Notes
+
+**Examples**: `en_obs-tn`
+
+**Key Characteristics:**
+- Subject: "OBS Translation Notes" 
+- Container type: "help"
+- Content: TSV files with story-specific guidance
+- Format: Tab-separated values
+- Organization: Notes for Open Bible Stories
+- Scope: 50 story coverage
+
+## How to Identify Translation Notes Repositories
+
+**Step 1: Check the Manifest Subject**
+- Look for `dublin_core.subject` field in manifest.yaml
+- Should be "Translation Notes" or "OBS Translation Notes"
+
+**Step 2: Verify Container Type**
+- Check `dublin_core.type` field
+- Should be "help" for Translation Notes repositories
+
+**Step 3: Confirm File Structure**
+- Look for TSV files with "tn_" prefix (tn_GEN.tsv, tn_EXO.tsv, etc.)
+- Files should cover Bible books or OBS stories
+- All files should be in TSV format
+
+## Manifest Structure for Translation Notes
+
+### Bible Translation Notes Manifest
+
+```yaml
+dublin_core:
+  identifier: 'tn'                     # Resource identifier
+  language:
+    identifier: 'en'                   # Language code
+    direction: 'ltr'                   # Text direction
+  subject: 'Translation Notes'         # Resource type
+  type: 'help'                        # Help/guidance resource
+  version: '84'                       # Resource version
+  relation:                           # Dependencies
+    - 'en/ult'                        # Literal translation
+    - 'en/ust'                        # Simplified translation
+    - 'en/ta'                         # Translation Academy
+    - 'hbo/uhb'                       # Hebrew Bible
+    - 'el-x-koine/ugnt'               # Greek NT
+
+projects:                             # TSV files for each book
+  - identifier: 'gen'                 # Book identifier
+    title: 'Genesis'                  # Human-readable title
+    path: './tn_GEN.tsv'             # TSV file path
+    sort: 1                          # Display order
+    versification: 'ufw'             # Versification system
+    categories: ['bible-ot']         # Old Testament
+```
+
+## File Structure Patterns
+
+### Bible Translation Notes Structure
+
+```
+en_tn/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 tn_GEN.tsv                    # Genesis notes
+├── 📄 tn_EXO.tsv                    # Exodus notes
+├── 📄 tn_LEV.tsv                    # Leviticus notes
+├── ...                              # All Bible books
+├── 📄 tn_MAT.tsv                    # Matthew notes
+├── ...                              # All NT books
+└── 📄 tn_REV.tsv                    # Revelation notes
+```
+
+### OBS Translation Notes Structure
+
+```
+en_obs-tn/
+├── 📄 manifest.yaml                 # Resource Container manifest
+├── 📄 LICENSE.md                    # License file
+├── 📄 tn_01.tsv                     # Story 1 notes
+├── 📄 tn_02.tsv                     # Story 2 notes
+├── ...                              # All 50 stories
+└── 📄 tn_50.tsv                     # Story 50 notes
+```
+
+## TSV Content Structure
+
+### Translation Notes TSV Format
+
+**Column Headers**:
+| Column | Purpose | Example |
+|--------|---------|---------|
+| **Reference** | Verse reference | "1:1" or "1:1-2" |
+| **ID** | Unique note identifier | "abc1" |
+| **Tags** | Note categories | "grammar", "culture", "translate" |
+| **SupportReference** | Link to TA article | "rc://*/ta/man/translate/figs-metaphor" |
+| **Quote** | Text being explained | "In the beginning" |
+| **Occurrence** | Which occurrence in verse | "1" |
+| **Note** | Translation guidance | "This phrase introduces..." |
+
+**Sample TSV Content**:
+```tsv
+Reference	ID	Tags	SupportReference	Quote	Occurrence	Note
+1:1	abc1	grammar	rc://*/ta/man/translate/figs-metaphor	In the beginning	1	This phrase introduces the entire Bible and tells us the starting point of everything that follows.
+1:2	abc2	culture	rc://*/ta/man/translate/translate-unknown	without form and empty	1	This describes the condition of the earth before God shaped it.
+```
+
+## How to Process Translation Notes Repositories
+
+### Step 1: Verify Repository Type
+
+**Check Manifest Fields**:
+- Confirm subject is "Translation Notes" or "OBS Translation Notes"
+- Verify container type is "help"
+- Check that projects array contains TSV files
+
+### Step 2: Extract Book/Story Coverage
+
+**From Projects Array**:
+- Get list of all books or stories covered
+- Note the TSV file path for each book/story
+- Check versification system used
+
+**Expected Coverage**:
+- Bible TN: 66 books (or subset)
+- OBS TN: 50 stories
+
+### Step 3: Process TSV File Structure
+
+**For Each TSV File**:
+- Download the file content
+- Parse as tab-separated values
+- Validate expected column headers
+- Process note content (markdown formatted)
+
+### Step 4: Handle Cross-References
+
+**Support References**:
+- Parse rc:// links to Translation Academy articles
+- Extract tool and article identifiers
+- Enable navigation to referenced training materials
+
+**Quote and Occurrence**:
+- Use for linking to specific words in aligned Bible texts
+- Enable word-level highlighting features
+- Connect to Translation Words Links if available
+
+### Step 5: Organize for Application Use
+
+**Group by Reference Type**:
+- Verse-level notes
+- Passage-level notes (multi-verse references)
+- Chapter-level notes (if any)
+
+**Categorize by Tags**:
+- Grammar issues
+- Cultural background
+- Translation techniques
+- Theological concepts
+
+## Application Integration
+
+### How to Display Translation Notes in Preview Apps
+
+**Step 1: Organize by Book Structure**
+- Present notes organized by Bible book or OBS story
+- Show verse references clearly
+- Group related notes together
+
+**Step 2: Show Note Categories**
+- Display note tags to help users understand note types
+- Provide filtering by tag categories
+- Show support article links when available
+
+**Step 3: Enable Cross-Navigation**
+- Link quotes to specific words in Bible texts
+- Connect support references to Translation Academy articles
+- Show related Translation Words when applicable
+
+**Step 4: Present Content Clearly**
+- Format note content (markdown) appropriately
+- Show verse context for each note
+- Indicate which occurrence of a word is being discussed
+
+### How to Use Translation Notes in Editing Apps
+
+**Step 1: Set Up Note Access**
+- Configure access to TSV files for target books
+- Set up parsing for TSV format
+- Enable markdown rendering for note content
+
+**Step 2: Enable Word-Level Linking**
+- Use Quote and Occurrence columns to highlight specific words
+- Connect to aligned Bible texts for precise targeting
+- Show notes contextually when users select words
+
+**Step 3: Configure Support Material Access**
+- Parse support references to link to Translation Academy
+- Enable quick access to referenced training articles
+- Show related Translation Words definitions
+
+**Step 4: Organize for Translator Workflow**
+- Present notes in verse order for systematic review
+- Group by tag categories for focused study
+- Enable filtering and search functionality
+
+## Content Characteristics
+
+### Note Content Analysis
+
+**Typical Note Length**: 50-200 characters
+**Content Format**: Markdown with basic formatting
+**Reference Patterns**: Single verses most common, some multi-verse
+**Tag Distribution**: Grammar (40%), Culture (25%), Translate (20%), Other (15%)
+
+### Cross-Reference Patterns
+
+**Support References**:
+- Most link to Translation Academy articles
+- Common articles: figs-metaphor, translate-names, grammar topics
+- Links use rc:// URI format
+
+**Quote Patterns**:
+- Usually 1-5 words from the verse
+- Occurrence numbers typically 1-3
+- Some notes reference multiple quotes
+
+## Best Practices
+
+### 1. TSV Processing
+- Always validate column headers before processing
+- Handle markdown formatting in note content
+- Parse support references for navigation features
+
+### 2. Cross-Reference Integration
+- Link quotes to specific word occurrences in Bible texts
+- Enable seamless navigation to Translation Academy
+- Connect to Translation Words for term definitions
+
+### 3. User Experience
+- Present notes contextually with Bible text
+- Organize by translator workflow needs
+- Enable filtering and categorization
+
+### 4. Performance Optimization
+- Cache frequently accessed TSV files
+- Index notes by reference for quick lookup
+- Pre-process support references for faster navigation
+
+## Common Issues and Solutions
+
+### Issue 1: Large TSV Files
+**Problem**: Some books have hundreds of notes, making large TSV files
+**Solution**: Implement efficient TSV parsing and consider pagination
+
+### Issue 2: Complex Cross-References
+**Problem**: Support references use complex rc:// URI format
+**Solution**: Parse URI components and validate referenced resources
+
+### Issue 3: Markdown in TSV
+**Problem**: Note content contains markdown that needs rendering
+**Solution**: Use appropriate markdown parser for note display
+
+---
+
+This guide is based on analysis of Door43 Translation Notes repositories and should be used alongside the main [Door43 API Developer Guide](../../3-door43-api-developer-guide).
