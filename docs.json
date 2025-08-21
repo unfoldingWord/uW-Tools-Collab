@@ -14,74 +14,70 @@
   "sidebar": [
     {
       "group": "Getting Started",
-      "icon": "/assets/icons/getting-started.svg",
+      "icon": "🚀",
       "pages": [
         {
           "title": "Overview",
-          "href": "/getting-started/"
+          "href": "/0-getting-started"
         },
         {
           "title": "Why unfoldingWord Translation Resources",
-          "href": "/getting-started/why-unfoldingword-translation-resources"
+          "href": "/1-why-unfoldingword-translation-resources"
         }
       ]
     },
     {
       "group": "Developer Guides",
-      "icon": "/assets/icons/developer-guide.svg", 
+      "icon": "🛠️",
       "pages": [
         {
-          "title": "Overview",
-          "href": "/guides/"
-        },
-        {
           "title": "unfoldingWord Developer Guide", 
-          "href": "/guides/unfoldingword-developer-guide"
+          "href": "/2-unfoldingword-developer-guide"
         },
         {
           "title": "Door43 API Developer Guide",
-          "href": "/guides/door43-api-developer-guide"
+          "href": "/3-door43-api-developer-guide"
         }
       ]
     },
     {
       "group": "Repository Formats",
-      "icon": "/assets/icons/repository.svg",
+      "icon": "📁",
       "pages": [
         {
           "title": "Overview",
-          "href": "/repository-formats/"
+          "href": "/4-repository-formats/"
         },
         {
           "group": "Resource Container (RC)",
           "pages": [
             {
               "title": "Bible Text Repositories",
-              "href": "/repository-formats/resource-container/bible-text-repositories-guide"
+              "href": "/4-repository-formats/resource-container/bible-text-repositories-guide"
             },
             {
               "title": "Translation Notes Repositories", 
-              "href": "/repository-formats/resource-container/translation-notes-repositories-guide"
+              "href": "/4-repository-formats/resource-container/translation-notes-repositories-guide"
             },
             {
               "title": "Translation Questions Repositories",
-              "href": "/repository-formats/resource-container/translation-questions-repositories-guide"
+              "href": "/4-repository-formats/resource-container/translation-questions-repositories-guide"
             },
             {
               "title": "Translation Words Repositories",
-              "href": "/repository-formats/resource-container/translation-words-repositories-guide"
+              "href": "/4-repository-formats/resource-container/translation-words-repositories-guide"
             },
             {
               "title": "Translation Words Links Repositories",
-              "href": "/repository-formats/resource-container/translation-words-links-repositories-guide"
+              "href": "/4-repository-formats/resource-container/translation-words-links-repositories-guide"
             },
             {
               "title": "Translation Academy Repositories",
-              "href": "/repository-formats/resource-container/translation-academy-repositories-guide"
+              "href": "/4-repository-formats/resource-container/translation-academy-repositories-guide"
             },
             {
               "title": "Open Bible Stories Repositories",
-              "href": "/repository-formats/resource-container/open-bible-stories-repositories-guide"
+              "href": "/4-repository-formats/resource-container/open-bible-stories-repositories-guide"
             }
           ]
         },
@@ -90,7 +86,7 @@
           "pages": [
             {
               "title": "Scripture Burrito Repositories",
-              "href": "/repository-formats/scripture-burrito/scripture-burrito-repositories-guide"
+              "href": "/4-repository-formats/scripture-burrito/scripture-burrito-repositories-guide"
             }
           ]
         },
@@ -99,11 +95,11 @@
           "pages": [
             {
               "title": "translationCore Format",
-              "href": "/repository-formats/tool-generated/translationcore-format-guide"
+              "href": "/4-repository-formats/tool-generated/translationcore-format-guide"
             },
             {
               "title": "translationStudio Format", 
-              "href": "/repository-formats/tool-generated/translationstudio-format-guide"
+              "href": "/4-repository-formats/tool-generated/translationstudio-format-guide"
             }
           ]
         }
@@ -111,41 +107,82 @@
     },
     {
       "group": "Migration & Conversion",
-      "icon": "/assets/icons/migration.svg",
+      "icon": "🔄",
       "pages": [
         {
           "title": "Overview",
-          "href": "/migration/"
+          "href": "/5-migration/"
         },
         {
           "title": "Migration Guide Index",
-          "href": "/migration/migration-guide-index"
+          "href": "/5-migration/migration-guide-index"
         },
         {
-          "title": "Bible Text RC to SB Migration",
-          "href": "/migration/bible-text-rc-to-sb-migration"
+          "group": "RC → SB Migration",
+          "pages": [
+            {
+              "title": "General Conversion Guide",
+              "href": "/5-migration/rc-to-sb/general-conversion-guide"
+            },
+            {
+              "group": "Bible Text",
+              "pages": [
+                {
+                  "title": "Original Languages (UHB, UGNT)",
+                  "href": "/5-migration/rc-to-sb/bible-text/original-languages"
+                }
+              ]
+            },
+            {
+              "group": "Translation Support",
+              "pages": [
+                {
+                  "title": "Translation Notes",
+                  "href": "/5-migration/rc-to-sb/translation-support/translation-notes"
+                },
+                {
+                  "title": "Translation Words",
+                  "href": "/5-migration/rc-to-sb/translation-support/translation-words"
+                },
+                {
+                  "title": "Translation Academy",
+                  "href": "/5-migration/rc-to-sb/translation-support/translation-academy"
+                }
+              ]
+            }
+          ]
         },
         {
-          "title": "Translation Notes RC to SB Migration",
-          "href": "/migration/translation-notes-rc-to-sb-migration"
+          "group": "TC → RC Migration",
+          "pages": [
+            {
+              "title": "Overview",
+              "href": "/5-migration/tc-to-rc/"
+            },
+            {
+              "title": "Book Integration",
+              "href": "/5-migration/tc-to-rc/book-integration"
+            },
+            {
+              "title": "New RC Creation",
+              "href": "/5-migration/tc-to-rc/new-rc-creation"
+            }
+          ]
         },
         {
-          "title": "Translation Words RC to SB Migration",
-          "href": "/migration/translation-words-rc-to-sb-migration"
-        },
-        {
-          "title": "Translation Academy RC to SB Migration",
-          "href": "/migration/translation-academy-rc-to-sb-migration"
-        },
-        {
-          "title": "General RC to SB Conversion",
-          "href": "/migration/rc-to-scripture-burrito-conversion-guide"
+          "group": "tS → RC Migration",
+          "pages": [
+            {
+              "title": "Overview",
+              "href": "/5-migration/ts-to-rc/"
+            }
+          ]
         }
       ]
     },
     {
       "group": "Automation & MCP", 
-      "icon": "/assets/icons/automation.svg",
+      "icon": "🤖",
       "pages": [
         {
           "title": "Overview",
@@ -166,28 +203,6 @@
         {
           "title": "Door43 API Reference for MCP",
           "href": "/automation/door43-api-reference-for-mcp"
-        }
-      ]
-    },
-    {
-      "group": "Reference",
-      "icon": "/assets/icons/reference.svg",
-      "pages": [
-        {
-          "title": "Overview",
-          "href": "/reference/"
-        },
-        {
-          "title": "Guide Index",
-          "href": "/reference/guide-index"
-        },
-        {
-          "title": "Repository Analysis Plan",
-          "href": "/reference/repository-analysis-plan"
-        },
-        {
-          "title": "Subject Guide Template",
-          "href": "/reference/subject-guide-template"
         }
       ]
     }
