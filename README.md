@@ -31,26 +31,26 @@
 
 This repository contains comprehensive developer documentation for the Door43 ecosystem:
 
-### **[Getting Started](docs/getting-started/)**
-- **Why unfoldingWord Translation Resources** - Mission and ecosystem overview
-- Foundation concepts for Bible translation technology
+### **[Getting Started](docs/)**
+- **[Why unfoldingWord Translation Resources](docs/1-why-unfoldingword-translation-resources.mdx)** - Mission and ecosystem overview
+- **[Getting Started Guide](docs/0-getting-started.mdx)** - Foundation concepts for Bible translation technology
 
-### **[Developer Guides](docs/guides/)**
-- **unfoldingWord Developer Guide** - Complete resource architecture
-- **Door43 API Developer Guide** - Practical API implementation patterns
+### **[Developer Guides](docs/)**
+- **[unfoldingWord Developer Guide](docs/2-unfoldingword-developer-guide.mdx)** - Complete resource architecture
+- **[Door43 API Developer Guide](docs/3-door43-api-developer-guide.mdx)** - Practical API implementation patterns
 
-### **[Repository Formats](docs/repository-formats/)**
-- **Resource Container** - Standard unfoldingWord formats (Bible texts, translation helps)
-- **Scripture Burrito** - Alternative Bible resource format  
-- **Tool-Generated** - translationCore and translationStudio formats
+### **[Repository Formats](docs/4-repository-formats/)**
+- **[Resource Container](docs/4-repository-formats/resource-container/)** - Standard unfoldingWord formats (Bible texts, translation helps)
+- **[Scripture Burrito](docs/4-repository-formats/scripture-burrito/)** - Alternative Bible resource format  
+- **[Tool-Generated](docs/4-repository-formats/tool-generated/)** - translationCore and translationStudio formats
 
-### **[Migration & Conversion](docs/migration/)**
-- Resource Container → Scripture Burrito conversion guides
-- Format-specific migration instructions
+### **[Migration & Conversion](docs/5-migration/)**
+- **[Resource Container → Scripture Burrito](docs/5-migration/rc-to-sb/)** conversion guides
+- **[Format-specific migration instructions](docs/5-migration/migration-guide-index.mdx)**
 
 ### **[Automation & MCP](docs/automation/)**
-- MCP instructions for AI systems
-- Batch processing and repository analysis tools
+- **[MCP instructions for AI systems](docs/automation/mcp-implementation-example.mdx)**
+- **[Batch processing and repository analysis tools](docs/automation/door43-repository-analyzer-mcp.mdx)**
 
 ## 🎯 **Find What You Need**
 
@@ -87,6 +87,12 @@ This repository contains comprehensive developer documentation for the Door43 ec
 - **[Door43 Content Service](https://git.door43.org/)** - Live repository browser
 - **[Door43 API Swagger](https://git.door43.org/api/swagger)** - Complete API reference
 - **[Resource Container Spec](https://resource-container.readthedocs.io/)** - Official RC specification
+
+## 🤖 **For AI Developers & Automation**
+
+Building AI tools or automated systems? Check out our comprehensive AI developer guide:
+
+**📋 [AI Developer Guide](AI_DEVELOPER_GUIDE.md)** - Complete roadmap for AI systems, MCP implementations, and automated tools
 
 ## 📖 **Documentation Site**
 
@@ -131,17 +137,19 @@ We welcome contributions to improve the documentation!
 
 ```
 docs/
-├── index.mdx                    # Main documentation index
-├── getting-started/             # Introduction and concepts
-├── guides/                      # Core technical guides
-├── repository-formats/          # Format-specific documentation
-│   ├── resource-container/      # RC specification guides
-│   ├── scripture-burrito/       # SB specification guides
-│   └── tool-generated/          # Tool-specific formats
-├── migration/                   # Format conversion guides
-├── automation/                  # MCP and automation tools
-├── reference/                   # Templates and reference materials
-└── assets/                      # Icons, schemas, and resources
+├── index.mdx                           # Main documentation index
+├── 0-getting-started.mdx               # Introduction and learning paths
+├── 1-why-unfoldingword-translation-resources.mdx  # Mission and ecosystem
+├── 2-unfoldingword-developer-guide.mdx # Complete technical specification
+├── 3-door43-api-developer-guide.mdx    # Practical API implementation
+├── 4-repository-formats/               # Format-specific documentation
+│   ├── resource-container/             # RC specification guides
+│   ├── scripture-burrito/              # SB specification guides
+│   └── tool-generated/                 # Tool-specific formats
+├── 5-migration/                        # Format conversion guides
+├── automation/                         # MCP and automation tools
+└── assets/                             # Icons, schemas, and resources
+AI_DEVELOPER_GUIDE.md                   # AI systems implementation guide
 ```
 
 ## 📊 **Documentation Stats**
@@ -171,4 +179,6 @@ These resources are designed for the [Open Components Ecosystem](https://opencom
 
 ---
 
-**Ready to build?** Start with the [Door43 API Developer Guide](docs/guides/door43-api-developer-guide.mdx) for practical implementation patterns.
+**Ready to build?**
+- **Human developers**: Start with the [Door43 API Developer Guide](docs/3-door43-api-developer-guide.mdx) for practical implementation patterns
+- **AI systems**: Begin with the [AI Developer Guide](AI_DEVELOPER_GUIDE.md) for comprehensive automation guidance
