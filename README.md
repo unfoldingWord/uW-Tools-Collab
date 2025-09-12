@@ -3,9 +3,9 @@
 > **Build applications with Door43 Bible translation resources**  
 > Comprehensive guides for APIs, formats, and implementation patterns
 
-[![Documentation](https://img.shields.io/badge/docs-docs.page-blue)](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)
+[![Documentation](https://img.shields.io/badge/docs-docs.page-blue)](https://docs.page/unfoldingWord/uW-Tools-Collab)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/unfoldingWord-dev/uW-Tools-Collab)](https://github.com/unfoldingWord-dev/uW-Tools-Collab/issues)
+[![GitHub Issues](https://img.shields.io/github/issues/unfoldingWord/uW-Tools-Collab)](https://github.com/unfoldingWord/uW-Tools-Collab/issues)
 
 ## 🚀 **Quick Start**
 
@@ -98,7 +98,7 @@ Building AI tools or automated systems? Check out our comprehensive AI developer
 
 This repository powers a beautiful documentation site built with [docs.page](https://docs.page/):
 
-**🌐 [View Live Documentation](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)**
+**🌐 [View Live Documentation](https://docs.page/unfoldingWord/uW-Tools-Collab)**
 
 ### **Features:**
 - 🔍 **Full-text search** across all guides
@@ -162,9 +162,9 @@ AI_DEVELOPER_GUIDE.md                   # AI systems implementation guide
 
 ## 🆘 **Getting Help**
 
-- **📖 Browse the docs**: [docs.page/unfoldingWord-dev/uW-Tools-Collab](https://docs.page/unfoldingWord-dev/uW-Tools-Collab)
-- **🐛 Report issues**: [GitHub Issues](https://github.com/unfoldingWord-dev/uW-Tools-Collab/issues)
-- **💬 Ask questions**: [GitHub Discussions](https://github.com/unfoldingWord-dev/uW-Tools-Collab/discussions)
+- **📖 Browse the docs**: [docs.page/unfoldingWord/uW-Tools-Collab](https://docs.page/unfoldingWord/uW-Tools-Collab)
+- **🐛 Report issues**: [GitHub Issues](https://github.com/unfoldingWord/uW-Tools-Collab/issues)
+- **💬 Ask questions**: [GitHub Discussions](https://github.com/unfoldingWord/uW-Tools-Collab/discussions)
 - **🔗 Official API docs**: [git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 
 ## 📄 **License**
