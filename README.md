@@ -1,7 +1,7 @@
 # Door43 Developer Documentation
 
 > **Build applications with Door43 Bible translation resources**  
-> Comprehensive guides for APIs, formats, and implementation patterns
+> Guides for APIs, formats, and implementation patterns
 
 [![Documentation](https://img.shields.io/badge/docs-docs.page-blue)](https://docs.page/unfoldingWord/uW-Tools-Collab)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -29,7 +29,7 @@
 
 ## 📚 **What's Inside**
 
-This repository contains comprehensive developer documentation for the Door43 ecosystem:
+This repository contains developer documentation for the Door43 ecosystem:
 
 ### **[Getting Started](docs/)**
 - **[Why unfoldingWord Translation Resources](docs/1-why-unfoldingword-translation-resources.mdx)** - Mission and ecosystem overview
@@ -90,13 +90,13 @@ This repository contains comprehensive developer documentation for the Door43 ec
 
 ## 🤖 **For AI Developers & Automation**
 
-Building AI tools or automated systems? Check out our comprehensive AI developer guide:
+Do you build AI tools or automated systems? See our AI developer guide:
 
 **📋 [AI Developer Guide](AI_DEVELOPER_GUIDE.md)** - Complete roadmap for AI systems, MCP implementations, and automated tools
 
 ## 📖 **Documentation Site**
 
-This repository powers a beautiful documentation site built with [docs.page](https://docs.page/):
+This repository powers a documentation site built with [docs.page](https://docs.page/):
 
 **🌐 [View Live Documentation](https://docs.page/unfoldingWord/uW-Tools-Collab)**
 
@@ -109,7 +109,7 @@ This repository powers a beautiful documentation site built with [docs.page](htt
 
 ## 🤝 **Contributing**
 
-We welcome contributions to improve the documentation!
+We welcome contributions that improve the documentation.
 
 ### **How to Contribute:**
 
@@ -158,7 +158,7 @@ AI_DEVELOPER_GUIDE.md                   # AI systems implementation guide
 - **🔧 3 specifications** (Resource Container, Scripture Burrito, Tool-Generated)
 - **🔄 6 migration guides** for format conversion
 - **🤖 4 automation tools** for MCP systems
-- **📋 Comprehensive cross-references** between all guides
+- **📋 Cross-references** between all guides
 
 ## 🆘 **Getting Help**
 
@@ -173,12 +173,12 @@ This documentation is licensed under the [MIT License](LICENSE).
 
 ## 🌍 **About unfoldingWord & Open Components**
 
-This documentation supports the [unfoldingWord](https://unfoldingword.org/) mission to provide unrestricted biblical content in every language. The Door43 platform hosts comprehensive Bible translation resources that help Mother Tongue Translators create Scripture translations in their heart languages.
+This documentation supports the [unfoldingWord](https://unfoldingword.org/) mission. The mission provides unrestricted biblical content in every language. The Door43 platform hosts Bible translation resources. These resources help Mother Tongue Translators create Scripture translations in their heart languages.
 
-These resources are designed for the [Open Components Ecosystem](https://opencomponents.io/) community, enabling developers to build interoperable Bible translation applications with shared, reusable components.
+These resources are designed for the [Open Components Ecosystem](https://opencomponents.io/) community. They let developers build interoperable Bible translation applications with shared, reusable components.
 
 ---
 
 **Ready to build?**
 - **Human developers**: Start with the [Door43 API Developer Guide](docs/3-door43-api-developer-guide.mdx) for practical implementation patterns
-- **AI systems**: Begin with the [AI Developer Guide](AI_DEVELOPER_GUIDE.md) for comprehensive automation guidance
+- **AI systems**: Begin with the [AI Developer Guide](AI_DEVELOPER_GUIDE.md) for automation guidance

@@ -7,7 +7,7 @@ description: Complete technical specification of the unfoldingWord Bible transla
 
 ## Introduction
 
-This technical guide provides complete documentation for the unfoldingWord Bible translation resource ecosystem - an interconnected system of open-source resources that enables Mother Tongue Translators to create Scripture translations in their heart languages.
+This technical guide documents the unfoldingWord Bible translation resource ecosystem. The ecosystem is a connected system of open-source resources. These resources help Mother Tongue Translators to make Scripture translations in their heart languages.
 
 **Who This Helps:**
 
@@ -16,7 +16,7 @@ This technical guide provides complete documentation for the unfoldingWord Bible
 - **Content Creators**: Understand how translation resources connect and support quality workflows
 - **Open Source Contributors**: Follow technical standards, contribute new resources, and extend the ecosystem
 
-**Key Benefits:** Saves development time with ready-to-use specifications, ensures new tools integrate seamlessly with existing apps, includes quality checks for reliable implementations, and simplifies working with interconnected Bible translation resources.
+**Key Benefits:** The specifications save development time. New tools integrate with existing apps. Quality checks make implementations reliable. The guide makes work with connected Bible translation resources easier.
 
 ## Table of Contents
 
@@ -126,7 +126,7 @@ This technical guide provides complete documentation for the unfoldingWord Bible
 
 ## TLDR
 
-unfoldingWord provides an interconnected ecosystem of open-source Bible translation resources designed to help Mother Tongue Translators create Scripture in their heart languages. The system centers around **word-level alignment** between original biblical texts and gateway language translations, with supporting resources that provide contextual guidance.
+unfoldingWord provides a connected ecosystem of open-source Bible translation resources. These resources help Mother Tongue Translators to make Scripture in their heart languages. The system centers on **word-level alignment** between original biblical texts and gateway language translations. Supporting resources give contextual guidance.
 
 **Key Components:**
 
@@ -142,7 +142,7 @@ unfoldingWord provides an interconnected ecosystem of open-source Bible translat
 - System supports multiple gateway languages with parallel resource structures
 - Three main formats: USFM (Bible text), TSV (structured data), Markdown (articles)
 
-**Getting Started:** Use the Catalog API to discover resources, load primary texts (ULT/UST), then add supporting resources based on manifest dependencies. The alignment layer connects everything together.
+**Getting Started:** Use the Catalog API to find resources. Load the primary texts (ULT/UST). Then add supporting resources from the manifest dependencies. The alignment layer connects all resources.
 
 ## Overview
 
@@ -152,7 +152,7 @@ unfoldingWord provides open-source <abbr title="A comprehensive suite of interco
 
 ## Resource Ecosystem Architecture
 
-The translation resource ecosystem consists of three foundational layers:
+The translation resource ecosystem has three layers:
 
 1. **Source Texts**: Original language texts (Hebrew, Greek, Aramaic) with modern gateway language translations
 2. **Alignment Layer**: Precise word-level connections between original and gateway languages  
@@ -182,7 +182,7 @@ The unfoldingWord ecosystem includes the following resources for Bible translato
 | **Translation Questions** | TSV | Verse-specific quality assurance questions | Community checking |
 | **Translation Academy** | Markdown | Translation methodology, cultural issues, and quality standards | Training materials |
 
-For a more comprehensive description of the resources and their purpose, see the [unfoldingWord for Translators](https://unfoldingword.org/for-translators/) page. This document is a technical specification of the resources and their interconnections meant to help developers understand the resources and how they work together.
+For more description of the resources and their purpose, see the [unfoldingWord for Translators](https://unfoldingword.org/for-translators/) page. This document is a technical specification of the resources and their connections. It helps developers understand the resources and how they work together.
 
 ### Core Architecture
 
@@ -259,11 +259,11 @@ graph TB
 
 #### Purpose & Structure
 
-The **Resource Container specification** provides a standardized framework for organizing and connecting Bible resources. RC allows you to declare the file and directory structure of a resource and describe it comprehensively through a manifest file. This enables automatic discovery, validation, and interconnection of resources across the entire ecosystem.
+The **Resource Container specification** is a standard framework to organize and connect Bible resources. RC lets you declare the file and directory structure of a resource. RC lets you describe the resource in a manifest file. This makes automatic discovery, validation, and connection of resources possible across the ecosystem.
 
 #### Example: English ULT Resource Container
 
-Here's what an actual Resource Container looks like in practice:
+This is an example of a Resource Container:
 
 ```
 en_ult/
@@ -331,9 +331,9 @@ To create a valid Resource Container, you need:
 4. **Consistent Structure** following RC directory patterns for your container type
 5. **Valid Identifiers** using established conventions (language codes, book codes, etc.)
 
-This standardized structure ensures that all unfoldingWord resources work together seamlessly, regardless of language or resource type.
+This standard structure makes all unfoldingWord resources work together. This applies to any language or resource type.
 
-**Dublin Core**: The manifest file uses [Dublin Core metadata standards](https://dublincore.org/specifications/dublin-core/dcmi-terms/#terms-defined-by-dc) to describe the resource with standardized fields like `identifier`, `language`, `subject`, `type`, and `relation`. This ensures consistent metadata across all Resource Containers and enables automatic discovery and interconnection of resources.
+**Dublin Core**: The manifest file uses [Dublin Core metadata standards](https://dublincore.org/specifications/dublin-core/dcmi-terms/#terms-defined-by-dc) to describe the resource. It uses standard fields such as `identifier`, `language`, `subject`, `type`, and `relation`. This keeps metadata consistent across all Resource Containers. It also makes automatic discovery and connection of resources possible.
 
 **RC Core Functions:**
 
@@ -395,7 +395,7 @@ rc://en/tw/dict/bible/kt/god # Translation Words entry for "god"
 ```
 
 **4. New Resource Compatibility:**
-Following RC structure ensures new resources integrate automatically:
+If you follow the RC structure, new resources integrate automatically:
 
 ```yaml
 # New commentary resource
@@ -418,7 +418,7 @@ en_tw    → es-419_tw   → fr_tw      # Same markdown format
 
 - **Structure**: Predictable file organization across all resources
 - **Compatibility**: New resources automatically work with existing tools
-- **Interconnection**: Standardized linking enables seamless navigation
+- **Interconnection**: Standardized linking enables navigation
 - **Quality Control**: Metadata provides versioning and quality tracking
 
 #### RC Container Types & File Patterns
@@ -471,32 +471,32 @@ For more information on the Resource Container specification, see the [Resource 
 
 ### Hosting Resource Containers
 
-unfoldingWord resources are currently hosted on the [Door43 Content Service](https://git.door43.org/) platform. This platform is a fork of [Gitea](https://gitea.io/) (an open source Git server like GitHub) and provides a robust infrastructure for hosting and managing resources, including:
+unfoldingWord resources are hosted on the [Door43 Content Service](https://git.door43.org/) platform. This platform is a fork of [Gitea](https://gitea.io/), an open source Git server like GitHub. The platform hosts and manages resources. It provides these functions:
 
 - Version control
 - Collaboration (forking, pull requests, etc.)
 - API access
 - Resource discovery
 
-Although any other platform that supports these features can host resource containers, this guide will focus on the Door43 Content Service and how unfoldingWord RCs are hosted and accessed in the Door43 ecosystem.
+Any other platform with these features can host resource containers. This guide focuses on the Door43 Content Service. It shows how unfoldingWord RCs are hosted and accessed in the Door43 ecosystem.
 
-The DCS hosts unfoldingWord resources as git repositories using three organizational models:
+The DCS hosts unfoldingWord resources as git repositories. It uses three organizational models:
 
-**1. Single-Language Organizations**: Most gateway language communities create dedicated organizations (e.g., `es-419_gl` for Spanish, `fr_gl` for French) that contain all resource repositories for their specific language. This enables focused collaboration within language communities and clear ownership models.
+**1. Single-Language Organizations**: Most gateway language communities create dedicated organizations (e.g., `es-419_gl` for Spanish, `fr_gl` for French). Each organization contains all resource repositories for its language. This gives focused collaboration in language communities and clear ownership models.
 
-**2. Multi-Language Organizations**: The core `unfoldingWord` organization hosts resources across multiple languages, including the original English resources and some community contributions in other languages, providing centralized access to foundational resources.
+**2. Multi-Language Organizations**: The core `unfoldingWord` organization hosts resources in multiple languages. This includes the original English resources and some community contributions in other languages. It gives central access to the core resources.
 
-**3. Individual User Repositories**: Users can host resources under their personal accounts for private development, experimentation, or small group collaboration, though this limits broader community collaboration and discoverability.
+**3. Individual User Repositories**: Users can host resources under their personal accounts. This is for private development, experimentation, or small group collaboration. This limits community collaboration and discoverability.
 
-This flexible organizational structure supports both large-scale community collaboration and individual development workflows, while maintaining clear resource discovery patterns for developers.
+This organizational structure supports large-scale community collaboration and individual development workflows. It keeps clear resource discovery patterns for developers.
 
-You can find the unfoldingWord organization containing all its resources at [https://git.door43.org/unfoldingWord](https://git.door43.org/unfoldingWord).
+You can find the unfoldingWord organization with all its resources at [https://git.door43.org/unfoldingWord](https://git.door43.org/unfoldingWord).
 
 ### API Reference
 
 #### Platform Overview
 
-The Door43 Content Service provides a comprehensive REST API for managing and accessing unfoldingWord resources. This Git-based platform (fork of Gitea) enables both resource discovery through enhanced catalog endpoints and direct repository access through standard Git API patterns.
+The Door43 Content Service provides a REST API to manage and access unfoldingWord resources. This Git-based platform is a fork of Gitea. It gives resource discovery through catalog endpoints. It also gives direct repository access through standard Git API patterns.
 
 **Primary Platform:** Door43 Content Service (`https://git.door43.org/`)
 
@@ -507,7 +507,7 @@ The Door43 Content Service provides a comprehensive REST API for managing and ac
 
 #### Catalog API Endpoints
 
-The Catalog API provides enhanced resource discovery with intelligent filtering and relationship resolution.
+The Catalog API provides resource discovery with filtering and relationship resolution.
 
 **Resource Discovery:**
 
@@ -592,7 +592,7 @@ Response: Individual release object with detailed information
 
 **Authentication Methods:**
 
-Most unfoldingWord resources are publicly accessible, but authentication provides enhanced capabilities:
+Most unfoldingWord resources are public. Authentication provides more capabilities:
 
 **API Token Authentication:**
 
@@ -606,7 +606,7 @@ Content-Type: application/json
 - Increased rate limits (1000+ requests/hour vs 60/hour)
 - Access to private repositories
 - CRUD operations on resources
-- Enhanced catalog filtering options
+- More catalog filtering options
 - Priority access during high traffic
 
 **Token Generation:**
@@ -631,7 +631,7 @@ X-RateLimit-Reset: 1640995200 # Reset time (Unix timestamp)
 
 - Cache manifest files for dependency resolution
 - Store frequently accessed content locally
-- Implement intelligent cache invalidation based on version tags
+- Implement cache invalidation based on version tags
 - Use ETags for conditional requests
 
 **Batch Operations:**
@@ -652,11 +652,11 @@ X-RateLimit-Reset: 1640995200 # Reset time (Unix timestamp)
 
 #### Organizational Models
 
-The Door43 Content Service supports multiple organizational patterns to accommodate different community structures and collaboration models:
+The Door43 Content Service supports several organizational patterns. These patterns support different community structures and collaboration models:
 
 **1. Single-Language Organizations:**
 
-The most common pattern where gateway language communities create dedicated organizations containing all resources for their specific language:
+This is the most common pattern. Gateway language communities create dedicated organizations. Each organization contains all resources for its language:
 
 ```
 Organization: es-419_gl (Spanish Gateway Language)
@@ -678,7 +678,7 @@ Organization: es-419_gl (Spanish Gateway Language)
 
 **2. Multi-Language Organizations:**
 
-Organizations hosting resources across multiple languages, typically for foundational or cross-community resources:
+These organizations host resources in multiple languages. They host core or cross-community resources:
 
 ```
 Organization: unfoldingWord (Multi-Language)
@@ -699,7 +699,7 @@ Organization: unfoldingWord (Multi-Language)
 
 **3. Individual User Repositories:**
 
-Personal accounts hosting resources for development, testing, or specialized purposes:
+These are personal accounts. They host resources for development, testing, or special purposes:
 
 ```
 User: translator_john
@@ -777,7 +777,7 @@ Filter Strategies:
 
 **Subject-Based Filtering:**
 
-Subject-based filtering uses the `dublin_core.subject` field in manifest files to categorize and filter resources by their content type and purpose.
+Subject-based filtering uses the `dublin_core.subject` field in manifest files. It categorizes and filters resources by content type and purpose.
 
 **Standard Subject Categories:**
 
@@ -1008,11 +1008,11 @@ relation:
 
 ## Resource formats
 
-There are three main resource formats used in unfoldingWord resources, USFM, TSV, and Markdown.
+unfoldingWord resources use three main formats: USFM, TSV, and Markdown.
 
 ### USFM
 
-USFM is a markup language for Bible text. It is a subset of the [USFM 3.1 specification](https://docs.usfm.bible/usfm/3.1/index.html) and is used to represent the original language text of the Bible.
+USFM is a markup language for Bible text. It is a subset of the [USFM 3.1 specification](https://docs.usfm.bible/usfm/3.1/index.html). It represents the original language text of the Bible.
 
 A usfm file should have the `.usfm` extension. e.g. `01-GEN.usfm`
 
@@ -1044,7 +1044,7 @@ where:
 
 ### TSV
 
-TSV is a tab-separated values file format used to represent translation notes, translation words links, and translation questions.
+TSV is a tab-separated values file format. It represents translation notes, translation words links, and translation questions.
 
 A tsv file should have the `.tsv` extension. e.g. `tn_GEN.tsv`
 
@@ -1077,7 +1077,7 @@ where:
 
 ### Markdown
 
-Markdown is a lightweight markup language for creating formatted text. It is used to add formatting to the content of all unfoldingWord resources.
+Markdown is a markup language for formatted text. It adds formatting to the content of all unfoldingWord resources.
 
 A markdown file should have the `.md` extension. e.g. `bc_GEN.md`
 
@@ -1218,9 +1218,9 @@ See: [https://git.door43.org/unfoldingWord/en_ust](https://git.door43.org/unfold
   - ...
   - tn_REV.tsv
 
-The **Quote, Occurrence, and Reference** columns allows the note to be linked to the alignment layer, which in turn allows the note to reference the exact quote words in the original text and any other Bible resource that is aligned to it. This is the key to features like word-level highlighting where the user can clearly see the exact words that a note is referencing across multiple aligned texts.
+The **Quote, Occurrence, and Reference** columns link the note to the alignment layer. The alignment layer lets the note reference the exact quote words in the original text. It also lets the note reference any other Bible resource that is aligned to it. This makes features like word-level highlighting possible. The user then sees the exact words that a note references across multiple aligned texts.
 
-The **SupportReference** column allows the note to reference the translationAcademy article that gives a more detailed explanation of the translation issue the note is referencing. For example, if the note is about the translation of the word "**slave**", the SupportReference would be `rc://en/ta/man/translate/figs-metaphor`, a tA article that explains how to translate metaphors.
+The **SupportReference** column lets the note reference the translationAcademy article. The article gives a more detailed explanation of the translation issue. For example, if the note is about the word "**slave**", the SupportReference is `rc://en/ta/man/translate/figs-metaphor`. This tA article explains how to translate metaphors.
 
 An example of the content of a tn entry:
 
@@ -1254,13 +1254,13 @@ See: [https://git.door43.org/unfoldingWord/en_tn](https://git.door43.org/unfoldi
       - 01.md
     - ...
 
-Academy articles are splitted into three files:
+Academy articles are split into three files:
 
 - title.md - the title of the article
 - subtitle.md - the subtitle of the article
 - 01.md - the content of the article
 
-The content of the articles in the **translate** folder mostly adheres to the following structure:
+The articles in the **translate** folder use this structure:
 
 ```markdown
 # Title
@@ -1303,7 +1303,7 @@ See: [https://git.door43.org/unfoldingWord/en_ta](https://git.door43.org/unfoldi
       - ...
       - bread.md
 
-The content of a word article in the **bible** folder is a markdown file that contains the definition of the word. They mostly adhere to the following structure:
+A word article in the **bible** folder is a markdown file. It contains the definition of the word. The articles use this structure:
 
 ```markdown
 # word
@@ -1349,9 +1349,9 @@ See: [https://git.door43.org/unfoldingWord/en_tw](https://git.door43.org/unfoldi
   - ...
   - twl_REV.tsv
   
-The **TWLink** column allows the TWL entry to reference the translation word that is related to the original word.
+The **TWLink** column lets the TWL entry reference the translation word for the original word.
 
-The **OrigWords, Occurrence, and Reference** columns allows the TWL entry to be linked to the alignment layer, which in turn allows the TWL entry to reference the exact quote words in the original text and any other Bible resource that is aligned to it. This is the key to features like word-level highlighting where the user can clearly see the exact words that a note is referencing across multiple aligned texts.
+The **OrigWords, Occurrence, and Reference** columns link the TWL entry to the alignment layer. The alignment layer lets the TWL entry reference the exact quote words in the original text. It also lets the TWL entry reference any other Bible resource that is aligned to it. This makes features like word-level highlighting possible. The user then sees the exact words that a note references across multiple aligned texts.
 
 See: [https://git.door43.org/unfoldingWord/en_twl](https://git.door43.org/unfoldingWord/en_twl)
 
@@ -1383,11 +1383,11 @@ See: [https://git.door43.org/unfoldingWord/en_tq](https://git.door43.org/unfoldi
 
 ## Alignment Layer
 
-The alignment layer is a key component of the unfoldingWord resource system. It is a layer that allows the resources to be linked to the original text and other Bible translations. Currently alignment data is embedded in the gateway language USFM files, which are tokenized into words.
+The alignment layer is a key component of the unfoldingWord resource system. It links the resources to the original text and other Bible translations. The alignment data is embedded in the gateway language USFM files. These files are tokenized into words.
 
 ### Alignment Syntax
 
-unfoldingWord uses custom USFM markers for the alignment syntax. Which allows for precise word-level connections between gateway language translations and original Hebrew, Greek, and Aramaic texts.
+unfoldingWord uses custom USFM markers for the alignment syntax. These markers give precise word-level connections between gateway language translations and the original Hebrew, Greek, and Aramaic texts.
 
 #### USFM Alignment Syntax Structure
 
@@ -1440,7 +1440,7 @@ graph LR
 \zaln-s |x-strong="G2980" x-lemma="λαλέω" x-morph="Gr,V,IFA1,,P," x-occurrence="1" x-occurrences="1" x-content="λαλήσομεν"\*\w we|x-occurrence="1" x-occurrences="1"\w* \w will|x-occurrence="1" x-occurrences="1"\w* \w speak|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
 ```
 
-*Here, the single Greek verb "λαλήσομεν" (we will speak) requires three English words to express the same meaning. All three gateway words are contained within one alignment pair because they all translate the single original word.*
+*Here, the single Greek verb "λαλήσομεν" (we will speak) needs three English words for the same meaning. One alignment pair contains all three gateway words. All three words translate the single original word.*
 
 ```mermaid
 graph LR
@@ -1467,7 +1467,7 @@ graph LR
 \zaln-s |x-strong="G1223" x-lemma="διά" x-morph="Gr,P,,,,,G,,," x-occurrence="1" x-occurrences="1" x-content="διὰ"\*\zaln-s |x-strong="G5124" x-lemma="οὗτος" x-morph="Gr,RD,,,,ANS," x-occurrence="1" x-occurrences="1" x-content="τοῦτο"\*\w therefore|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*\zaln-e\*
 ```
 
-*This example shows two Greek words "διὰ τοῦτο" (literally "through this") being translated as the single English word "therefore". The alignment markers are nested, with both original words wrapping around the single gateway word that captures their combined meaning.*
+*This example shows two Greek words "διὰ τοῦτο" (literally "through this"). They are translated as the single English word "therefore". The alignment markers are nested. Both original words wrap around the single gateway word. The gateway word captures their combined meaning.*
 
 ```mermaid
 graph LR
@@ -1492,7 +1492,7 @@ graph LR
 \zaln-s |x-strong="G3756" x-lemma="οὐ" x-morph="Gr,D,,,,,,,," x-occurrence="1" x-occurrences="1" x-content="οὐ"\*\zaln-s |x-strong="G3361" x-lemma="μή" x-morph="Gr,D,,,,,,,," x-occurrence="1" x-occurrences="1" x-content="μὴ"\*\w by|x-occurrence="1" x-occurrences="1"\w* \w no|x-occurrence="1" x-occurrences="1"\w* \w means|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*\zaln-e\*
 ```
 
-*This shows a many-to-many relationship: the Greek double negative "οὐ μὴ" (literally "not not") is an emphatic negation construction that cannot be aligned as individual word pairs. You cannot say οὐ = "by" and μὴ = "no means" because neither Greek word individually means those English concepts. Instead, both Greek words together form an emphatic negation that requires the English idiomatic phrase "by no means" as an inseparable unit. The nested alignment markers show that both original words contribute to all three gateway words simultaneously.*
+*This shows a many-to-many relationship. The Greek double negative "οὐ μὴ" (literally "not not") is an emphatic negation construction. You cannot align it as individual word pairs. You cannot say οὐ = "by" and μὴ = "no means". Neither Greek word alone means those English concepts. Together, both Greek words form an emphatic negation. This negation needs the English phrase "by no means" as one unit. The nested alignment markers show that both original words contribute to all three gateway words.*
 
 ```mermaid
 graph LR
@@ -1594,13 +1594,13 @@ graph TD
 
 ## Versification Layer
 
-The versification layer defines the standardized chapter and verse numbering system used by a resource, ensuring precise cross-resource references. Different Bible traditions use different versification schemes (e.g., KJV, RSV, Vulgate), which can vary in verse counts and numbering. The versification system is declared in the resource container's manifest file, allowing tools to properly align references when working with resources that may use different versification schemes.
+The versification layer defines the standard chapter and verse numbering system of a resource. It gives precise cross-resource references. Different Bible traditions use different versification schemes (e.g., KJV, RSV, Vulgate). These schemes vary in verse counts and numbering. The resource container's manifest file declares the versification system. This lets tools align references correctly when resources use different versification schemes.
 
-Versification is commonly used by navigation components to know which references are available for the current resource. They are usually described in json files. See: [https://github.com/Copenhagen-Alliance/versification-specification](https://github.com/Copenhagen-Alliance/versification-specification)
+Navigation components use versification to know which references are available for the current resource. Versification is described in json files. See: [https://github.com/Copenhagen-Alliance/versification-specification](https://github.com/Copenhagen-Alliance/versification-specification)
 
 ## Quality Assurance of the Resource System
 
-The resource system is a complex system that requires a lot of quality assurance to ensure that the resources are correct and consistent.
+The resource system is complex. It needs much quality assurance to keep the resources correct and consistent.
 
 ### Validation Requirements
 
@@ -1758,7 +1758,7 @@ Cross-Resource Testing:
 
 - **Minimal Set**: Single chapter for basic functionality testing
 - **Standard Set**: Complete book for integration testing
-- **Comprehensive Set**: Multi-book collection for system testing
+- **Full Set**: Multi-book collection for system testing
 - **Stress Test Set**: Complete Bible for performance validation
 
 **Mock Data Strategies:**
@@ -1893,7 +1893,7 @@ Performance Patterns:
 
 ## Automated Research & AI Analysis
 
-This section provides guidance for AI systems, automated tools, and research platforms to systematically explore and analyze the unfoldingWord ecosystem for deeper insights and understanding.
+This section gives guidance for AI systems, automated tools, and research platforms. They can explore and analyze the unfoldingWord ecosystem systematically.
 
 ### Research Target Priorities
 
@@ -2111,12 +2111,12 @@ Research Validation:
 
 #### **Gateway Languages**
 
-Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that serve as intermediary bridges between the original biblical languages (Hebrew, Greek, Aramaic) and target heart languages. Gateway languages are major languages that Mother Tongue Translators can understand and use as a foundation for translating Scripture into their native languages.
+Strategic languages (such as English, Spanish, French, Portuguese, Hindi) that are bridges between the original biblical languages (Hebrew, Greek, Aramaic) and the target heart languages. Gateway languages are major languages. Mother Tongue Translators understand them and use them as a base to translate Scripture into their native languages.
 
 #### **Mother Tongue Translators (MTTs)**
 
-Translators who are native speakers of the target language and are working to translate Scripture into their own heart language - the language they know best and speak most naturally.
+Translators who are native speakers of the target language. They translate Scripture into their own heart language. This is the language they know best and speak most naturally.
 
 #### **Heart Languages**
 
-The native languages that Mother Tongue Translators speak most naturally and are translating Scripture into. These are the target languages for the final Bible translations that will serve local communities.
+The native languages that Mother Tongue Translators speak most naturally. They translate Scripture into these languages. These are the target languages for the final Bible translations. These translations serve local communities.
