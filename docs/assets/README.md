@@ -40,7 +40,7 @@ Place these in the `icons/` subdirectory:
 
 ## Usage
 
-Icons are referenced in `docs.json` using relative paths from the `docs/` directory:
+`docs.json` references icons with relative paths from the `docs/` directory:
 
 ```json
 {

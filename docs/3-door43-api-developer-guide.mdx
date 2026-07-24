@@ -7,10 +7,10 @@ description: Step-by-step instructions for developers building applications that
 
 ## Introduction
 
-This guide provides step-by-step instructions for developers building applications that access Bible translation resources through the Door43 Content Service API. It focuses on **common usage patterns and workflows** rather than comprehensive API documentation.
+This guide gives step-by-step instructions for developers. These developers build applications that access Bible translation resources through the Door43 Content Service API. The guide focuses on **common usage patterns and workflows**. It does not give full API documentation.
 
 **Important Note:**
-This guide is **not a substitute** for the official [Door43 API Documentation](https://git.door43.org/api/swagger). Instead, it highlights the most commonly used API endpoints and combination patterns that applications typically need for handling Bible translation resources.
+This guide is **not a substitute** for the official [Door43 API Documentation](https://git.door43.org/api/swagger). It highlights the most commonly used API endpoints and combination patterns. Applications need these patterns to handle Bible translation resources.
 
 **For Complete API Reference:** Visit [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)
 
@@ -110,14 +110,11 @@ Content-Type: application/json
 User-Agent: YourApp/1.0.0
 ```
 
-> **Note**: As specified in the [Door43 API documentation](https://git.door43.org/api/swagger), API tokens must be prepended with "token" followed by a space.
+> **Note**: The [Door43 API documentation](https://git.door43.org/api/swagger) specifies this. Add "token" and a space before your API token.
 
 ### Rate Limits
 
-| Access Type | Requests/Hour | Use Case |
-|-------------|---------------|----------|
-| **Anonymous** | 60 | Basic browsing, testing |
-| **Authenticated** | 1000+ | Production applications |
+DCS does not enforce documented API rate limits. Cache responses and batch requests to reduce server load.
 
 ### When Authorization is Required
 
@@ -199,7 +196,7 @@ GET /api/v1/repos/{owner}/{repo}/contents?ref={branch}
 - `metadata.json` → **Content inspection required** 
 - Any manifest file → **Format determined by content structure, not file extension**
 
-> **⚠️ Important**: File extensions don't determine the format. A `manifest.json` could contain Resource Container format, and a `manifest.yaml` could contain translationCore format. Always inspect content structure.
+> **⚠️ Important**: File extensions do not determine the format. A `manifest.json` can contain Resource Container format. A `manifest.yaml` can contain translationCore format. Always inspect the content structure.
 
 **Step 3: Read Specification File**
 ```http
@@ -208,8 +205,8 @@ GET /api/v1/repos/{owner}/{repo}/contents/{spec-file}?ref={branch}
 
 **Processing Steps**:
 1. Decode base64 content if `encoding: "base64"`
-2. **Parse content based on file extension**: YAML parser for `.yaml`/`.yml`, JSON parser for `.json`
-3. **Inspect content structure** to determine actual format type (regardless of file extension)
+2. **Parse content based on file extension**: Use the YAML parser for `.yaml`/`.yml` files. Use the JSON parser for `.json` files.
+3. **Inspect content structure** to find the actual format type. Ignore the file extension.
 4. Extract resource type and version information
 
 > **🔍 Content-Based Detection**: The same content structure can appear in different file formats. Always check the parsed content structure, not the file extension.
@@ -218,7 +215,7 @@ GET /api/v1/repos/{owner}/{repo}/contents/{spec-file}?ref={branch}
 
 **All manifest files require content inspection to determine the actual format**:
 
-> **📝 Note**: These content structures can appear in `.yaml`, `.yml`, or `.json` files. The format is determined by the content structure, not the file extension.
+> **📝 Note**: These content structures can appear in `.yaml`, `.yml`, or `.json` files. The content structure determines the format, not the file extension.
 
 **Resource Container (RC) Format**:
 ```json
@@ -358,7 +355,7 @@ Based on examples like [this translationCore manifest](https://git.door43.org/ab
 - `tc_version`: translationCore version
 - `source_translations[]`: Source material information
 
-**File Structure**: translationCore projects typically contain:
+**File Structure**: translationCore projects contain:
 - Single book focus (e.g., Esther only)
 - Multiple USFM file variations for the same book
 - Tool-specific configuration files (settings.json)
@@ -392,7 +389,7 @@ Based on examples like [this translationStudio manifest](https://git.door43.org/
 - `source_translations[]`: Source material references
 - `finished_chunks[]`: Completion status
 
-**File Structure**: translationStudio projects typically contain:
+**File Structure**: translationStudio projects contain:
 - Single book or story collection focus
 - Numbered files without extensions (01, 02, 03...)
 - Chunk-based completion tracking via `finished_chunks[]`
@@ -533,16 +530,17 @@ GET /api/v1/catalog/list/subjects
 
 **Response Format**:
 ```json
-[
-  {
-    "subject": "Bible",
-    "count": 45
-  },
-  {
-    "subject": "Aligned Bible", 
-    "count": 123
-  }
-]
+{
+  "ok": true,
+  "data": [
+    "Aligned Bible",
+    "Bible",
+    "Translation Academy",
+    "Translation Notes",
+    "Translation Questions",
+    "Translation Words"
+  ]
+}
 ```
 
 **Common Subjects**:
@@ -902,7 +900,7 @@ Authorization: token USER_TOKEN
 - Large USFM files (Bible books with alignment data)
 - TSV files with many rows (Translation Notes, Questions)
 - Files with collaborative editing
-- When preserving detailed change history
+- When keeping change history
 
 **How to Create Unified Diff Format**:
 - Compare original content with modified content
@@ -1015,15 +1013,15 @@ This guide covers the **most common workflows and patterns** for Door43 API inte
 This guide focuses on practical application patterns and **does not provide**:
 - Complete endpoint documentation (see [official API docs](https://git.door43.org/api/swagger))
 - All available API parameters and response formats
-- Administrative and advanced endpoints
-- Detailed error code specifications
+- Administrative and complex endpoints
+- Error code specifications
 
 ### For Complete API Reference
 
 **Official Documentation**: [https://git.door43.org/api/swagger](https://git.door43.org/api/swagger)  
 **JSON Specification**: [https://git.door43.org/swagger.v1.json](https://git.door43.org/swagger.v1.json)
 
-This guide serves as a **practical companion** to the official documentation, helping developers quickly implement common Bible translation application patterns.
+This guide is a **practical companion** to the official documentation. It helps developers implement common Bible translation application patterns quickly.
 
 ## Repository-Specific Guides
 

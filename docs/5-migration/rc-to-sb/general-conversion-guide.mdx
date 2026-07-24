@@ -2,18 +2,18 @@
 
 ## Introduction
 
-This guide provides step-by-step instructions for converting Resource Container repositories to Scripture Burrito format. The conversion is generally feasible but requires careful handling of structural differences and some data transformation.
+This guide gives step-by-step instructions to convert Resource Container repositories to Scripture Burrito format. The conversion is feasible. It requires careful handling of structural differences and some data transformation.
 
 **Conversion Feasibility**: ✅ **HIGHLY FEASIBLE**
 **Complexity Level**: Low to Medium
 **Recommended Approach**: Automated conversion with validation
-**Key Insight**: Scripture Burrito is much more flexible than initially assessed
+**Key Insight**: Scripture Burrito is more flexible than the first assessment showed
 
 ## Enhanced Understanding of Scripture Burrito Flexibility
 
 ### Key Research Findings
 
-Based on thorough research of the [Scripture Burrito specification](https://docs.burrito.bible/), Scripture Burrito is significantly more flexible than initially understood:
+Research of the [Scripture Burrito specification](https://docs.burrito.bible/) shows that Scripture Burrito is more flexible than initially understood:
 
 **1. Comprehensive Flavor System**
 - **Scripture flavors**: textTranslation, scripturalTextStories
@@ -28,7 +28,7 @@ Based on thorough research of the [Scripture Burrito specification](https://docs
 - No structural limitations on content organization
 
 **3. Enhanced Metadata Capabilities**
-- Comprehensive identification system
+- Identification system
 - Multiple language support
 - Extensive relationship modeling
 - Custom extension support for additional metadata
@@ -42,16 +42,16 @@ Based on thorough research of the [Scripture Burrito specification](https://docs
 
 **Scripture Burrito Actually Improves Upon RC**:
 - More explicit content typing (mimeType)
-- Better scope precision (book/chapter/verse level)
-- Enhanced relationship modeling
-- Flexible role system for content categorization
+- Scope precision (book/chapter/verse level)
+- Relationship modeling
+- Role system for content categorization
 - Support for custom extensions when needed
 
 ## Conversion Overview
 
 ### What Can Be Converted
 
-Based on research of the [Scripture Burrito specification](https://docs.burrito.bible/), the format is highly flexible and can accommodate most RC content:
+Research of the [Scripture Burrito specification](https://docs.burrito.bible/) shows that the format is flexible. It can hold most RC content:
 
 **✅ Fully Compatible**:
 - USFM Bible text files (`text/usfm` mimeType)
@@ -64,17 +64,17 @@ Based on research of the [Scripture Burrito specification](https://docs.burrito.
 
 **✅ Enhanced in Scripture Burrito**:
 - Explicit MIME type specification for all content
-- Flexible ingredient role system
+- Ingredient role system
 - Precise scope definitions (book, chapter, verse level)
 - Multiple flavor types for different resource categories
-- Better support for multi-content repositories
+- Support for multi-content repositories
 
 **⚠️ Requires Transformation**:
 - RC checking information → SB custom extensions or meta.generator
 - RC versification → SB scope format
 - RC project categories → SB ingredient roles
 
-**Key Discovery**: Scripture Burrito's ingredient system is more flexible than Resource Container's projects array, making conversion easier than initially thought.
+**Key Discovery**: Scripture Burrito's ingredient system is more flexible than Resource Container's projects array. This makes conversion easier than initially thought.
 
 ## Field Mapping Reference
 
@@ -162,7 +162,7 @@ Based on [Scripture Burrito flavor specifications](https://docs.burrito.bible/),
 | "Translation Academy" | Peripheral | "peripheralResource" | Training materials |
 | "Open Bible Stories" | Scripture | "scripturalTextStories" | Story collection |
 
-**Key Insight**: Scripture Burrito has specific flavor types designed for different biblical content, making RC conversion very natural.
+**Key Insight**: Scripture Burrito has specific flavor types for different biblical content. This makes RC conversion natural.
 
 ### Step 5: Convert Projects to Ingredients
 
@@ -368,14 +368,14 @@ projects:
 **RC Fields Easily Preserved in SB**:
 - `checking.checking_level` → Custom extension in `meta.generator` or `meta.custom`
 - `checking.checking_entity` → `agencies[]` array with checking role
-- `project.versification` → Enhanced `scope` objects with versification info
+- `project.versification` → `scope` objects with versification info
 - `relation[]` dependencies → `relationships[]` array (full support available)
 
 ### Simplified Conversion Process
 
 **Low Complexity Areas** (easier than initially thought):
 - Subject to flavor type mapping (clear specification guidelines)
-- Relationship conversion (SB has robust relationship support)
+- Relationship conversion (SB has relationship support)
 - Scope conversion (SB scope is more flexible than RC versification)
 
 **Medium Complexity Areas**:
@@ -386,12 +386,12 @@ projects:
 ### Significant Benefits of Conversion
 
 **Scripture Burrito Advantages Over RC**:
-- **Better Content Typing**: Explicit MIME types vs implicit file extension detection
-- **Enhanced Scope System**: Book/chapter/verse precision vs simple versification
-- **Flexible Relationships**: Robust relationship modeling vs simple relation array
+- **Content Typing**: Explicit MIME types vs implicit file extension detection
+- **Scope System**: Book/chapter/verse precision vs simple versification
+- **Relationships**: Relationship modeling vs simple relation array
 - **Role-Based Organization**: Clear content roles vs category tags
 - **Custom Extension Support**: Ability to preserve RC-specific metadata
-- **Multi-Content Resources**: Better support for repositories with multiple content types
+- **Multi-Content Resources**: Support for repositories with multiple content types
 - **Standardized Format**: Industry-standard specification vs Door43-specific format
 
 ## Best Practices
@@ -407,8 +407,8 @@ projects:
 - Document any data loss or transformation decisions
 
 ### 3. Tool Development
-- Build comprehensive mapping tables
-- Implement robust error handling
+- Build mapping tables
+- Implement error handling
 - Create validation and testing frameworks
 
 ### 4. Documentation
@@ -420,17 +420,17 @@ projects:
 
 **Conversion Verdict**: ✅ **HIGHLY RECOMMENDED - Scripture Burrito is Superior**
 
-Based on thorough research of the [Scripture Burrito specification](https://docs.burrito.bible/), conversion from Resource Container to Scripture Burrito is not only feasible but actually beneficial. Scripture Burrito provides enhanced capabilities that improve upon Resource Container limitations.
+Research of the [Scripture Burrito specification](https://docs.burrito.bible/) shows that conversion from Resource Container to Scripture Burrito is feasible and beneficial. Scripture Burrito gives capabilities that improve on Resource Container limitations.
 
 **Why Convert to Scripture Burrito**:
 - **Industry Standard**: Scripture Burrito is designed for interoperability across Bible translation tools
-- **Enhanced Precision**: Better scope and content typing than RC
-- **Flexible Organization**: Ingredients system is more flexible than RC projects
-- **Better Relationships**: Robust relationship modeling vs simple RC relations
-- **Future-Proof**: Designed for modern Bible translation workflows
+- **Precision**: More precise scope and content typing than RC
+- **Organization**: Ingredients system is more flexible than RC projects
+- **Relationships**: Relationship modeling vs simple RC relations
+- **Future-Proof**: Designed for current Bible translation workflows
 - **Tool Ecosystem**: Growing ecosystem of SB-compatible tools
 
-**Conversion Complexity**: **Low to Medium** (much easier than initially assessed)
+**Conversion Complexity**: **Low to Medium** (easier than initially assessed)
 
 **Recommended For All RC Types**:
 - ✅ Bible text repositories (UHB, UGNT, ULT, UST)
@@ -439,13 +439,13 @@ Based on thorough research of the [Scripture Burrito specification](https://docs
 - ✅ Any RC repository type
 
 **Implementation Strategy**:
-1. **Automated Conversion Tool**: Build conversion tool using mapping guidelines
+1. **Automated Conversion Tool**: Build the conversion tool with mapping guidelines
 2. **Validation Pipeline**: Implement SB validation for quality assurance
-3. **Gradual Migration**: Convert repositories systematically
+3. **Gradual Migration**: Convert repositories
 4. **Tool Integration**: Integrate with SB-compatible applications
 
-**Key Insight**: Scripture Burrito was specifically designed to address limitations in existing formats like Resource Container, making it a natural evolution path for Door43 resources.
+**Key Insight**: Scripture Burrito addresses limitations in existing formats like Resource Container. This makes it a natural evolution path for Door43 resources.
 
 ---
 
-This guide is based on analysis of both Resource Container and Scripture Burrito specifications and should be used alongside the main [Door43 API Developer Guide](../../3-door43-api-developer-guide).
+This guide is based on analysis of both Resource Container and Scripture Burrito specifications. Use it with the main [Door43 API Developer Guide](../../3-door43-api-developer-guide).

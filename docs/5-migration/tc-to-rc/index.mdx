@@ -19,13 +19,13 @@ tags: ["migration", "translationcore", "resource-container", "single-book"]
 
 # translationCore to Resource Container Migration
 
-This section provides comprehensive guides for converting translationCore (TC) repositories to standard Resource Container (RC) format. translationCore projects focus on single books with rich word alignment data and tool-specific metadata.
+This section gives guides to convert translationCore (TC) repositories to standard Resource Container (RC) format. translationCore projects focus on single books. They contain word alignment data and tool-specific metadata.
 
 ## 🎯 **Migration Overview**
 
 ### **Why Integrate TC Books into RC?**
 - **Multi-Book Consolidation**: Combine single-book TC projects into complete Bible RC
-- **Workflow Continuity**: Maintain translation progress across books in unified repository
+- **Workflow Continuity**: Maintain translation progress across books in one repository
 - **Content Preservation**: Preserve all translation work and alignment data from TC
 - **Team Collaboration**: Enable multiple translators to work on different books
 - **Format Standardization**: Convert from tool-specific to ecosystem standard format
@@ -35,7 +35,7 @@ Based on the [translationCore Format Guide](../../4-repository-formats/tool-gene
 
 - **Single Book Focus**: Each repository contains one Bible book
 - **Two USFM Files**: Simple and complete versions (app-generated only)
-- **Rich Alignment Data**: Extensive word-level alignment markers
+- **Alignment Data**: Extensive word-level alignment markers
 - **Tool-Specific Metadata**: translationCore-specific manifest format
 - **App Data Directory**: `.apps/translationCore/` with tool data
 
@@ -82,7 +82,7 @@ Create a new Resource Container repository starting with a translationCore book.
 - ⏱️ **Time**: 2-3 hours
 
 ### **🔗 [Alignment Data Preservation](alignment-data-handling)**
-Specialized guide for preserving word alignment data during integration.
+Guide to preserve word alignment data during integration.
 
 **Covers**:
 - USFM alignment marker preservation (`\zaln-s`, `\zaln-e`, `\w`)
@@ -116,7 +116,7 @@ es-419_tps_est_book/
 ### **Key Identification Markers**
 - **Manifest**: Contains `tc_version` field or `generator.name: "tc-desktop"`
 - **File Pattern**: Exactly two USFM files (`{project.id}.usfm`, `{target_language.id}_{resource.id}_{project.id}_book.usfm`)
-- **Content**: Rich USFM with alignment markers (`\zaln-s`, `\zaln-e`, `\w`)
+- **Content**: USFM with alignment markers (`\zaln-s`, `\zaln-e`, `\w`)
 - **Dependencies**: Uses `tsv_relation[]` instead of `dublin_core.relation[]`
 
 ## 📊 **Integration Complexity Analysis**
@@ -165,7 +165,7 @@ es-419_tps_est_book/
 
 ### **Key Challenges**
 - **File Selection**: Choose between initial import and working USFM files (always use working file)
-- **Alignment Complexity**: Rich alignment data must be preserved exactly
+- **Alignment Complexity**: Alignment data must be preserved exactly
 - **Single Book Scope**: TC's single-book focus vs RC's multi-book capability
 - **Tool Dependencies**: TC-specific dependencies may not map directly
 
@@ -180,7 +180,7 @@ es-419_tps_est_book/
 2. **Alignment Data**: Word-level alignment markers intact
 3. **Metadata**: Project, resource, and language information
 4. **Dependencies**: Source text relationships maintained
-5. **Tool Data**: Optional but valuable for advanced features
+5. **Tool Data**: Optional but valuable for additional features
 
 ## 📈 **Success Criteria**
 
@@ -209,4 +209,4 @@ A successful TC→RC migration should achieve:
 
 ---
 
-**Start Here**: Begin with [Single Book Migration](single-book-migration) for the core conversion process, then add [Alignment Data Handling](alignment-data-handling) for advanced alignment preservation.
+**Start Here**: Begin with [Single Book Migration](single-book-migration) for the conversion process. Then add [Alignment Data Handling](alignment-data-handling) for alignment preservation.
