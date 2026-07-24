@@ -208,8 +208,8 @@ GET /api/v1/repos/{owner}/{repo}/contents/{spec-file}?ref={branch}
 
 **Processing Steps**:
 1. Decode base64 content if `encoding: "base64"`
-2. **Parse content based on file extension**: YAML parser for `.yaml`/`.yml`, JSON parser for `.json`
-3. **Inspect content structure** to determine actual format type (regardless of file extension)
+2. **Parse content based on file extension**: Use the YAML parser for `.yaml`/`.yml` files. Use the JSON parser for `.json` files.
+3. **Inspect content structure** to find the actual format type. Ignore the file extension.
 4. Extract resource type and version information
 
 > **🔍 Content-Based Detection**: The same content structure can appear in different file formats. Always check the parsed content structure, not the file extension.

@@ -115,7 +115,7 @@ We welcome contributions that improve the documentation.
 
 1. **Fork** this repository
 2. **Create** a feature branch (`git checkout -b improve-docs`)
-3. **Make** your changes following our [style guidelines](docs/assets/frontmatter-schema.md)
+3. **Make** your changes. Follow our [style guidelines](docs/assets/frontmatter-schema.md)
 4. **Test** your changes locally with docs.page preview
 5. **Submit** a pull request
 
