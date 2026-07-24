@@ -114,10 +114,7 @@ User-Agent: YourApp/1.0.0
 
 ### Rate Limits
 
-| Access Type | Requests/Hour | Use Case |
-|-------------|---------------|----------|
-| **Anonymous** | 60 | Basic browsing, testing |
-| **Authenticated** | 1000+ | Production applications |
+DCS does not enforce documented API rate limits. Cache responses and batch requests to reduce server load.
 
 ### When Authorization is Required
 
@@ -533,16 +530,17 @@ GET /api/v1/catalog/list/subjects
 
 **Response Format**:
 ```json
-[
-  {
-    "subject": "Bible",
-    "count": 45
-  },
-  {
-    "subject": "Aligned Bible", 
-    "count": 123
-  }
-]
+{
+  "ok": true,
+  "data": [
+    "Aligned Bible",
+    "Bible",
+    "Translation Academy",
+    "Translation Notes",
+    "Translation Questions",
+    "Translation Words"
+  ]
+}
 ```
 
 **Common Subjects**:

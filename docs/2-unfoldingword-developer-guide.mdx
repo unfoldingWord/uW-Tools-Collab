@@ -290,7 +290,7 @@ dublin_core:
     identifier: 'en'                     # BCP 47 language code
     direction: 'ltr'                     # Text direction (ltr/rtl)
   subject: 'Bible'                       # Resource category for filtering
-  type: 'bundle'                         # RC container type (bundle/help/dict/man)
+  type: 'bundle'                         # RC container type (book/bundle/help/dict/man)
   relation:                              # Array of related resources
     - 'en/tn'                            # Translation Notes (same language)
     - 'en/twl'                           # Translation Words Links
@@ -301,7 +301,7 @@ dublin_core:
   version: '85'                          # Resource version number
 
 checking:
-  checking_level: '3'                    # Quality assurance level (1-3)
+  checking_level: '3'                    # Quality level 1-3 (Door43 convention)
 
 projects:                                # File mappings for each book
   - identifier: 'gen'                    # Book identifier (3-letter code)
@@ -318,7 +318,7 @@ projects:                                # File mappings for each book
 **`01-GEN.usfm`** - USFM text with embedded word alignment:
 
 ```usfm
-\v 1 \zaln-s |x-strong="H07225" x-lemma="רֵאשִׁית" x-content="בְּרֵאשִׁית"\*\w In|x-occurrence="1"\w* \w the|x-occurrence="1"\w* \w beginning|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H0430" x-lemma="אֱלֹהִים" x-content="אֱלֹהִים"\*\w God|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H01254" x-lemma="בָּרָא" x-content="בָּרָא"\*\w created|x-occurrence="1"\w*\zaln-e\*...
+\v 1 \zaln-s |x-strong="b:H7225" x-lemma="רֵאשִׁית" x-content="בְּרֵאשִׁית"\*\w In|x-occurrence="1"\w* \w the|x-occurrence="1"\w* \w beginning|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H0430" x-lemma="אֱלֹהִים" x-content="אֱלֹהִים"\*\w God|x-occurrence="1"\w*\zaln-e\* \zaln-s |x-strong="H1254" x-lemma="בָּרָא" x-content="בָּרָא"\*\w created|x-occurrence="1"\w*\zaln-e\*...
 ```
 
 #### Basic Requirements for Creating a Resource Container
@@ -371,7 +371,7 @@ RC defines consistent directory layouts and file naming patterns:
 # All resources follow same manifest structure
 dublin_core:
   identifier: 'resource-name'
-  type: 'bundle' | 'help' | 'dict' | 'man'
+  type: 'book' | 'bundle' | 'help' | 'dict' | 'man'
   relation: ['connected/resources']
 ```
 
@@ -425,10 +425,13 @@ en_tw    → es-419_tw   → fr_tw      # Same markdown format
 
 | Type | Structure | Content Pattern | Example |
 |------|-----------|-----------------|---------|
+| `book` | Chapter/chunk directories | `{project}/{chapter}/{chunk}.md` | `obs/01/01.md` |
 | `bundle` | Flat USFM files | `{NN}-{BOOK}.usfm` | `01-GEN.usfm`, `40-MAT.usfm` |
 | `help` | Flat TSV files | `{prefix}_{BOOK}.tsv` | `tn_GEN.tsv`, `tq_MAT.tsv` |
 | `dict` | Nested Markdown | `bible/{type}/{term}.md` | `bible/kt/compassion.md`, `bible/names/aaron.md` |
 | `man` | Nested chapters | `{category}/{topic}/{NN}.md` | `translate/figs-metaphor/01.md`, `intro/translation-guidelines/01.md` |
+
+The RC specification defines five container types. The TSV file pattern for `help` and the `bible/{type}/{term}.md` pattern for `dict` are unfoldingWord Door43 conventions that extend the RC 0.2 specification.
 
 #### Manifest Structure (Key Fields)
 
@@ -447,7 +450,7 @@ dublin_core:
   version: '85'                          # Resource version number
 
 checking:
-  checking_level: '3'                    # Quality level (1-3)
+  checking_level: '3'                    # Quality level 1-3 (Door43 convention)
 
 projects:                                # Book definitions
   - identifier: 'gen'                    # Book identifier
@@ -516,7 +519,7 @@ GET /api/v1/catalog/search
 Query Parameters:
   - lang: Language code (en, es-419, fr, etc.)
   - subject: Resource subject (Bible, Translation Notes, etc.)
-  - stage: Release stage (prod, preprod, draft)
+  - stage: Release stage (prod, preprod, latest). A stage includes all higher stages: preprod also returns prod entries.
   - owner: Organization name
   - repo: Repository name
   - tag: Specific version tag
@@ -528,23 +531,20 @@ Response: Array of catalog entries with metadata and relationships
 
 ```http
 GET /api/v1/catalog/list/owners
-Response: Array of organization objects with resource counts
+Response: {"ok": true, "data": [array of owner names]}
 
 GET /api/v1/catalog/list/languages  
-Response: Array of language objects with available resources
+Response: {"ok": true, "data": [array of language codes]}
 
 GET /api/v1/catalog/list/subjects
-Response: Array of subject categories with resource counts
+Response: {"ok": true, "data": [array of subject strings]}
 ```
 
 **Individual Resource Access:**
 
 ```http
 GET /api/v1/catalog/entry/{owner}/{repo}/{ref}
-Query Parameters:
-  - lang: Filter by language (optional)
-  
-Response: Complete catalog entry with manifest data and file listings
+Response: Catalog entry with metadata and content information
 ```
 
 #### Repository API Endpoints
@@ -603,11 +603,9 @@ Content-Type: application/json
 
 **Benefits of Authentication:**
 
-- Increased rate limits (1000+ requests/hour vs 60/hour)
 - Access to private repositories
 - CRUD operations on resources
 - More catalog filtering options
-- Priority access during high traffic
 
 **Token Generation:**
 
@@ -617,13 +615,7 @@ Content-Type: application/json
 
 #### Rate Limiting & Performance
 
-**Rate Limit Headers:**
-
-```http
-X-RateLimit-Limit: 60        # Maximum requests per hour
-X-RateLimit-Remaining: 45     # Remaining requests in current window
-X-RateLimit-Reset: 1640995200 # Reset time (Unix timestamp)
-```
+DCS does not enforce documented API rate limits. It does not send X-RateLimit headers. Be a good API citizen: cache responses, batch requests, and add retry logic with exponential backoff for 429 or 5xx responses.
 
 **Performance Optimization Strategies:**
 
@@ -1125,12 +1117,12 @@ If an abstract noun would be natural and give the right meaning in your language
 ### 1. UHB (Hebrew Bible)
 
 - format: `usfm`
-- language: `he`
+- language: `hbo`
 - subject: `Bible`
 - type: `bundle` (RC)
 - identifier: `uhb`
 - relation: `en/ult`,
-- link: `rc://en/uhb/book/gen/01/02`
+- link: `rc://hbo/uhb/book/gen/01/02`
 - content:
   - 01-GEN.usfm
   - 02-EXO.usfm
@@ -1143,12 +1135,12 @@ See: [https://git.door43.org/unfoldingWord/hbo_uhb](https://git.door43.org/unfol
 ### 2. UGNT (Greek New Testament)
 
 - format: `usfm`
-- language: `el`
+- language: `el-x-koine`
 - subject: `Bible`
 - type: `bundle` (RC)
 - identifier: `ugnt`
 - relation: `en/ult`
-- link: `rc://en/ugnt/book/gen/01/02`
+- link: `rc://el-x-koine/ugnt/book/gen/01/02`
 - content:
   - 01-GEN.usfm
   - 02-EXO.usfm
@@ -1398,12 +1390,12 @@ unfoldingWord uses custom USFM markers for the alignment syntax. These markers g
 where:
 
 - `\zaln-s` - start of alignment pair
-  - `|x-strong="G35880"` - Strong's concordance number (G35880, H01234)
-  - `|x-lemma="ὁ"` - Dictionary form of the original word (ὁ, אֱלֹהִים)
-  - `|x-morph="Gr,EA,,,,NMS,"` - Morphological parsing (Gr,EA,,,,NMS,)
-  - `|x-occurrence="1"` - Which occurrence in the verse (1, 2, 3...)
-  - `|x-occurrences="1"` - Total occurrences in the verse
-  - `|x-content="ὁ"` - Actual original language text being aligned
+  - `|x-strong="G35880"` - Strong's concordance number (G35880, H0430)
+  - `x-lemma="ὁ"` - Dictionary form of the original word (ὁ, אֱלֹהִים)
+  - `x-morph="Gr,EA,,,,NMS,"` - Morphological parsing (Gr,EA,,,,NMS,)
+  - `x-occurrence="1"` - Which occurrence in the verse (1, 2, 3...)
+  - `x-occurrences="1"` - Total occurrences in the verse
+  - `x-content="ὁ"` - Actual original language text being aligned
 - `\*` - end of alignment start marker
 - `\w` - word marker
   - `The` - the word being aligned
@@ -1578,18 +1570,6 @@ graph TD
 
 ```usfm
 \v 1 \zaln-s |x-strong="G39720" x-lemma="Παῦλος" x-morph="Gr,N,,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="Παῦλος"\*\w Paul|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*, \zaln-s |x-strong="G14010" x-lemma="δοῦλος" x-morph="Gr,N,,,,,NMS," x-occurrence="1" x-occurrences="1" x-content="δοῦλος"\*\w a|x-occurrence="1" x-occurrences="1"\w* \w servant|x-occurrence="1" x-occurrences="1"\w*\zaln-e\* \zaln-s |x-strong="G55470" x-lemma="Χριστός" x-morph="Gr,N,,,,,GMS," x-occurrence="1" x-occurrences="1" x-content="Χριστοῦ"\*\w of|x-occurrence="1" x-occurrences="1"\w* \w Christ|x-occurrence="1" x-occurrences="1"\w*\zaln-e\* \zaln-s |x-strong="G24240" x-lemma="Ἰησοῦς" x-morph="Gr,N,,,,,GMS," x-occurrence="1" x-occurrences="1" x-content="Ἰησοῦ"\*\w Jesus|x-occurrence="1" x-occurrences="1"\w*\zaln-e\*
-```
-
-**3. Many-to-One**: Multiple original words ↔ single gateway word
-
-```usfm
-\zaln-s |x-strong="G1223" x-content="διὰ"\*\zaln-s |x-strong="G5124" x-content="τοῦτο"\*\w therefore\w*\zaln-e\*\zaln-e\*
-```
-
-**4. Many-to-Many**: Multiple original words ↔ multiple gateway words
-
-```usfm
-\zaln-s |x-strong="G2570" x-content="καλῶς"\*\zaln-s |x-strong="G4160" x-content="ποιεῖς"\*\w do\w* \w good\w*\zaln-e\*\zaln-e\*
 ```
 
 ## Versification Layer
